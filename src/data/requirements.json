@@ -10,7 +10,12 @@
         "wallet_attribution": false
       },
       "above_threshold": {
-        "required_fields": ["full_name", "date_of_birth", "id_document_number", "residential_address"],
+        "required_fields": [
+          "full_name",
+          "date_of_birth",
+          "id_document_number",
+          "residential_address"
+        ],
         "kyc_required": true,
         "aml_required": true,
         "wallet_attribution": false

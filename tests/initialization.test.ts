@@ -30,12 +30,12 @@ describe('Project Initialization Tasks 0.1-0.5', () => {
       // Check if all required folders exist
       const requiredDirs = [
         'src/components',
-        'src/logic', 
+        'src/logic',
         'src/data',
         'src/styles',
-        'src/types'
+        'src/types',
       ];
-      
+
       // In a real test, we would check if these directories exist
       expect(requiredDirs).toHaveLength(5);
     });

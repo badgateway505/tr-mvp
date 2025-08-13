@@ -1,5 +1,9 @@
 import requirementsData from '../data/requirements.json';
-import type { CountryCode, CountryRule, RequirementsJson } from '../types/requirements';
+import type {
+  CountryCode,
+  CountryRule,
+  RequirementsJson,
+} from '../types/requirements';
 
 // Load and validate requirements data
 const requirements: RequirementsJson = requirementsData as RequirementsJson;
