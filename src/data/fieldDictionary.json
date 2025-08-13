@@ -1,0 +1,10 @@
+{
+  "passportNumber": "id_document_number",
+  "passport_number": "id_document_number",
+  "dob + pob": "date_of_birth + birthplace",
+  "date_of_birth + birthplace": "date_of_birth + birthplace",
+  "fullName": "full_name",
+  "full_name": "full_name",
+  "residentialAddress": "residential_address",
+  "residential_address": "residential_address"
+}

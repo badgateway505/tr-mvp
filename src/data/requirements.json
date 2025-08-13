@@ -1,0 +1,47 @@
+{
+  "DEU": {
+    "currency": "EUR",
+    "threshold": 0,
+    "individual": {
+      "below_threshold": {
+        "required_fields": ["full_name", "date_of_birth"],
+        "kyc_required": false,
+        "aml_required": false,
+        "wallet_attribution": false
+      },
+      "above_threshold": {
+        "required_fields": ["full_name", "date_of_birth", "id_document_number", "residential_address"],
+        "kyc_required": true,
+        "aml_required": true,
+        "wallet_attribution": false
+      }
+    }
+  },
+  "ZAF": {
+    "currency": "ZAR",
+    "threshold": 5000,
+    "individual": {
+      "below_threshold": {
+        "required_fields": ["full_name"],
+        "kyc_required": false,
+        "aml_required": false,
+        "wallet_attribution": false
+      },
+      "above_threshold": {
+        "requirement_groups": [
+          {
+            "logic": "AND",
+            "fields": ["full_name", "date_of_birth + birthplace"]
+          },
+          {
+            "logic": "OR",
+            "fields": ["id_document_number", "passport_number"]
+          }
+        ],
+        "kyc_required": true,
+        "aml_required": true,
+        "wallet_attribution": true
+      }
+    }
+  }
+}
