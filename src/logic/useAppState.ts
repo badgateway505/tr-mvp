@@ -10,7 +10,7 @@ export interface AppState {
   direction: Direction;
   amount: number;
   entityType: EntityType;
-  
+
   // Actions
   setSumsubCountry: (country: string) => void;
   setCounterpartyCountry: (country: string) => void;
@@ -30,9 +30,10 @@ const initialState = {
 
 export const useAppState = create<AppState>((set) => ({
   ...initialState,
-  
+
   setSumsubCountry: (country: string) => set({ sumsubCountry: country }),
-  setCounterpartyCountry: (country: string) => set({ counterpartyCountry: country }),
+  setCounterpartyCountry: (country: string) =>
+    set({ counterpartyCountry: country }),
   setDirection: (direction: Direction) => set({ direction }),
   setAmount: (amount: number) => set({ amount }),
   setEntityType: (entityType: EntityType) => set({ entityType }),

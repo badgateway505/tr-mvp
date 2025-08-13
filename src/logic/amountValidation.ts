@@ -11,25 +11,25 @@
 export function validateAmount(input: string): number | null {
   // Remove any whitespace
   const trimmed = input.trim();
-  
+
   // Check if input is empty
   if (trimmed === '') {
     return null;
   }
-  
+
   // Check if input contains only digits
   if (!/^\d+$/.test(trimmed)) {
     return null;
   }
-  
+
   // Parse to integer
   const amount = parseInt(trimmed, 10);
-  
+
   // Ensure it's a valid integer (handles edge cases like very large numbers)
   if (!Number.isInteger(amount) || amount < 0) {
     return null;
   }
-  
+
   return amount;
 }
 
