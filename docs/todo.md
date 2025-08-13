@@ -22,17 +22,17 @@
 
 ## 1. Static Data (JSON) & Docs
 
-- **1.1** \[ ] **Add `data/requirements.json` with DEU & ZAF**
-  _Context:_ Encode examples from PRD including thresholds, individual rules, AND/OR groups.
+- **1.1** \[x] **Add `data/requirements.json` with DEU & ZAF**
+  _Context:_ Encode examples from scope.md including thresholds, individual rules, AND/OR groups.
   _Depends on:_ 0.3
-- **1.2** \[ ] **Add `data/currencyRates.json`**
+- **1.2** \[x] **Add `data/currencyRates.json`**
   _Context:_ Static mapping `{ "EUR": 1, "ZAR": 0.05 }` as example.
   _Depends on:_ 0.3
-- **1.3** \[ ] **Add `data/fieldDictionary.json`**
+- **1.3** \[x] **Add `data/fieldDictionary.json`**
   _Context:_ Map raw law terms → normalized names, e.g. `{ "passportNumber": "id_document_number", "dob + pob": "date_of_birth + birthplace" }`.
   _Depends on:_ 0.3
-- **1.4** \[ ] **Include `/docs/scope.md` & `/docs/todo.md` in repo**
-  _Context:_ Keep PRD and plan close to code for easy handoff.
+- **1.4** \[x] **Include `/docs/scope.md` & `/docs/todo.md` in repo**
+  _Context:_ Keep scope.md (PRD) and todo.md (plan) close to code for easy handoff.
   _Depends on:_ 0.3
 
 ---

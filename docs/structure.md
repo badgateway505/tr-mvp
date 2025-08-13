@@ -75,7 +75,7 @@ export type RequirementsJson = Record<CountryCode, CountryRule>;
 
 **Location:** `/data`
 
-- `requirements.json` — per-country rules (see PRD examples for **DEU**/**ZAF**).
+- `requirements.json` — per-country rules (see scope.md examples for **DEU**/**ZAF**).
 - `currencyRates.json` — `{"EUR": 1, "ZAR": 0.05, ...}` (static for MVP).
 - `fieldDictionary.json` — normalization map (law term → canonical key), e.g.:
   ```json
