@@ -1,26 +1,14 @@
 {
-  "extends": "./tsconfig.app.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "types": ["vitest/globals", "@testing-library/jest-dom"],
-    "lib": ["ES2015", "DOM", "DOM.Iterable"],
-    "target": "ES2015",
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "strict": true,
-    "skipLibCheck": true
+    "types": ["vitest/globals"],
+    "lib": ["ES2022", "DOM"]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
     "src/**/__tests__/**/*.ts",
     "src/**/__tests__/**/*.tsx",
-    "tests/**/*.ts",
-    "src/test-setup.ts",
-    "src/types/vitest.d.ts"
-  ],
-  "exclude": []
+    "src/test-setup.ts"
+  ]
 }
