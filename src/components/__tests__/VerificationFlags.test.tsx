@@ -12,7 +12,7 @@ describe('VerificationFlags', () => {
         colorTheme="blue"
       />
     );
-    
+
     expect(screen.getByText('KYC Required')).toBeInTheDocument();
     expect(screen.queryByText('AML Required')).not.toBeInTheDocument();
     expect(screen.queryByText('Wallet Attribution')).not.toBeInTheDocument();
@@ -27,7 +27,7 @@ describe('VerificationFlags', () => {
         colorTheme="blue"
       />
     );
-    
+
     expect(screen.getByText('AML Required')).toBeInTheDocument();
     expect(screen.queryByText('KYC Required')).not.toBeInTheDocument();
     expect(screen.queryByText('Wallet Attribution')).not.toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('VerificationFlags', () => {
         colorTheme="blue"
       />
     );
-    
+
     expect(screen.getByText('Wallet Attribution')).toBeInTheDocument();
     expect(screen.queryByText('KYC Required')).not.toBeInTheDocument();
     expect(screen.queryByText('AML Required')).not.toBeInTheDocument();
@@ -57,7 +57,7 @@ describe('VerificationFlags', () => {
         colorTheme="purple"
       />
     );
-    
+
     expect(screen.getByText('KYC Required')).toBeInTheDocument();
     expect(screen.getByText('AML Required')).toBeInTheDocument();
     expect(screen.queryByText('Wallet Attribution')).not.toBeInTheDocument();
@@ -72,7 +72,7 @@ describe('VerificationFlags', () => {
         colorTheme="blue"
       />
     );
-    
+
     expect(screen.getByText('No Special Verification')).toBeInTheDocument();
     expect(screen.queryByText('KYC Required')).not.toBeInTheDocument();
     expect(screen.queryByText('AML Required')).not.toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('VerificationFlags', () => {
         colorTheme="blue"
       />
     );
-    
+
     const heading = screen.getByText('Verification Requirements');
     expect(heading).toHaveClass('text-blue-700');
   });
@@ -102,7 +102,7 @@ describe('VerificationFlags', () => {
         colorTheme="purple"
       />
     );
-    
+
     const heading = screen.getByText('Verification Requirements');
     expect(heading).toHaveClass('text-purple-700');
   });
@@ -117,8 +117,10 @@ describe('VerificationFlags', () => {
         className="custom-class"
       />
     );
-    
-    const container = screen.getByText('Verification Requirements').closest('div');
+
+    const container = screen
+      .getByText('Verification Requirements')
+      .closest('div');
     expect(container).toHaveClass('custom-class');
   });
 
@@ -131,7 +133,7 @@ describe('VerificationFlags', () => {
         colorTheme="blue"
       />
     );
-    
+
     expect(screen.getByText('Verification Requirements')).toBeInTheDocument();
   });
 });

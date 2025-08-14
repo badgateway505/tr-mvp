@@ -2,20 +2,22 @@
 // This file demonstrates the usage of the centralized theme system
 
 import React from 'react';
-import { 
-  theme, 
-  getVaspTheme, 
-  getComponentStyles, 
-  commonStyles, 
+import {
+  theme,
+  getVaspTheme,
+  getComponentStyles,
+  commonStyles,
   vaspThemes,
   combineClasses,
   conditionalClass,
-  responsiveClass 
+  responsiveClass,
 } from '../src/styles/theme-utils';
 
 const ThemeDemo: React.FC = () => {
   const [isActive, setIsActive] = React.useState(false);
-  const [selectedTheme, setSelectedTheme] = React.useState<'sumsub' | 'counterparty'>('sumsub');
+  const [selectedTheme, setSelectedTheme] = React.useState<
+    'sumsub' | 'counterparty'
+  >('sumsub');
 
   return (
     <div className="min-h-screen bg-neutral-50 p-8">
@@ -34,21 +36,27 @@ const ThemeDemo: React.FC = () => {
         <div className="flex justify-center space-x-4">
           <button
             onClick={() => setSelectedTheme('sumsub')}
-            className={conditionalClass(
-              selectedTheme === 'sumsub',
-              'bg-sumsub-600 text-white',
-              'bg-neutral-200 text-neutral-700'
-            ) + ' px-6 py-3 rounded-lg font-medium transition-colors duration-200'}
+            className={
+              conditionalClass(
+                selectedTheme === 'sumsub',
+                'bg-sumsub-600 text-white',
+                'bg-neutral-200 text-neutral-700'
+              ) +
+              ' px-6 py-3 rounded-lg font-medium transition-colors duration-200'
+            }
           >
             Sumsub Theme (Blue)
           </button>
           <button
             onClick={() => setSelectedTheme('counterparty')}
-            className={conditionalClass(
-              selectedTheme === 'counterparty',
-              'bg-counterparty-600 text-white',
-              'bg-neutral-200 text-neutral-700'
-            ) + ' px-6 py-3 rounded-lg font-medium transition-colors duration-200'}
+            className={
+              conditionalClass(
+                selectedTheme === 'counterparty',
+                'bg-counterparty-600 text-white',
+                'bg-neutral-200 text-neutral-700'
+              ) +
+              ' px-6 py-3 rounded-lg font-medium transition-colors duration-200'
+            }
           >
             Counterparty Theme (Purple)
           </button>
@@ -57,25 +65,28 @@ const ThemeDemo: React.FC = () => {
         {/* Color Palette */}
         <div className="bg-white rounded-xl p-6 shadow-soft">
           <h2 className="text-2xl font-semibold mb-6">Color Palette</h2>
-          
+
           {/* VASP Theme Colors */}
           <div className="mb-8">
             <h3 className="text-lg font-medium mb-4">
-              {selectedTheme === 'sumsub' ? 'Sumsub' : 'Counterparty'} Theme Colors
+              {selectedTheme === 'sumsub' ? 'Sumsub' : 'Counterparty'} Theme
+              Colors
             </h3>
             <div className="grid grid-cols-5 gap-4">
-              {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map((shade) => (
-                <div key={shade} className="text-center">
-                  <div 
-                    className={`w-16 h-16 rounded-lg mb-2 ${
-                      selectedTheme === 'sumsub' 
-                        ? `bg-sumsub-${shade}` 
-                        : `bg-counterparty-${shade}`
-                    }`}
-                  />
-                  <span className="text-sm text-neutral-600">{shade}</span>
-                </div>
-              ))}
+              {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(
+                (shade) => (
+                  <div key={shade} className="text-center">
+                    <div
+                      className={`w-16 h-16 rounded-lg mb-2 ${
+                        selectedTheme === 'sumsub'
+                          ? `bg-sumsub-${shade}`
+                          : `bg-counterparty-${shade}`
+                      }`}
+                    />
+                    <span className="text-sm text-neutral-600">{shade}</span>
+                  </div>
+                )
+              )}
             </div>
           </div>
 
@@ -106,7 +117,7 @@ const ThemeDemo: React.FC = () => {
         {/* Component Examples */}
         <div className="bg-white rounded-xl p-6 shadow-soft">
           <h2 className="text-2xl font-semibold mb-6">Component Examples</h2>
-          
+
           {/* Buttons */}
           <div className="mb-8">
             <h3 className="text-lg font-medium mb-4">Button Variants</h3>
@@ -133,19 +144,19 @@ const ThemeDemo: React.FC = () => {
           <div className="mb-8">
             <h3 className="text-lg font-medium mb-4">Input Variants</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <input 
-                type="text" 
-                placeholder="Default input" 
+              <input
+                type="text"
+                placeholder="Default input"
                 className={commonStyles.inputs.default}
               />
-              <input 
-                type="text" 
-                placeholder="Error input" 
+              <input
+                type="text"
+                placeholder="Error input"
                 className={commonStyles.inputs.error}
               />
-              <input 
-                type="text" 
-                placeholder="Success input" 
+              <input
+                type="text"
+                placeholder="Success input"
                 className={commonStyles.inputs.success}
               />
             </div>
@@ -157,15 +168,21 @@ const ThemeDemo: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className={commonStyles.cards.default}>
                 <h4 className="font-medium mb-2">Default Card</h4>
-                <p className="text-neutral-600 text-sm">Standard card with basic shadow</p>
+                <p className="text-neutral-600 text-sm">
+                  Standard card with basic shadow
+                </p>
               </div>
               <div className={commonStyles.cards.elevated}>
                 <h4 className="font-medium mb-2">Elevated Card</h4>
-                <p className="text-neutral-600 text-sm">Card with medium shadow for elevation</p>
+                <p className="text-neutral-600 text-sm">
+                  Card with medium shadow for elevation
+                </p>
               </div>
               <div className={commonStyles.cards.interactive}>
                 <h4 className="font-medium mb-2">Interactive Card</h4>
-                <p className="text-neutral-600 text-sm">Hover to see shadow transition</p>
+                <p className="text-neutral-600 text-sm">
+                  Hover to see shadow transition
+                </p>
               </div>
             </div>
           </div>
@@ -174,7 +191,7 @@ const ThemeDemo: React.FC = () => {
         {/* Spacing & Layout */}
         <div className="bg-white rounded-xl p-6 shadow-soft">
           <h2 className="text-2xl font-semibold mb-6">Spacing & Layout</h2>
-          
+
           {/* Spacing Scale */}
           <div className="mb-8">
             <h3 className="text-lg font-medium mb-4">Spacing Scale</h3>
@@ -205,19 +222,27 @@ const ThemeDemo: React.FC = () => {
           {/* Responsive Layout */}
           <div>
             <h3 className="text-lg font-medium mb-4">Responsive Layout</h3>
-            <div className={responsiveClass(
-              'grid grid-cols-1 gap-4',
-              'sm:grid-cols-2',
-              'lg:grid-cols-3'
-            )}>
+            <div
+              className={responsiveClass(
+                'grid grid-cols-1 gap-4',
+                'sm:grid-cols-2',
+                'lg:grid-cols-3'
+              )}
+            >
               <div className="bg-neutral-100 p-4 rounded-lg text-center">
-                <span className="text-sm text-neutral-600">Responsive Grid Item</span>
+                <span className="text-sm text-neutral-600">
+                  Responsive Grid Item
+                </span>
               </div>
               <div className="bg-neutral-100 p-4 rounded-lg text-center">
-                <span className="text-sm text-neutral-600">Responsive Grid Item</span>
+                <span className="text-sm text-neutral-600">
+                  Responsive Grid Item
+                </span>
               </div>
               <div className="bg-neutral-100 p-4 rounded-lg text-center">
-                <span className="text-sm text-neutral-600">Responsive Grid Item</span>
+                <span className="text-sm text-neutral-600">
+                  Responsive Grid Item
+                </span>
               </div>
             </div>
           </div>
@@ -226,11 +251,11 @@ const ThemeDemo: React.FC = () => {
         {/* Utility Functions */}
         <div className="bg-white rounded-xl p-6 shadow-soft">
           <h2 className="text-2xl font-semibold mb-6">Utility Functions</h2>
-          
+
           {/* combineClasses */}
           <div className="mb-6">
             <h3 className="text-lg font-medium mb-4">combineClasses</h3>
-            <button 
+            <button
               className={combineClasses(
                 theme.spacing.button,
                 theme.radius.button,
@@ -249,16 +274,16 @@ const ThemeDemo: React.FC = () => {
             <h3 className="text-lg font-medium mb-4">conditionalClass</h3>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-neutral-600">State:</span>
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                conditionalClass(
+              <span
+                className={`px-3 py-1 rounded-full text-sm font-medium ${conditionalClass(
                   isActive,
                   'bg-status-success-100 text-status-success-800',
                   'bg-status-error-100 text-status-error-800'
-                )
-              }`}>
+                )}`}
+              >
                 {isActive ? 'Active' : 'Inactive'}
               </span>
-              <button 
+              <button
                 onClick={() => setIsActive(!isActive)}
                 className="px-3 py-1 bg-neutral-200 text-neutral-700 rounded text-sm hover:bg-neutral-300 transition-colors"
               >
@@ -270,9 +295,14 @@ const ThemeDemo: React.FC = () => {
           {/* VASP Theme Helper */}
           <div>
             <h3 className="text-lg font-medium mb-4">VASP Theme Helper</h3>
-            <div className={`p-6 rounded-lg border ${getVaspTheme(selectedTheme).bg} ${getVaspTheme(selectedTheme).border}`}>
-              <h4 className={`text-lg font-semibold mb-2 ${getVaspTheme(selectedTheme).text}`}>
-                {selectedTheme === 'sumsub' ? 'Sumsub' : 'Counterparty'} Theme Example
+            <div
+              className={`p-6 rounded-lg border ${getVaspTheme(selectedTheme).bg} ${getVaspTheme(selectedTheme).border}`}
+            >
+              <h4
+                className={`text-lg font-semibold mb-2 ${getVaspTheme(selectedTheme).text}`}
+              >
+                {selectedTheme === 'sumsub' ? 'Sumsub' : 'Counterparty'} Theme
+                Example
               </h4>
               <p className={`text-sm ${getVaspTheme(selectedTheme).accent}`}>
                 This card uses the {selectedTheme} theme colors automatically
@@ -283,9 +313,11 @@ const ThemeDemo: React.FC = () => {
 
         {/* Code Examples */}
         <div className="bg-neutral-900 rounded-xl p-6 text-neutral-100">
-          <h2 className="text-2xl font-semibold mb-6 text-white">Code Examples</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-white">
+            Code Examples
+          </h2>
           <pre className="text-sm overflow-x-auto">
-{`// Import theme utilities
+            {`// Import theme utilities
 import { 
   theme, 
   getVaspTheme, 

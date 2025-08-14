@@ -1,12 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { 
-  extractRequirements, 
+import {
+  extractRequirements,
   extractFromRuleBlock,
   getAllRequirements,
   hasRequirementGroups,
-  hasRequiredFields
+  hasRequiredFields,
 } from '../requirementExtractor';
-
 
 describe('requirementExtractor', () => {
   describe('extractRequirements', () => {
@@ -28,11 +27,11 @@ describe('requirementExtractor', () => {
       expect(result?.groups).toHaveLength(2);
       expect(result?.groups?.[0]).toEqual({
         logic: 'AND',
-        fields: ['full_name', 'date_of_birth + birthplace']
+        fields: ['full_name', 'date_of_birth + birthplace'],
       });
       expect(result?.groups?.[1]).toEqual({
         logic: 'OR',
-        fields: ['id_document_number', 'passport_number']
+        fields: ['id_document_number', 'passport_number'],
       });
       expect(result?.kyc_required).toBe(true);
       expect(result?.aml_required).toBe(true);
@@ -46,7 +45,7 @@ describe('requirementExtractor', () => {
         'full_name',
         'date_of_birth',
         'id_document_number',
-        'residential_address'
+        'residential_address',
       ]);
       expect(result?.kyc_required).toBe(true);
       expect(result?.aml_required).toBe(true);
@@ -66,7 +65,7 @@ describe('requirementExtractor', () => {
         required_fields: ['field1', 'field2'],
         kyc_required: true,
         aml_required: false,
-        wallet_attribution: true
+        wallet_attribution: true,
       };
 
       const result = extractFromRuleBlock(individualBranch);
@@ -82,16 +81,16 @@ describe('requirementExtractor', () => {
         requirement_groups: [
           {
             logic: 'AND' as const,
-            fields: ['field1', 'field2']
+            fields: ['field1', 'field2'],
           },
           {
             logic: 'OR' as const,
-            fields: ['field3', 'field4']
-          }
+            fields: ['field3', 'field4'],
+          },
         ],
         kyc_required: false,
         aml_required: true,
-        wallet_attribution: false
+        wallet_attribution: false,
       };
 
       const result = extractFromRuleBlock(individualBranch);
@@ -109,12 +108,15 @@ describe('requirementExtractor', () => {
       const result = getAllRequirements('DEU');
       expect(result).toBeDefined();
       expect(result?.threshold).toBe(0);
-      expect(result?.below_threshold.fields).toEqual(['full_name', 'date_of_birth']);
+      expect(result?.below_threshold.fields).toEqual([
+        'full_name',
+        'date_of_birth',
+      ]);
       expect(result?.above_threshold.fields).toEqual([
         'full_name',
         'date_of_birth',
         'id_document_number',
-        'residential_address'
+        'residential_address',
       ]);
     });
 

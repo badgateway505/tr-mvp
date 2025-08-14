@@ -170,13 +170,13 @@
   _Context:_ Tailwind transitions (`transition`, `transform`, `hover:scale-…`, `border-dashed`) for smooth UX; keep subtle.
   _Depends on:_ 6.3, 7.3
   _Completed:_ Added smooth transitions, hover effects, and subtle animations across all components including:
-    - Input controls (hover:scale, focus:scale, smooth transitions)
-    - Field pills (enhanced hover effects, border-dashed on hover)
-    - VASP requirement blocks (card hover effects, group animations)
-    - Summary status bar (status change animations, icon rotations)
-    - Verification flags (hover scaling, shadow effects)
-    - Header elements (title hover scaling, subtitle transitions)
-    - Test results and scenarios (hover effects, smooth scaling)
+  - Input controls (hover:scale, focus:scale, smooth transitions)
+  - Field pills (enhanced hover effects, border-dashed on hover)
+  - VASP requirement blocks (card hover effects, group animations)
+  - Summary status bar (status change animations, icon rotations)
+  - Verification flags (hover scaling, shadow effects)
+  - Header elements (title hover scaling, subtitle transitions)
+  - Test results and scenarios (hover effects, smooth scaling)
 
 ---
 

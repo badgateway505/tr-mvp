@@ -72,7 +72,7 @@
 }
 
 /* Hover highlight for matching fields */
-.field-pill[data-is-matched="true"]:hover {
+.field-pill[data-is-matched='true']:hover {
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.4);
   transform: translateY(-1px);
 }
@@ -92,13 +92,18 @@
 }
 
 /* Enhanced focus states for accessibility */
-input:focus, select:focus {
+input:focus,
+select:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Smooth transitions for all interactive elements */
-button, input, select, .field-pill, .requirement-group {
+button,
+input,
+select,
+.field-pill,
+.requirement-group {
   transition: all 0.2s ease-out;
 }
 

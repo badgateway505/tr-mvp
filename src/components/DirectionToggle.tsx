@@ -30,11 +30,7 @@ export const DirectionToggle: React.FC<DirectionToggleProps> = ({
             value === 'OUT'
               ? 'bg-blue-600 text-white shadow-md'
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          } ${
-            disabled
-              ? 'opacity-50 cursor-not-allowed'
-              : 'cursor-pointer'
-          }`}
+          } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           OUT
         </button>
@@ -46,11 +42,7 @@ export const DirectionToggle: React.FC<DirectionToggleProps> = ({
             value === 'IN'
               ? 'bg-blue-600 text-white shadow-md'
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          } ${
-            disabled
-              ? 'opacity-50 cursor-not-allowed'
-              : 'cursor-pointer'
-          }`}
+          } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           IN
         </button>

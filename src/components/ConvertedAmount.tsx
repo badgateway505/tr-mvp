@@ -54,9 +54,7 @@ export const ConvertedAmount: React.FC<ConvertedAmountProps> = ({
           </div>
           <div className="text-right">
             <div className="text-xs text-gray-500">EUR Equivalent</div>
-            <div className="text-xs text-blue-600 font-medium">
-              Rounded
-            </div>
+            <div className="text-xs text-blue-600 font-medium">Rounded</div>
           </div>
         </div>
         <div className="mt-2 text-xs text-gray-500">

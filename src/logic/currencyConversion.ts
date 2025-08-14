@@ -13,7 +13,10 @@ export interface CurrencyConversion {
  * @param currencyCode - The currency code to convert from
  * @returns CurrencyConversion object with conversion details
  */
-export function convertToEUR(amount: number, currencyCode: string): CurrencyConversion | undefined {
+export function convertToEUR(
+  amount: number,
+  currencyCode: string
+): CurrencyConversion | undefined {
   const rate = getCurrencyRate(currencyCode);
   if (rate === undefined) {
     return undefined;
@@ -25,7 +28,7 @@ export function convertToEUR(amount: number, currencyCode: string): CurrencyConv
     originalAmount: amount,
     originalCurrency: currencyCode,
     eurAmount,
-    exchangeRate: rate
+    exchangeRate: rate,
   };
 }
 
@@ -51,7 +54,7 @@ export function formatCurrency(amount: number, currencyCode: string): string {
       style: 'currency',
       currency: 'EUR',
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     }).format(amount);
   }
 
@@ -60,7 +63,7 @@ export function formatCurrency(amount: number, currencyCode: string): string {
     style: 'currency',
     currency: currencyCode,
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0
+    maximumFractionDigits: 0,
   }).format(amount);
 }
 
@@ -79,7 +82,10 @@ export function formatEURAmount(eurAmount: number): string {
  * @param currencyCode - The original currency code
  * @returns Formatted conversion summary or undefined if conversion failed
  */
-export function getConversionSummary(amount: number, currencyCode: string): string | undefined {
+export function getConversionSummary(
+  amount: number,
+  currencyCode: string
+): string | undefined {
   const conversion = convertToEUR(amount, currencyCode);
   if (!conversion) {
     return undefined;

@@ -1,6 +1,6 @@
 /**
  * Hover Sync Demo - Task 7.3
- * 
+ *
  * This demo shows how the hover sync functionality works between blocks:
  * - When hovering over a field pill, corresponding pills in the opposite block are highlighted
  * - Fields with `inBoth === true` get `scale` + `dashed-border` effects
@@ -12,7 +12,7 @@ const exampleFieldPairings = new Map<string, string[]>([
   ['passportNumber', ['id_document_number']],
   ['date_of_birth', ['date_of_birth']],
   ['fullName', ['fullName', 'legalName']],
-  ['address', ['residentialAddress', 'mailingAddress']]
+  ['address', ['residentialAddress', 'mailingAddress']],
 ]);
 
 // Example reverse pairings
@@ -22,7 +22,7 @@ const exampleReversePairings = new Map<string, string[]>([
   ['fullName', ['fullName']],
   ['legalName', ['fullName']],
   ['residentialAddress', ['address']],
-  ['mailingAddress', ['address']]
+  ['mailingAddress', ['address']],
 ]);
 
 /**
@@ -30,7 +30,7 @@ const exampleReversePairings = new Map<string, string[]>([
  */
 function simulateHoverSync(hoveredField: string | null) {
   console.log(`\n🔍 Hovering over: ${hoveredField || 'none'}`);
-  
+
   if (!hoveredField) {
     console.log('   No field highlighted');
     return;
@@ -39,17 +39,25 @@ function simulateHoverSync(hoveredField: string | null) {
   // Find matching fields in the opposite block
   const matches = exampleFieldPairings.get(hoveredField) || [];
   const reverseMatches = exampleReversePairings.get(hoveredField) || [];
-  
+
   if (matches.length > 0) {
-    console.log(`   ✅ Matching fields in counterparty block: ${matches.join(', ')}`);
-    console.log(`   🎯 These fields would get: scale-105 + border-dashed + border-blue-400 + shadow-lg`);
+    console.log(
+      `   ✅ Matching fields in counterparty block: ${matches.join(', ')}`
+    );
+    console.log(
+      `   🎯 These fields would get: scale-105 + border-dashed + border-blue-400 + shadow-lg`
+    );
   }
-  
+
   if (reverseMatches.length > 0) {
-    console.log(`   ✅ Matching fields in applicant block: ${reverseMatches.join(', ')}`);
-    console.log(`   🎯 These fields would get: scale-105 + border-dashed + border-blue-400 + shadow-lg`);
+    console.log(
+      `   ✅ Matching fields in applicant block: ${reverseMatches.join(', ')}`
+    );
+    console.log(
+      `   🎯 These fields would get: scale-105 + border-dashed + border-blue-400 + shadow-lg`
+    );
   }
-  
+
   if (matches.length === 0 && reverseMatches.length === 0) {
     console.log('   ❌ No matching fields found');
   }
@@ -69,7 +77,13 @@ simulateHoverSync(null);
 
 console.log('\n📋 Implementation Details:');
 console.log('- Hover state is managed in App.tsx with useState');
-console.log('- VaspRequirementsBlock receives hoveredField and onFieldHover props');
+console.log(
+  '- VaspRequirementsBlock receives hoveredField and onFieldHover props'
+);
 console.log('- FieldPill applies hover sync effects via CSS classes');
-console.log('- Effects: scale-105, border-dashed, border-2, border-blue-400, shadow-lg');
-console.log('- Bidirectional sync between Sumsub (blue) and Counterparty (purple) blocks');
+console.log(
+  '- Effects: scale-105, border-dashed, border-2, border-blue-400, shadow-lg'
+);
+console.log(
+  '- Bidirectional sync between Sumsub (blue) and Counterparty (purple) blocks'
+);

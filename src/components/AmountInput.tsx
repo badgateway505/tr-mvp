@@ -27,11 +27,11 @@ export const AmountInput: React.FC<AmountInputProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    
+
     // Only allow digits
     if (inputValue === '' || /^\d+$/.test(inputValue)) {
       setDisplayValue(inputValue);
-      
+
       // Convert to number and call onChange
       const numValue = inputValue === '' ? 0 : parseInt(inputValue, 10);
       onChange(numValue);
@@ -41,10 +41,17 @@ export const AmountInput: React.FC<AmountInputProps> = ({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // Prevent non-digit keys (except navigation keys)
     const allowedKeys = [
-      'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
-      'Home', 'End', 'ArrowLeft', 'ArrowRight'
+      'Backspace',
+      'Delete',
+      'Tab',
+      'Escape',
+      'Enter',
+      'Home',
+      'End',
+      'ArrowLeft',
+      'ArrowRight',
     ];
-    
+
     if (!allowedKeys.includes(e.key) && !/^\d$/.test(e.key)) {
       e.preventDefault();
     }
@@ -53,7 +60,7 @@ export const AmountInput: React.FC<AmountInputProps> = ({
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const pastedText = e.clipboardData.getData('text');
-    
+
     // Only allow pasting digits
     if (/^\d+$/.test(pastedText)) {
       const newValue = displayValue + pastedText;
@@ -90,13 +97,15 @@ export const AmountInput: React.FC<AmountInputProps> = ({
                      disabled:hover:border-gray-300 disabled:hover:shadow-sm"
         />
         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-          <span className={`text-sm font-medium transition-all duration-200 ${
-            isFocused ? 'text-blue-600 scale-110' : 'text-gray-500'
-          }`}>
+          <span
+            className={`text-sm font-medium transition-all duration-200 ${
+              isFocused ? 'text-blue-600 scale-110' : 'text-gray-500'
+            }`}
+          >
             {currency}
           </span>
         </div>
-        
+
         {/* Subtle focus indicator */}
         {isFocused && (
           <div className="absolute inset-0 rounded-md ring-2 ring-blue-200 ring-opacity-50 pointer-events-none animate-pulse"></div>

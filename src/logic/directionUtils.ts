@@ -9,12 +9,12 @@ export function getDirectionLabels(direction: Direction) {
   if (direction === 'OUT') {
     return {
       sender: 'Sumsub',
-      receiver: 'Counterparty'
+      receiver: 'Counterparty',
     };
   } else {
     return {
       sender: 'Counterparty',
-      receiver: 'Sumsub'
+      receiver: 'Sumsub',
     };
   }
 }

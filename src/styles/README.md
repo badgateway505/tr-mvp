@@ -24,10 +24,12 @@ src/styles/
 ### VASP Themes
 
 #### Sumsub (Blue Theme)
+
 - **Primary**: Blue palette for Sumsub VASP requirements
 - **Usage**: Main application elements, primary actions, Sumsub-side components
 
 #### Counterparty (Purple Theme)
+
 - **Primary**: Purple palette for Counterparty VASP requirements
 - **Usage**: Secondary elements, counterparty-side components
 
@@ -41,6 +43,7 @@ src/styles/
 ## 📏 Spacing System
 
 ### Standard Spacing Scale
+
 - `xs`: 4px (0.25rem)
 - `sm`: 8px (0.5rem)
 - `md`: 12px (0.75rem)
@@ -51,6 +54,7 @@ src/styles/
 - `4xl`: 64px (4rem)
 
 ### Component-Specific Spacing
+
 - `input`: `px-3 py-2` (12px horizontal, 8px vertical)
 - `button`: `px-4 py-2` (16px horizontal, 8px vertical)
 - `buttonLarge`: `px-8 py-3` (32px horizontal, 12px vertical)
@@ -71,6 +75,7 @@ src/styles/
 ## 🌫️ Shadows
 
 ### Standard Shadows
+
 - `xs`: Subtle shadow for small elements
 - `sm`: Light shadow for cards and inputs
 - `md`: Medium shadow for elevated elements
@@ -79,6 +84,7 @@ src/styles/
 - `2xl`: Maximum shadow for top-level elements
 
 ### Custom Shadows
+
 - `soft`: Gentle shadow for subtle elevation
 - `medium`: Balanced shadow for medium elevation
 - `strong`: Prominent shadow for high elevation
@@ -86,11 +92,13 @@ src/styles/
 ## ⚡ Transitions
 
 ### Duration
+
 - `fast`: 150ms (for hover states and quick interactions)
 - `normal`: 200ms (for standard state changes)
 - `slow`: 300ms (for complex animations)
 
 ### Types
+
 - `colors`: Color transitions only
 - `transform`: Transform transitions only
 - `opacity`: Opacity transitions only
@@ -113,9 +121,7 @@ import { getVaspTheme, commonStyles } from '../styles/theme-utils';
 const sumsubTheme = getVaspTheme('sumsub');
 
 // Use common button styles
-<button className={commonStyles.buttons.primary}>
-  Primary Button
-</button>
+<button className={commonStyles.buttons.primary}>Primary Button</button>;
 ```
 
 ### Component Styling
@@ -132,9 +138,7 @@ const buttonClasses = combineClasses(
 );
 
 // Use in component
-<button className={buttonClasses}>
-  Styled Button
-</button>
+<button className={buttonClasses}>Styled Button</button>;
 ```
 
 ### Responsive Design
@@ -144,9 +148,9 @@ import { responsiveClass } from '../styles/theme-utils';
 
 // Responsive spacing
 const containerClasses = responsiveClass(
-  'p-4',        // Base: 16px padding
-  'sm:p-6',     // Small screens: 24px padding
-  'lg:p-8'      // Large screens: 32px padding
+  'p-4', // Base: 16px padding
+  'sm:p-6', // Small screens: 24px padding
+  'lg:p-8' // Large screens: 32px padding
 );
 ```
 
@@ -180,16 +184,19 @@ The theme system also provides CSS custom properties that can be used directly i
 ## 🔄 Updating the Theme
 
 ### Adding New Colors
+
 1. Add the color to `theme.ts` in the appropriate color section
 2. Add the corresponding CSS variable to `theme-variables.css`
 3. Update the Tailwind config if using custom color values
 
 ### Adding New Spacing
+
 1. Add the spacing value to `theme.ts` in the spacing section
 2. Add the corresponding CSS variable to `theme-variables.css`
 3. Update the Tailwind config if using custom spacing values
 
 ### Adding New Components
+
 1. Add the component styles to `getComponentStyles` in `theme.ts`
 2. Create utility functions in `theme-utils.ts` if needed
 3. Document the new component in this README
@@ -197,6 +204,7 @@ The theme system also provides CSS custom properties that can be used directly i
 ## 🧪 Testing
 
 The theme system includes TypeScript types and should be tested for:
+
 - Color contrast ratios (WCAG AA compliance)
 - Consistent spacing across components
 - Proper focus states and accessibility

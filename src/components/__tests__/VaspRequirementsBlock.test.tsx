@@ -9,7 +9,7 @@ describe('VaspRequirementsBlock', () => {
     fields: ['full_name', 'date_of_birth'],
     kyc_required: true,
     aml_required: false,
-    wallet_attribution: true
+    wallet_attribution: true,
   };
 
   const mockRequirementsWithGroups: ExtractedRequirements = {
@@ -17,16 +17,16 @@ describe('VaspRequirementsBlock', () => {
     groups: [
       {
         logic: 'AND',
-        fields: ['full_name', 'date_of_birth + birthplace']
+        fields: ['full_name', 'date_of_birth + birthplace'],
       },
       {
         logic: 'OR',
-        fields: ['id_document_number', 'passport_number']
-      }
+        fields: ['id_document_number', 'passport_number'],
+      },
     ],
     kyc_required: true,
     aml_required: true,
-    wallet_attribution: false
+    wallet_attribution: false,
   };
 
   it('renders with blue theme and simple fields', () => {
@@ -86,7 +86,7 @@ describe('VaspRequirementsBlock', () => {
       fields: ['full_name'],
       kyc_required: false,
       aml_required: false,
-      wallet_attribution: false
+      wallet_attribution: false,
     };
 
     const { container } = render(
@@ -105,7 +105,7 @@ describe('VaspRequirementsBlock', () => {
       fields: [],
       kyc_required: false,
       aml_required: false,
-      wallet_attribution: false
+      wallet_attribution: false,
     };
 
     const { container } = render(

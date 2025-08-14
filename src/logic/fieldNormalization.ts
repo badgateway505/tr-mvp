@@ -15,17 +15,17 @@ export interface NormalizedField {
 export function normalizeField(field: string): NormalizedField {
   const normalized = normalizeFieldName(field);
   const isCombo = field.includes(' + ');
-  
+
   let comboFields: string[] = [];
   if (isCombo) {
-    comboFields = field.split(' + ').map(f => f.trim());
+    comboFields = field.split(' + ').map((f) => f.trim());
   }
 
   return {
     original: field,
     normalized,
     isCombo,
-    comboFields
+    comboFields,
   };
 }
 
@@ -56,7 +56,7 @@ export function fieldsMatch(field1: string, field2: string): boolean {
   // Check if one is a combo field that contains the other
   if (normalized1.isCombo && normalized2.isCombo) {
     // Both are combo fields - check if they share any combo components
-    const commonFields = normalized1.comboFields.filter(f => 
+    const commonFields = normalized1.comboFields.filter((f) =>
       normalized2.comboFields.includes(f)
     );
     return commonFields.length > 0;
@@ -80,7 +80,10 @@ export function fieldsMatch(field1: string, field2: string): boolean {
  * @param fields2 - Second array of field names
  * @returns Array of matching field pairs
  */
-export function findMatchingFields(fields1: string[], fields2: string[]): Array<{
+export function findMatchingFields(
+  fields1: string[],
+  fields2: string[]
+): Array<{
   field1: string;
   field2: string;
   matchType: 'exact' | 'combo' | 'partial';
@@ -96,7 +99,7 @@ export function findMatchingFields(fields1: string[], fields2: string[]): Array<
       if (fieldsMatch(field1, field2)) {
         const normalized1 = normalizeField(field1);
         const normalized2 = normalizeField(field2);
-        
+
         let matchType: 'exact' | 'combo' | 'partial';
         if (normalized1.normalized === normalized2.normalized) {
           matchType = 'exact';
@@ -121,12 +124,12 @@ export function findMatchingFields(fields1: string[], fields2: string[]): Array<
  */
 export function getUniqueNormalizedFields(fields: string[]): string[] {
   const normalizedSet = new Set<string>();
-  
-  fields.forEach(field => {
+
+  fields.forEach((field) => {
     const normalized = normalizeField(field);
     normalizedSet.add(normalized.normalized);
   });
-  
+
   return Array.from(normalizedSet);
 }
 
@@ -140,23 +143,29 @@ export function buildFieldPresenceMap(
   applicantFields: string[],
   counterpartyFields: string[]
 ): Map<string, { inApplicant: boolean; inCounterparty: boolean }> {
-  const presenceMap = new Map<string, { inApplicant: boolean; inCounterparty: boolean }>();
-  
+  const presenceMap = new Map<
+    string,
+    { inApplicant: boolean; inCounterparty: boolean }
+  >();
+
   // Get all unique normalized fields from both sides
   const applicantNormalized = getUniqueNormalizedFields(applicantFields);
   const counterpartyNormalized = getUniqueNormalizedFields(counterpartyFields);
-  
+
   // Create a set of all unique normalized fields across both sides
-  const allNormalizedFields = new Set([...applicantNormalized, ...counterpartyNormalized]);
-  
+  const allNormalizedFields = new Set([
+    ...applicantNormalized,
+    ...counterpartyNormalized,
+  ]);
+
   // Build the presence map
   for (const normalizedField of allNormalizedFields) {
     presenceMap.set(normalizedField, {
       inApplicant: applicantNormalized.includes(normalizedField),
-      inCounterparty: counterpartyNormalized.includes(normalizedField)
+      inCounterparty: counterpartyNormalized.includes(normalizedField),
     });
   }
-  
+
   return presenceMap;
 }
 
@@ -178,7 +187,7 @@ export function splitComboField(field: string): string[] {
   if (!isComboField(field)) {
     return [field];
   }
-  return field.split(' + ').map(f => f.trim());
+  return field.split(' + ').map((f) => f.trim());
 }
 
 /**
@@ -188,88 +197,100 @@ export function splitComboField(field: string): string[] {
  * @returns Object with normalized sets and pairing information
  */
 export function buildComparableSets(
-  applicantRequirements: { fields?: string[]; groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }> },
-  counterpartyRequirements: { fields?: string[]; groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }> }
+  applicantRequirements: {
+    fields?: string[];
+    groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }>;
+  },
+  counterpartyRequirements: {
+    fields?: string[];
+    groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }>;
+  }
 ) {
   // Normalize applicant fields (including OR-group satisfaction)
   const applicantFields = new Set<string>();
-  const applicantGroups = new Map<string, { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean }>();
-  
+  const applicantGroups = new Map<
+    string,
+    { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean }
+  >();
+
   // Process simple fields
   if (applicantRequirements.fields) {
-    applicantRequirements.fields.forEach(field => {
+    applicantRequirements.fields.forEach((field) => {
       applicantFields.add(field);
     });
   }
-  
+
   // Process groups with OR-group satisfaction logic
   if (applicantRequirements.groups) {
     applicantRequirements.groups.forEach((group, index) => {
       const groupKey = `group_${index}`;
-      
+
       // For OR groups, we'll track which fields are satisfied
       // For AND groups, all fields are required
       applicantGroups.set(groupKey, {
         logic: group.logic,
         fields: group.fields,
-        satisfied: false // Will be updated during matching
+        satisfied: false, // Will be updated during matching
       });
-      
+
       // Add all fields to the set for comparison
-      group.fields.forEach(field => {
+      group.fields.forEach((field) => {
         applicantFields.add(field);
       });
     });
   }
-  
+
   // Normalize counterparty fields (including OR-group satisfaction)
   const counterpartyFields = new Set<string>();
-  const counterpartyGroups = new Map<string, { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean }>();
-  
+  const counterpartyGroups = new Map<
+    string,
+    { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean }
+  >();
+
   // Process simple fields
   if (counterpartyRequirements.fields) {
-    counterpartyRequirements.fields.forEach(field => {
+    counterpartyRequirements.fields.forEach((field) => {
       counterpartyFields.add(field);
     });
   }
-  
+
   // Process groups
   if (counterpartyRequirements.groups) {
     counterpartyRequirements.groups.forEach((group, index) => {
       const groupKey = `group_${index}`;
-      
+
       counterpartyGroups.set(groupKey, {
         logic: group.logic,
         fields: group.fields,
-        satisfied: false // Will be updated during matching
+        satisfied: false, // Will be updated during matching
       });
-      
+
       // Add all fields to the set for comparison
-      group.fields.forEach(field => {
+      group.fields.forEach((field) => {
         counterpartyFields.add(field);
       });
     });
   }
-  
+
   // Build field pairing map for hover interactions
   const fieldPairings = new Map<string, string[]>();
   const reversePairings = new Map<string, string[]>();
-  
+
   // Find all matches between the two sides
   for (const applicantField of applicantFields) {
     const matches: string[] = [];
-    
+
     for (const counterpartyField of counterpartyFields) {
       if (fieldsMatch(applicantField, counterpartyField)) {
         matches.push(counterpartyField);
       }
     }
-    
+
     if (matches.length > 0) {
       fieldPairings.set(applicantField, matches);
-      
+
       // Build reverse mappings
-      matches.forEach(match => {
+      matches.forEach((match) => {
         if (!reversePairings.has(match)) {
           reversePairings.set(match, []);
         }
@@ -277,30 +298,34 @@ export function buildComparableSets(
       });
     }
   }
-  
+
   // Update group satisfaction based on matches
   // For OR groups: satisfied if ANY field matches
   // For AND groups: satisfied if ALL fields match
   for (const [, group] of applicantGroups) {
     if (group.logic === 'OR') {
       // OR group is satisfied if any field matches
-      group.satisfied = group.fields.some(field => fieldPairings.has(field));
+      group.satisfied = group.fields.some((field) => fieldPairings.has(field));
     } else {
       // AND group is satisfied if all fields match
-      group.satisfied = group.fields.every(field => fieldPairings.has(field));
+      group.satisfied = group.fields.every((field) => fieldPairings.has(field));
     }
   }
-  
+
   for (const [, group] of counterpartyGroups) {
     if (group.logic === 'OR') {
       // OR group is satisfied if any field matches
-      group.satisfied = group.fields.some(field => reversePairings.has(field));
+      group.satisfied = group.fields.some((field) =>
+        reversePairings.has(field)
+      );
     } else {
       // AND group is satisfied if all fields match
-      group.satisfied = group.fields.every(field => reversePairings.has(field));
+      group.satisfied = group.fields.every((field) =>
+        reversePairings.has(field)
+      );
     }
   }
-  
+
   return {
     applicantFields: Array.from(applicantFields),
     counterpartyFields: Array.from(counterpartyFields),
@@ -313,7 +338,10 @@ export function buildComparableSets(
     applicantMatchedFields: Array.from(fieldPairings.keys()),
     counterpartyMatchedFields: Array.from(reversePairings.keys()),
     // Field presence map for task 7.2
-    fieldPresenceMap: buildFieldPresenceMap(Array.from(applicantFields), Array.from(counterpartyFields))
+    fieldPresenceMap: buildFieldPresenceMap(
+      Array.from(applicantFields),
+      Array.from(counterpartyFields)
+    ),
   };
 }
 
@@ -323,7 +351,10 @@ export function buildComparableSets(
  * @param pairings - The field pairings map
  * @returns True if the field has matches
  */
-export function hasMatches(field: string, pairings: Map<string, string[]>): boolean {
+export function hasMatches(
+  field: string,
+  pairings: Map<string, string[]>
+): boolean {
   return pairings.has(field);
 }
 
@@ -333,7 +364,10 @@ export function hasMatches(field: string, pairings: Map<string, string[]>): bool
  * @param pairings - The field pairings map
  * @returns Array of matching fields or empty array if no matches
  */
-export function getMatchingFields(field: string, pairings: Map<string, string[]>): string[] {
+export function getMatchingFields(
+  field: string,
+  pairings: Map<string, string[]>
+): string[] {
   return pairings.get(field) || [];
 }
 
@@ -342,7 +376,9 @@ export function getMatchingFields(field: string, pairings: Map<string, string[]>
  * @param comparableSets - Result from buildComparableSets function
  * @returns Map of normalized field keys to presence information
  */
-export function getFieldPresenceMap(comparableSets: ReturnType<typeof buildComparableSets>): Map<string, { inApplicant: boolean; inCounterparty: boolean }> {
+export function getFieldPresenceMap(
+  comparableSets: ReturnType<typeof buildComparableSets>
+): Map<string, { inApplicant: boolean; inCounterparty: boolean }> {
   return comparableSets.fieldPresenceMap;
 }
 
@@ -368,45 +404,60 @@ export function isFieldPresentOnBothSides(
  * @returns Compliance status: 'match', 'overcompliance', or 'undercompliance'
  */
 export function compareFieldSets(
-  applicantRequirements: { fields?: string[]; groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }> },
-  counterpartyRequirements: { fields?: string[]; groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }> },
+  applicantRequirements: {
+    fields?: string[];
+    groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }>;
+  },
+  counterpartyRequirements: {
+    fields?: string[];
+    groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }>;
+  },
   direction: 'IN' | 'OUT' = 'OUT'
 ): 'match' | 'overcompliance' | 'undercompliance' {
   // Build comparable sets to get normalized field information
-  const comparableSets = buildComparableSets(applicantRequirements, counterpartyRequirements);
-  
+  const comparableSets = buildComparableSets(
+    applicantRequirements,
+    counterpartyRequirements
+  );
+
   // Get all unique normalized fields from both sides, expanding combo fields
   const applicantNormalized = expandComboFields(comparableSets.applicantFields);
-  const counterpartyNormalized = expandComboFields(comparableSets.counterpartyFields);
-  
+  const counterpartyNormalized = expandComboFields(
+    comparableSets.counterpartyFields
+  );
+
   // Create sets for easier comparison
   const applicantSet = new Set(applicantNormalized);
   const counterpartySet = new Set(counterpartyNormalized);
-  
+
   // Determine which side is the "sender" based on direction
   // For OUT direction: Sumsub (applicant) is sender, Counterparty is receiver
   // For IN direction: Counterparty is sender, Sumsub (applicant) is receiver
   const senderSet = direction === 'OUT' ? applicantSet : counterpartySet;
   const receiverSet = direction === 'OUT' ? counterpartySet : applicantSet;
-  
+
   // Check if all fields required by the receiver are covered by the sender
   const receiverFields = Array.from(receiverSet);
-  const allReceiverFieldsCovered = receiverFields.every(field => senderSet.has(field));
-  
+  const allReceiverFieldsCovered = receiverFields.every((field) =>
+    senderSet.has(field)
+  );
+
   if (!allReceiverFieldsCovered) {
     // Some required fields are missing - undercompliance
     return 'undercompliance';
   }
-  
+
   // Check if sender has additional fields beyond what receiver requires
   const senderFields = Array.from(senderSet);
-  const hasAdditionalFields = senderFields.some(field => !receiverSet.has(field));
-  
+  const hasAdditionalFields = senderFields.some(
+    (field) => !receiverSet.has(field)
+  );
+
   if (hasAdditionalFields) {
     // Sender has more fields than required - overcompliance
     return 'overcompliance';
   }
-  
+
   // All required fields are covered and no additional fields - perfect match
   return 'match';
 }
@@ -418,13 +469,13 @@ export function compareFieldSets(
  */
 function expandComboFields(fields: string[]): string[] {
   const expandedFields: string[] = [];
-  
-  fields.forEach(field => {
+
+  fields.forEach((field) => {
     const normalized = normalizeField(field);
-    
+
     if (normalized.isCombo) {
       // For combo fields, add each individual component
-      normalized.comboFields.forEach(comboField => {
+      normalized.comboFields.forEach((comboField) => {
         // Normalize each combo component individually
         const normalizedComboField = normalizeFieldName(comboField);
         expandedFields.push(normalizedComboField);
@@ -434,6 +485,6 @@ function expandComboFields(fields: string[]): string[] {
       expandedFields.push(normalized.normalized);
     }
   });
-  
+
   return expandedFields;
 }

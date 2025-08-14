@@ -11,13 +11,16 @@ The Field Presence Map functionality provides a way to determine which normalize
 Creates a map showing which normalized fields exist on each side.
 
 **Parameters:**
+
 - `applicantFields: string[]` - Raw field names from the applicant side
 - `counterpartyFields: string[]` - Raw field names from the counterparty side
 
 **Returns:**
+
 - `Map<string, { inApplicant: boolean, inCounterparty: boolean }>`
 
 **Example:**
+
 ```typescript
 const applicantFields = ['passportNumber', 'dateOfBirth'];
 const counterpartyFields = ['idDocumentNumber', 'dateOfBirth'];
@@ -36,13 +39,16 @@ const presenceMap = buildFieldPresenceMap(applicantFields, counterpartyFields);
 Checks if a specific normalized field is present on both sides.
 
 **Parameters:**
+
 - `normalizedField: string` - The normalized field name to check
 - `presenceMap: Map<string, { inApplicant: boolean, inCounterparty: boolean }>` - The presence map
 
 **Returns:**
+
 - `boolean` - True if the field is present on both sides
 
 **Example:**
+
 ```typescript
 const isPresent = isFieldPresentOnBothSides('id_document_number', presenceMap);
 // Returns true if both sides have this field
@@ -53,9 +59,11 @@ const isPresent = isFieldPresentOnBothSides('id_document_number', presenceMap);
 Helper function to extract the field presence map from the result of `buildComparableSets`.
 
 **Parameters:**
+
 - `comparableSets: ReturnType<typeof buildComparableSets>` - Result from buildComparableSets function
 
 **Returns:**
+
 - `Map<string, { inApplicant: boolean, inCounterparty: boolean }>`
 
 ## Integration with buildComparableSets
@@ -63,7 +71,10 @@ Helper function to extract the field presence map from the result of `buildCompa
 The `buildComparableSets` function now also returns a `fieldPresenceMap` property, making it easy to access this information:
 
 ```typescript
-const result = buildComparableSets(applicantRequirements, counterpartyRequirements);
+const result = buildComparableSets(
+  applicantRequirements,
+  counterpartyRequirements
+);
 
 // Access the field presence map
 const presenceMap = result.fieldPresenceMap;

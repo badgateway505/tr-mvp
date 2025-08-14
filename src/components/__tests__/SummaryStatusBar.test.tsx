@@ -5,14 +5,14 @@ import type { ExtractedRequirements } from '../../logic/requirementExtractor';
 
 // Mock the compareFieldSets function
 vi.mock('../../logic/fieldNormalization', () => ({
-  compareFieldSets: vi.fn()
+  compareFieldSets: vi.fn(),
 }));
 
 const mockRequirements: ExtractedRequirements = {
   fields: ['field1', 'field2'],
   kyc_required: true,
   aml_required: false,
-  wallet_attribution: false
+  wallet_attribution: false,
 };
 
 describe('SummaryStatusBar', () => {
@@ -21,11 +21,7 @@ describe('SummaryStatusBar', () => {
   });
 
   it('renders nothing when requirements are missing', () => {
-    const { container } = render(
-      <SummaryStatusBar
-        direction="OUT"
-      />
-    );
+    const { container } = render(<SummaryStatusBar direction="OUT" />);
     expect(container.firstChild).toBeNull();
   });
 
@@ -42,7 +38,7 @@ describe('SummaryStatusBar', () => {
   it('displays match status correctly', async () => {
     const { compareFieldSets } = await import('../../logic/fieldNormalization');
     vi.mocked(compareFieldSets).mockReturnValue('match');
-    
+
     render(
       <SummaryStatusBar
         applicantRequirements={mockRequirements}
@@ -52,14 +48,16 @@ describe('SummaryStatusBar', () => {
     );
 
     expect(screen.getByText('✅')).toBeInTheDocument();
-    expect(screen.getByText('Perfect match - all required fields are covered')).toBeInTheDocument();
+    expect(
+      screen.getByText('Perfect match - all required fields are covered')
+    ).toBeInTheDocument();
     expect(screen.getByText('Match')).toBeInTheDocument();
   });
 
   it('displays overcompliance status correctly', async () => {
     const { compareFieldSets } = await import('../../logic/fieldNormalization');
     vi.mocked(compareFieldSets).mockReturnValue('overcompliance');
-    
+
     render(
       <SummaryStatusBar
         applicantRequirements={mockRequirements}
@@ -69,14 +67,18 @@ describe('SummaryStatusBar', () => {
     );
 
     expect(screen.getByText('☑️')).toBeInTheDocument();
-    expect(screen.getByText('Overcompliance - additional fields provided beyond requirements')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Overcompliance - additional fields provided beyond requirements'
+      )
+    ).toBeInTheDocument();
     expect(screen.getByText('Overcompliance')).toBeInTheDocument();
   });
 
   it('displays undercompliance status correctly', async () => {
     const { compareFieldSets } = await import('../../logic/fieldNormalization');
     vi.mocked(compareFieldSets).mockReturnValue('undercompliance');
-    
+
     render(
       <SummaryStatusBar
         applicantRequirements={mockRequirements}
@@ -86,13 +88,15 @@ describe('SummaryStatusBar', () => {
     );
 
     expect(screen.getByText('⚠️')).toBeInTheDocument();
-    expect(screen.getByText('Undercompliance - some required fields are missing')).toBeInTheDocument();
+    expect(
+      screen.getByText('Undercompliance - some required fields are missing')
+    ).toBeInTheDocument();
     expect(screen.getByText('Undercompliance')).toBeInTheDocument();
   });
 
   it('calls compareFieldSets with correct parameters', async () => {
     const { compareFieldSets } = await import('../../logic/fieldNormalization');
-    
+
     render(
       <SummaryStatusBar
         applicantRequirements={mockRequirements}
@@ -111,7 +115,7 @@ describe('SummaryStatusBar', () => {
   it('applies custom className', async () => {
     const { compareFieldSets } = await import('../../logic/fieldNormalization');
     vi.mocked(compareFieldSets).mockReturnValue('match');
-    
+
     const { container } = render(
       <SummaryStatusBar
         applicantRequirements={mockRequirements}

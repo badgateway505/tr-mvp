@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { 
-  getThresholdBucket, 
-  getCountryThreshold, 
+import {
+  getThresholdBucket,
+  getCountryThreshold,
   isAmountAboveThreshold,
-  getThresholdBuckets 
+  getThresholdBuckets,
 } from '../thresholdUtils';
 
 describe('thresholdUtils', () => {

@@ -42,21 +42,23 @@ export function extractRequirements(
  * @param individualBranch - The individual branch containing fields/groups and flags
  * @returns Extracted requirements
  */
-export function extractFromRuleBlock(individualBranch: IndividualBranch[keyof IndividualBranch]): ExtractedRequirements {
+export function extractFromRuleBlock(
+  individualBranch: IndividualBranch[keyof IndividualBranch]
+): ExtractedRequirements {
   const result: ExtractedRequirements = {
     fields: [],
     kyc_required: individualBranch.kyc_required,
     aml_required: individualBranch.aml_required,
-    wallet_attribution: individualBranch.wallet_attribution
+    wallet_attribution: individualBranch.wallet_attribution,
   };
 
   // Extract fields or groups
   if ('required_fields' in individualBranch) {
     result.fields = individualBranch.required_fields;
   } else if ('requirement_groups' in individualBranch) {
-    result.groups = individualBranch.requirement_groups.map(group => ({
+    result.groups = individualBranch.requirement_groups.map((group) => ({
       logic: group.logic,
-      fields: group.fields
+      fields: group.fields,
     }));
   }
 
@@ -75,9 +77,13 @@ export function getAllRequirements(countryCode: CountryCode) {
   }
 
   return {
-    below_threshold: extractFromRuleBlock(countryRule.individual.below_threshold),
-    above_threshold: extractFromRuleBlock(countryRule.individual.above_threshold),
-    threshold: countryRule.threshold
+    below_threshold: extractFromRuleBlock(
+      countryRule.individual.below_threshold
+    ),
+    above_threshold: extractFromRuleBlock(
+      countryRule.individual.above_threshold
+    ),
+    threshold: countryRule.threshold,
   };
 }
 

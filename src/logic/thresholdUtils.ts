@@ -26,7 +26,9 @@ export function getThresholdBucket(
  * @param countryCode - The country code to check
  * @returns The threshold value or undefined if country not found
  */
-export function getCountryThreshold(countryCode: CountryCode): number | undefined {
+export function getCountryThreshold(
+  countryCode: CountryCode
+): number | undefined {
   const countryRule = getCountryRule(countryCode);
   return countryRule?.threshold;
 }
@@ -63,6 +65,6 @@ export function getThresholdBuckets(countryCode: CountryCode) {
   return {
     below_threshold: countryRule.individual.below_threshold,
     above_threshold: countryRule.individual.above_threshold,
-    threshold: countryRule.threshold
+    threshold: countryRule.threshold,
   };
 }

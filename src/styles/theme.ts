@@ -14,24 +14,24 @@ export const theme = {
         600: 'bg-blue-600',
         700: 'bg-blue-700',
         800: 'bg-blue-800',
-        900: 'bg-blue-900'
+        900: 'bg-blue-900',
       },
       text: {
         primary: 'text-blue-900',
         secondary: 'text-blue-700',
         accent: 'text-blue-600',
         muted: 'text-blue-500',
-        light: 'text-blue-100'
+        light: 'text-blue-100',
       },
       border: {
         light: 'border-blue-200',
         medium: 'border-blue-300',
-        dark: 'border-blue-400'
+        dark: 'border-blue-400',
       },
       focus: {
         ring: 'focus:ring-blue-500',
-        border: 'focus:border-blue-500'
-      }
+        border: 'focus:border-blue-500',
+      },
     },
     counterparty: {
       // Primary purple theme for Counterparty VASP
@@ -43,24 +43,24 @@ export const theme = {
         600: 'bg-purple-600',
         700: 'bg-purple-700',
         800: 'bg-purple-800',
-        900: 'bg-purple-900'
+        900: 'bg-purple-900',
       },
       text: {
         primary: 'text-purple-900',
         secondary: 'text-purple-700',
         accent: 'text-purple-600',
         muted: 'text-purple-500',
-        light: 'text-purple-100'
+        light: 'text-purple-100',
       },
       border: {
         light: 'border-purple-200',
         medium: 'border-purple-300',
-        dark: 'border-purple-400'
+        dark: 'border-purple-400',
       },
       focus: {
         ring: 'focus:ring-purple-500',
-        border: 'focus:border-purple-500'
-      }
+        border: 'focus:border-purple-500',
+      },
     },
     // Common semantic colors
     semantic: {
@@ -72,7 +72,7 @@ export const theme = {
         700: 'bg-green-700',
         800: 'bg-green-800',
         text: 'text-green-800',
-        border: 'border-green-200'
+        border: 'border-green-200',
       },
       warning: {
         50: 'bg-yellow-50',
@@ -82,7 +82,7 @@ export const theme = {
         700: 'bg-yellow-700',
         800: 'bg-yellow-800',
         text: 'text-yellow-800',
-        border: 'border-yellow-200'
+        border: 'border-yellow-200',
       },
       error: {
         50: 'bg-red-50',
@@ -92,7 +92,7 @@ export const theme = {
         700: 'bg-red-700',
         800: 'bg-red-800',
         text: 'text-red-800',
-        border: 'border-red-200'
+        border: 'border-red-200',
       },
       neutral: {
         50: 'bg-gray-50',
@@ -106,9 +106,9 @@ export const theme = {
         800: 'bg-gray-800',
         900: 'bg-gray-900',
         text: 'text-gray-700',
-        border: 'border-gray-200'
-      }
-    }
+        border: 'border-gray-200',
+      },
+    },
   },
 
   // Consistent spacing tokens
@@ -126,7 +126,7 @@ export const theme = {
     card: 'p-4 sm:p-6',
     header: 'px-4 py-3',
     section: 'p-4',
-    container: 'px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12'
+    container: 'px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12',
   },
 
   // Consistent border radius tokens
@@ -142,7 +142,7 @@ export const theme = {
     button: 'rounded-md',
     card: 'rounded-lg',
     pill: 'rounded-lg',
-    badge: 'rounded-full'
+    badge: 'rounded-full',
   },
 
   // Consistent shadow tokens
@@ -158,7 +158,7 @@ export const theme = {
     buttonHover: 'shadow-md',
     card: 'shadow-sm',
     dropdown: 'shadow-lg',
-    tooltip: 'shadow-lg'
+    tooltip: 'shadow-lg',
   },
 
   // Transition tokens
@@ -169,7 +169,7 @@ export const theme = {
     // Specific transitions
     colors: 'transition-colors duration-150',
     transform: 'transition-transform duration-150 ease-out',
-    opacity: 'transition-opacity duration-150'
+    opacity: 'transition-opacity duration-150',
   },
 
   // Focus states
@@ -177,10 +177,10 @@ export const theme = {
     ring: {
       sm: 'focus:ring-2',
       md: 'focus:ring-4',
-      lg: 'focus:ring-8'
+      lg: 'focus:ring-8',
     },
     outline: 'focus:outline-none',
-    visible: 'focus-visible:ring-2 focus-visible:ring-blue-500'
+    visible: 'focus-visible:ring-2 focus-visible:ring-blue-500',
   },
 
   // Layout tokens
@@ -194,16 +194,16 @@ export const theme = {
         sm: 'gap-2',
         md: 'gap-4',
         lg: 'gap-6',
-        xl: 'gap-8'
-      }
+        xl: 'gap-8',
+      },
     },
     spacing: {
       sm: 'space-y-2',
       md: 'space-y-4',
       lg: 'space-y-6',
-      xl: 'space-y-8'
-    }
-  }
+      xl: 'space-y-8',
+    },
+  },
 };
 
 // Helper function to get theme colors for a specific VASP type
@@ -214,7 +214,7 @@ export const getVaspTheme = (type: 'sumsub' | 'counterparty') => {
     header: theme.colors[type].primary[600],
     text: theme.colors[type].text.primary,
     accent: theme.colors[type].text.secondary,
-    focus: theme.colors[type].focus
+    focus: theme.colors[type].focus,
   };
 };
 
@@ -226,7 +226,7 @@ export const getComponentStyles = {
   card: `${theme.spacing.card} ${theme.radius.card} ${theme.shadow.card}`,
   header: `${theme.spacing.header}`,
   section: `${theme.spacing.section}`,
-  container: `${theme.layout.container} ${theme.spacing.container}`
+  container: `${theme.layout.container} ${theme.spacing.container}`,
 };
 
 export default theme;

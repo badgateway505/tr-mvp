@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { 
-  convertToEUR, 
+import {
+  convertToEUR,
   getExchangeRate,
   formatCurrency,
   formatEURAmount,
   getConversionSummary,
   isCurrencySupported,
-  getSupportedCurrencies
+  getSupportedCurrencies,
 } from '../currencyConversion';
 
 describe('currencyConversion', () => {

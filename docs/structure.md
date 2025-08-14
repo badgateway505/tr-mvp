@@ -256,6 +256,7 @@ App.tsx
 ## 13) Implementation Status
 
 **✅ Implemented:**
+
 - Core data loading and validation
 - Threshold determination logic
 - Requirement extraction for both sides
@@ -268,10 +269,12 @@ App.tsx
 - Field presence map for normalized field comparison
 
 **🚧 Partially Implemented:**
+
 - Field pairing/hover interaction (structure exists, logic pending)
 - Summary status comparison (components exist, logic pending)
 
 **❌ Not Yet Implemented:**
+
 - Field pairing map for hover interactions
 - Complete field matching with pairing visualization
 

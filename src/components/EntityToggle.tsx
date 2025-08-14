@@ -30,11 +30,7 @@ export const EntityToggle: React.FC<EntityToggleProps> = ({
             value === 'individual'
               ? 'bg-green-600 text-white shadow-md'
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          } ${
-            disabled
-              ? 'opacity-50 cursor-not-allowed'
-              : 'cursor-pointer'
-          }`}
+          } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           Individual
         </button>

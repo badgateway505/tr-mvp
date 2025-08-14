@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { getDirectionLabels, getSumsubLabel, getCounterpartyLabel } from '../directionUtils';
+import {
+  getDirectionLabels,
+  getSumsubLabel,
+  getCounterpartyLabel,
+} from '../directionUtils';
 
 describe('directionUtils', () => {
   describe('getDirectionLabels', () => {
