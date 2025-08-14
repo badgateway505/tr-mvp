@@ -359,3 +359,81 @@ export function isFieldPresentOnBothSides(
   const presence = presenceMap.get(normalizedField);
   return presence ? presence.inApplicant && presence.inCounterparty : false;
 }
+
+/**
+ * Compare field sets from both sides to determine compliance status
+ * @param applicantRequirements - Requirements from the applicant side (Sumsub for OUT direction)
+ * @param counterpartyRequirements - Requirements from the counterparty side
+ * @param direction - Transaction direction ('IN' or 'OUT')
+ * @returns Compliance status: 'match', 'overcompliance', or 'undercompliance'
+ */
+export function compareFieldSets(
+  applicantRequirements: { fields?: string[]; groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }> },
+  counterpartyRequirements: { fields?: string[]; groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }> },
+  direction: 'IN' | 'OUT' = 'OUT'
+): 'match' | 'overcompliance' | 'undercompliance' {
+  // Build comparable sets to get normalized field information
+  const comparableSets = buildComparableSets(applicantRequirements, counterpartyRequirements);
+  
+  // Get all unique normalized fields from both sides, expanding combo fields
+  const applicantNormalized = expandComboFields(comparableSets.applicantFields);
+  const counterpartyNormalized = expandComboFields(comparableSets.counterpartyFields);
+  
+  // Create sets for easier comparison
+  const applicantSet = new Set(applicantNormalized);
+  const counterpartySet = new Set(counterpartyNormalized);
+  
+  // Determine which side is the "sender" based on direction
+  // For OUT direction: Sumsub (applicant) is sender, Counterparty is receiver
+  // For IN direction: Counterparty is sender, Sumsub (applicant) is receiver
+  const senderSet = direction === 'OUT' ? applicantSet : counterpartySet;
+  const receiverSet = direction === 'OUT' ? counterpartySet : applicantSet;
+  
+  // Check if all fields required by the receiver are covered by the sender
+  const receiverFields = Array.from(receiverSet);
+  const allReceiverFieldsCovered = receiverFields.every(field => senderSet.has(field));
+  
+  if (!allReceiverFieldsCovered) {
+    // Some required fields are missing - undercompliance
+    return 'undercompliance';
+  }
+  
+  // Check if sender has additional fields beyond what receiver requires
+  const senderFields = Array.from(senderSet);
+  const hasAdditionalFields = senderFields.some(field => !receiverSet.has(field));
+  
+  if (hasAdditionalFields) {
+    // Sender has more fields than required - overcompliance
+    return 'overcompliance';
+  }
+  
+  // All required fields are covered and no additional fields - perfect match
+  return 'match';
+}
+
+/**
+ * Expand combo fields into individual normalized fields for comparison
+ * @param fields - Array of raw field names (may include combo fields)
+ * @returns Array of individual normalized field names
+ */
+function expandComboFields(fields: string[]): string[] {
+  const expandedFields: string[] = [];
+  
+  fields.forEach(field => {
+    const normalized = normalizeField(field);
+    
+    if (normalized.isCombo) {
+      // For combo fields, add each individual component
+      normalized.comboFields.forEach(comboField => {
+        // Normalize each combo component individually
+        const normalizedComboField = normalizeFieldName(comboField);
+        expandedFields.push(normalizedComboField);
+      });
+    } else {
+      // For regular fields, add the normalized field
+      expandedFields.push(normalized.normalized);
+    }
+  });
+  
+  return expandedFields;
+}

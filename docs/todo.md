@@ -145,9 +145,10 @@
 
 ## 8. Summary Indicator
 
-- **8.1** \[ ] **Comparison function (`compareFieldSets`)**
+- **8.1** [x] **Comparison function (`compareFieldSets`)**
   _Context:_ Return `"match"` if all normalized fields required by both are covered; `"overcompliance"` if sender (Sumsub side for OUT) includes more; `"undercompliance"` otherwise. KYC/AML/Wallet excluded.
   _Depends on:_ 7.2
+  _Status:_ ✅ **COMPLETED** - Implemented `compareFieldSets` function that compares field sets from both sides, handles combo fields correctly by expanding them into individual components, and returns appropriate compliance status based on direction
 - **8.2** \[ ] **Summary bar component (`<SummaryStatusBar />`)**
   _Context:_ Green ✅ for match, Blue ☑️ for overcompliance, Orange ⚠️ for undercompliance; concise message per case.
   _Depends on:_ 8.1

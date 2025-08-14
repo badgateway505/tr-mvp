@@ -9,7 +9,8 @@ import {
   splitComboField,
   buildFieldPresenceMap,
   isFieldPresentOnBothSides,
-  buildComparableSets
+  buildComparableSets,
+  compareFieldSets
 } from '../fieldNormalization';
 
 describe('fieldNormalization', () => {
@@ -217,5 +218,81 @@ describe('Field Presence Map', () => {
       inApplicant: true,
       inCounterparty: true
     });
+  });
+});
+
+describe('compareFieldSets', () => {
+  it('should return match when both sides have identical field sets', () => {
+    const applicantReqs = { fields: ['full_name', 'date_of_birth'] };
+    const counterpartyReqs = { fields: ['full_name', 'date_of_birth'] };
+    
+    const result = compareFieldSets(applicantReqs, counterpartyReqs, 'OUT');
+    expect(result).toBe('match');
+  });
+
+  it('should return overcompliance when sender has additional fields', () => {
+    const applicantReqs = { fields: ['full_name', 'date_of_birth', 'id_document_number'] };
+    const counterpartyReqs = { fields: ['full_name', 'date_of_birth'] };
+    
+    const result = compareFieldSets(applicantReqs, counterpartyReqs, 'OUT');
+    expect(result).toBe('overcompliance');
+  });
+
+  it('should return undercompliance when sender is missing required fields', () => {
+    const applicantReqs = { fields: ['full_name'] };
+    const counterpartyReqs = { fields: ['full_name', 'date_of_birth'] };
+    
+    const result = compareFieldSets(applicantReqs, counterpartyReqs, 'OUT');
+    expect(result).toBe('undercompliance');
+  });
+
+  it('should handle IN direction correctly (counterparty as sender)', () => {
+    const applicantReqs = { fields: ['full_name', 'date_of_birth'] };
+    const counterpartyReqs = { fields: ['full_name', 'date_of_birth', 'id_document_number'] };
+    
+    const result = compareFieldSets(applicantReqs, counterpartyReqs, 'IN');
+    expect(result).toBe('overcompliance');
+  });
+
+  it('should handle requirement groups correctly', () => {
+    const applicantReqs = { 
+      groups: [
+        { logic: 'AND' as const, fields: ['full_name', 'date_of_birth'] },
+        { logic: 'OR' as const, fields: ['passport_number', 'national_id'] }
+      ]
+    };
+    const counterpartyReqs = { 
+      groups: [
+        { logic: 'AND' as const, fields: ['full_name', 'date_of_birth'] },
+        { logic: 'OR' as const, fields: ['passport_number'] }
+      ]
+    };
+    
+    const result = compareFieldSets(applicantReqs, counterpartyReqs, 'OUT');
+    expect(result).toBe('overcompliance');
+  });
+
+  it('should handle normalized field names correctly', () => {
+    const applicantReqs = { fields: ['passportNumber', 'fullName'] };
+    const counterpartyReqs = { fields: ['id_document_number', 'full_name'] };
+    
+    const result = compareFieldSets(applicantReqs, counterpartyReqs, 'OUT');
+    expect(result).toBe('match');
+  });
+
+  it('should handle combo fields correctly', () => {
+    const applicantReqs = { fields: ['date_of_birth + birthplace'] };
+    const counterpartyReqs = { fields: ['date_of_birth', 'birthplace'] };
+    
+    const result = compareFieldSets(applicantReqs, counterpartyReqs, 'OUT');
+    expect(result).toBe('match');
+  });
+
+  it('should default to OUT direction when not specified', () => {
+    const applicantReqs = { fields: ['full_name', 'date_of_birth', 'extra_field'] };
+    const counterpartyReqs = { fields: ['full_name', 'date_of_birth'] };
+    
+    const result = compareFieldSets(applicantReqs, counterpartyReqs);
+    expect(result).toBe('overcompliance');
   });
 });
