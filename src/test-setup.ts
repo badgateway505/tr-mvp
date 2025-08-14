@@ -11,14 +11,14 @@ afterEach(() => {
 expect.extend(matchers);
 
 // Extend expect types to include jest-dom matchers
+declare module 'vitest' {
+  interface Assertion<T = any> extends matchers.TestingLibraryMatchers<T, void> {}
+  interface AsymmetricMatchersContaining extends matchers.TestingLibraryMatchers<any, void> {}
+}
+
+// Also extend the global expect interface for better compatibility
 declare global {
   namespace Vi {
     interface JestAssertion<T = any> extends matchers.TestingLibraryMatchers<T, void> {}
   }
-}
-
-// Also extend the vitest module for better compatibility
-declare module 'vitest' {
-  interface Assertion<T = any> extends matchers.TestingLibraryMatchers<T, void> {}
-  interface AsymmetricMatchersContaining extends matchers.TestingLibraryMatchers<any, void> {}
 }

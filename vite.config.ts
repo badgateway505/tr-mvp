@@ -7,5 +7,11 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test-setup.ts'],
+    globals: true,
+  },
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
   },
 } as any);
