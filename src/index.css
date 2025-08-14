@@ -2,8 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import theme variables */
+@import './styles/theme-variables.css';
+
 @layer base {
   html {
-    font-family: system-ui, sans-serif;
+    font-family: var(--font-family-sans);
+  }
+
+  /* Global theme-aware focus styles */
+  *:focus-visible {
+    outline: 2px solid var(--color-sumsub-500);
+    outline-offset: 2px;
+  }
+
+  /* Global theme-aware selection styles */
+  ::selection {
+    background-color: var(--color-sumsub-200);
+    color: var(--color-sumsub-900);
+  }
+}
+
+@layer components {
+  /* Common component patterns using theme tokens */
+  .btn-primary {
+    @apply bg-sumsub-600 hover:bg-sumsub-700 text-white font-medium transition-colors duration-200;
+    padding: var(--spacing-button);
+    border-radius: var(--radius-button);
+    box-shadow: var(--shadow-button);
+  }
+
+  .btn-secondary {
+    @apply bg-counterparty-600 hover:bg-counterparty-700 text-white font-medium transition-colors duration-200;
+    padding: var(--spacing-button);
+    border-radius: var(--radius-button);
+    box-shadow: var(--shadow-button);
+  }
+
+  .card {
+    background-color: white;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: var(--spacing-card);
+  }
+
+  .input-field {
+    @apply border border-neutral-300 focus:border-sumsub-500 focus:ring-2 focus:ring-sumsub-200 transition-colors duration-200;
+    padding: var(--spacing-input);
+    border-radius: var(--radius-input);
+    box-shadow: var(--shadow-input);
   }
 }

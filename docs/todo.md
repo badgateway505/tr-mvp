@@ -162,9 +162,10 @@
   _Context:_ Two-column layout for VASP blocks on desktop; stacked on small screens.
   _Depends on:_ 5.x, 6.x, 8.2
   _Status:_ ✅ **COMPLETED** - Implemented responsive layout with proper breakpoints, improved spacing, and modern UI design. VASP blocks stack on mobile and display side-by-side on larger screens.
-- **9.2** \[ ] **Theme colors & tokens**
+- **9.2** \[x] **Theme colors & tokens**
   _Context:_ Tailwind classes for blue (Sumsub) and purple (Counterparty); consistent paddings, radii, shadows.
   _Depends on:_ 2.2, 6.1
+  _Completed:_ Created centralized theme system with consistent tokens, CSS variables, and utility functions
 - **9.3** \[ ] **Micro-interactions**
   _Context:_ Tailwind transitions (`transition`, `transform`, `hover:scale-…`, `border-dashed`) for smooth UX; keep subtle.
   _Depends on:_ 6.3, 7.3
