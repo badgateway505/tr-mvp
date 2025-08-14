@@ -182,9 +182,10 @@
 
 ## 10. Manual QA Scenarios
 
-- **10.1** \[ ] **Threshold edge cases**
+- **10.1** \[x] **Threshold edge cases**
   _Context:_ DEU (threshold 0) always above; ZAF around 5,000 boundary. Verify independent evaluation per side.
   _Depends on:_ 4.2, 6.x, 8.2
+  _Completed:_ Comprehensive test suite created covering DEU threshold 0 behavior, ZAF 5,000 boundary testing, and independent evaluation per side validation.
 - **10.2** \[ ] **Direction cases (IN vs OUT)**
   _Context:_ Ensure labeling and summary logic remain correct while requirements evaluation stays independent.
   _Depends on:_ 4.1, 8.2
