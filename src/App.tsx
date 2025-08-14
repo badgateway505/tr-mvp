@@ -7,6 +7,7 @@ import { normalizeFields, fieldsMatch, buildComparableSets } from './logic/field
 import { convertToEUR, getConversionSummary } from './logic/currencyConversion';
 import { getCountryRule } from './logic/loadRequirements';
 import { VaspRequirementsBlock } from './components/VaspRequirementsBlock';
+import { SummaryStatusBar } from './components/SummaryStatusBar';
 import './App.css';
 
 function App() {
@@ -180,6 +181,18 @@ function App() {
       >
         Test Section 4 Integration
       </button>
+
+      {/* Summary Status Bar */}
+      {(sumsubRequirements && counterpartyRequirements) && (
+        <div className="mb-6">
+          <SummaryStatusBar
+            applicantRequirements={sumsubRequirements}
+            counterpartyRequirements={counterpartyRequirements}
+            direction={direction}
+            className="mb-4"
+          />
+        </div>
+      )}
 
       {/* Requirements Display */}
       {(sumsubRequirements || counterpartyRequirements) && (
