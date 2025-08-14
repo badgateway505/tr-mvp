@@ -61,9 +61,23 @@ export const FieldPill: React.FC<FieldPillProps> = ({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      // Trigger hover effect on keyboard activation
+      if (onFieldHover) {
+        onFieldHover(field, true);
+        // Auto-remove highlight after a short delay
+        setTimeout(() => {
+          onFieldHover(field, false);
+        }, 2000);
+      }
+    }
+  };
+
   const baseClasses = [
     'px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ease-out',
-    'cursor-default select-none field-pill-hover',
+    'cursor-default select-none field-pill-hover focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
   ];
 
   if (isComboField) {
@@ -109,8 +123,30 @@ export const FieldPill: React.FC<FieldPillProps> = ({
     baseClasses.push('animate-pulse');
   }
 
+  // Generate accessible description
+  const getAccessibleDescription = () => {
+    let description = field;
+    
+    if (isComboField) {
+      description += ' (combined field)';
+    }
+    
+    if (isMatched && hasMatches) {
+      description += ` - matched with ${matchCount} field${matchCount !== 1 ? 's' : ''} on the other side`;
+    } else if (isMatched && !hasMatches) {
+      description += ' - marked as matched but no actual matches found';
+    } else {
+      description += ' - no matches found on the other side';
+    }
+    
+    return description;
+  };
+
+  const pillId = `field-pill-${field.replace(/\s+/g, '-').toLowerCase()}`;
+
   return (
     <span
+      id={pillId}
       className={`${baseClasses.join(' ')} ${className}`}
       title={
         isComboField
@@ -119,6 +155,12 @@ export const FieldPill: React.FC<FieldPillProps> = ({
       }
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={getAccessibleDescription()}
+      aria-pressed={isHighlightedByHover ? "true" : "false"}
+      aria-describedby={`${pillId}-status`}
       data-field-name={field}
       data-is-matched={isMatched}
       data-has-matches={hasMatches}
@@ -129,20 +171,47 @@ export const FieldPill: React.FC<FieldPillProps> = ({
       {field}
       {/* Enhanced visual indicators for task 10.3 */}
       {isMatched && hasMatches && (
-        <span className="ml-1 text-xs text-green-600 font-bold">✓</span>
+        <span 
+          className="ml-1 text-xs text-green-600 font-bold"
+          aria-hidden="true"
+        >
+          ✓
+        </span>
       )}
       {isMatched && !hasMatches && (
-        <span className="ml-1 text-xs text-yellow-600 font-bold">⚠</span>
+        <span 
+          className="ml-1 text-xs text-yellow-600 font-bold"
+          aria-hidden="true"
+        >
+          ⚠
+        </span>
       )}
       {!isMatched && (
-        <span className="ml-1 text-xs text-gray-500">○</span>
+        <span 
+          className="ml-1 text-xs text-gray-500"
+          aria-hidden="true"
+        >
+          ○
+        </span>
       )}
       {/* Show match count for fields with multiple matches */}
       {hasMatches && matchCount > 1 && (
-        <span className="ml-1 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full">
+        <span 
+          className="ml-1 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full"
+          aria-hidden="true"
+        >
           {matchCount}
         </span>
       )}
+      
+      {/* Hidden status text for screen readers */}
+      <span 
+        id={`${pillId}-status`}
+        className="sr-only"
+        aria-live="polite"
+      >
+        {getAccessibleDescription()}
+      </span>
     </span>
   );
 };

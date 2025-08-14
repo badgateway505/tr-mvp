@@ -7,6 +7,8 @@ interface AmountInputProps {
   label?: string;
   placeholder?: string;
   disabled?: boolean;
+  id?: string;
+  'aria-describedby'?: string;
 }
 
 export const AmountInput: React.FC<AmountInputProps> = ({
@@ -16,6 +18,8 @@ export const AmountInput: React.FC<AmountInputProps> = ({
   label = 'Amount',
   placeholder = 'Enter amount',
   disabled = false,
+  id,
+  'aria-describedby': ariaDescribedby,
 }) => {
   const [displayValue, setDisplayValue] = useState(value.toString());
   const [isFocused, setIsFocused] = useState(false);
@@ -69,15 +73,24 @@ export const AmountInput: React.FC<AmountInputProps> = ({
     }
   };
 
+  const inputId = id || 'amount-input';
+  const labelId = label ? `${inputId}-label` : undefined;
+  const helpTextId = `${inputId}-help`;
+
   return (
     <div className="w-full group">
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800">
+        <label 
+          id={labelId}
+          htmlFor={inputId}
+          className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800"
+        >
           {label}
         </label>
       )}
       <div className="relative">
         <input
+          id={inputId}
           type="text"
           inputMode="numeric"
           value={displayValue}
@@ -88,6 +101,10 @@ export const AmountInput: React.FC<AmountInputProps> = ({
           onBlur={() => setIsFocused(false)}
           placeholder={placeholder}
           disabled={disabled}
+          aria-labelledby={labelId}
+          aria-describedby={`${helpTextId} ${ariaDescribedby || ''}`.trim()}
+          aria-invalid={!value}
+          aria-label={label ? undefined : `Amount in ${currency}`}
           className="w-full pl-3 pr-12 py-2 border border-gray-300 rounded-md shadow-sm 
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
                      disabled:bg-gray-100 disabled:cursor-not-allowed
@@ -96,7 +113,10 @@ export const AmountInput: React.FC<AmountInputProps> = ({
                      focus:shadow-lg focus:scale-[1.01]
                      disabled:hover:border-gray-300 disabled:hover:shadow-sm"
         />
-        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+        <div 
+          className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+          aria-hidden="true"
+        >
           <span
             className={`text-sm font-medium transition-all duration-200 ${
               isFocused ? 'text-blue-600 scale-110' : 'text-gray-500'
@@ -108,10 +128,16 @@ export const AmountInput: React.FC<AmountInputProps> = ({
 
         {/* Subtle focus indicator */}
         {isFocused && (
-          <div className="absolute inset-0 rounded-md ring-2 ring-blue-200 ring-opacity-50 pointer-events-none animate-pulse"></div>
+          <div 
+            className="absolute inset-0 rounded-md ring-2 ring-blue-200 ring-opacity-50 pointer-events-none animate-pulse"
+            aria-hidden="true"
+          ></div>
         )}
       </div>
-      <div className="mt-2 text-xs text-gray-500 transition-colors duration-150 group-hover:text-gray-600">
+      <div 
+        id={helpTextId}
+        className="mt-2 text-xs text-gray-500 transition-colors duration-150 group-hover:text-gray-600"
+      >
         Enter amount in {currency} (digits only)
       </div>
     </div>

@@ -7,6 +7,8 @@ interface CountrySelectProps {
   placeholder?: string;
   label?: string;
   disabled?: boolean;
+  id?: string;
+  'aria-describedby'?: string;
 }
 
 // Country data with flags, names, and codes
@@ -22,19 +24,32 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
   placeholder = 'Select a country',
   label,
   disabled = false,
+  id,
+  'aria-describedby': ariaDescribedby,
 }) => {
+  const selectId = id || 'country-select';
+  const labelId = label ? `${selectId}-label` : undefined;
+
   return (
     <div className="w-full group">
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800">
+        <label 
+          id={labelId}
+          htmlFor={selectId}
+          className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800"
+        >
           {label}
         </label>
       )}
       <div className="relative">
         <select
+          id={selectId}
           value={value}
           onChange={(e) => onChange(e.target.value as CountryCode)}
           disabled={disabled}
+          aria-labelledby={labelId}
+          aria-describedby={ariaDescribedby}
+          aria-invalid={!value}
           className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
                      disabled:bg-gray-100 disabled:cursor-not-allowed
@@ -52,7 +67,10 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
         </select>
 
         {/* Custom dropdown arrow with hover effect */}
-        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+        <div 
+          className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+          aria-hidden="true"
+        >
           <svg
             className="w-4 h-4 text-gray-400 transition-transform duration-200 group-hover:scale-110"
             fill="none"

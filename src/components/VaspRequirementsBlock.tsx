@@ -88,66 +88,66 @@ const RequirementGroup: React.FC<{
   const matchedCount = matchedFields.length;
   const satisfactionPercentage = totalFields > 0 ? (matchedCount / totalFields) * 100 : 0;
 
+  const groupId = `group-${group.logic.toLowerCase()}-${Math.random().toString(36).substr(2, 9)}`;
+
   return (
     <div
       className={`${colors.groupBg} border ${colors.groupBorder} rounded-lg p-4 shadow-sm 
                      transition-all duration-300 ease-out hover:shadow-md hover:scale-[1.01]
                      ${satisfactionClasses}`}
+      role="group"
+      aria-labelledby={groupId}
+      aria-describedby={`${groupId}-description`}
     >
       {/* Logic indicator with enhanced styling */}
       <div className="flex items-center gap-3 mb-3">
         <span
+          id={groupId}
           className={`text-xs font-semibold px-3 py-1.5 rounded-full ${colors.logicBg} ${colors.logicText} ${colors.logicBorder} border
-                         transition-all duration-200 hover:scale-105`}
+                     transition-all duration-200 ease-out hover:scale-105`}
+          role="status"
+          aria-label={`${group.logic} logic group`}
         >
           {group.logic}
         </span>
-        <span className="text-xs text-gray-500 font-medium transition-colors duration-150">
-          {group.fields.length} field{group.fields.length !== 1 ? 's' : ''}
-        </span>
-        {/* Enhanced satisfaction indicator for task 10.3 */}
         {isSatisfied !== undefined && (
-          <div className="flex items-center gap-2">
-            <span
-              className={`text-xs px-2 py-1 rounded-full transition-all duration-300 ease-out font-medium
-                           ${isSatisfied ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}
-                           ${isSatisfied ? 'hover:bg-green-200' : 'hover:bg-red-200'}`}
-            >
-              {isSatisfied ? '✓ Satisfied' : '✗ Not Satisfied'}
-            </span>
-            {/* Show satisfaction percentage for OR groups */}
-            {group.logic === 'OR' && (
-              <span className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
-                {matchedCount}/{totalFields} matched ({satisfactionPercentage.toFixed(0)}%)
-              </span>
-            )}
-          </div>
+          <span
+            className={`text-xs font-medium px-2 py-1 rounded ${
+              isSatisfied
+                ? 'bg-green-100 text-green-800 border border-green-200'
+                : 'bg-red-100 text-red-800 border border-red-200'
+            }`}
+            role="status"
+            aria-label={isSatisfied ? 'Group satisfied' : 'Group not satisfied'}
+          >
+            {isSatisfied ? '✓ Satisfied' : '✗ Not Satisfied'}
+          </span>
         )}
       </div>
 
-      {/* Fields with combo field support and enhanced matching visualization */}
+      {/* Fields */}
       <div className="flex flex-wrap gap-2">
-        {group.fields.map((field, fieldIndex) => {
-          const isFieldMatched = fieldPairings ? fieldPairings.has(field) : false;
-          const fieldMatchCount = fieldPairings?.get(field)?.length || 0;
-          
-          return (
-            <FieldPill
-              key={fieldIndex}
-              field={field}
-              isMatched={isFieldMatched}
-              fieldPairings={fieldPairings || undefined}
-              isApplicantSide={isApplicantSide || undefined}
-              hoveredField={hoveredField}
-              onFieldHover={onFieldHover}
-            />
-          );
-        })}
+        {group.fields.map((field, index) => (
+          <FieldPill
+            key={index}
+            field={field}
+            isMatched={fieldPairings ? fieldPairings.has(field) : false}
+            fieldPairings={fieldPairings}
+            isApplicantSide={isApplicantSide}
+            hoveredField={hoveredField || null}
+            onFieldHover={onFieldHover || undefined}
+          />
+        ))}
       </div>
 
-      {/* Additional group information for task 10.3 */}
+      {/* Satisfaction details for OR groups */}
       {group.logic === 'OR' && isSatisfied !== undefined && (
-        <div className="mt-3 pt-3 border-t border-gray-200">
+        <div 
+          id={`${groupId}-description`}
+          className="mt-3 pt-3 border-t border-gray-200"
+          role="status"
+          aria-live="polite"
+        >
           <div className="text-xs text-gray-600">
             <strong>OR Group Logic:</strong> This group is satisfied because{' '}
             {isSatisfied 
@@ -196,21 +196,37 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
       : comparableSets.reversePairings
     : undefined;
 
+  const blockId = `vasp-block-${roleLabel.toLowerCase().replace(/\s+/g, '-')}`;
+  const fieldsSectionId = `${blockId}-fields`;
+  const groupsSectionId = `${blockId}-groups`;
+
   return (
     <div
+      id={blockId}
       className={`border rounded-lg overflow-hidden ${colors.bg} ${colors.border}
                      transition-all duration-300 ease-out hover:shadow-lg hover:scale-[1.005]
                      group`}
+      role="region"
+      aria-labelledby={`${blockId}-header`}
     >
       {/* Header */}
       <div
         className={`${colors.header} px-4 py-3 transition-all duration-200 group-hover:brightness-110`}
       >
-        <h3 className="text-lg font-semibold text-white transition-all duration-200 group-hover:scale-[1.02]">
+        <h3 
+          id={`${blockId}-header`}
+          className="text-lg font-semibold text-white transition-all duration-200 group-hover:scale-[1.02]"
+        >
           {roleLabel} Requirements
         </h3>
         {comparableSets && (
-          <div className="text-sm text-blue-100 mt-1 transition-opacity duration-200 group-hover:opacity-90">
+          <div 
+            className="text-sm text-blue-100 mt-1 transition-opacity duration-200 group-hover:opacity-90"
+            role="status"
+            aria-label={`${isApplicantSide
+              ? comparableSets.applicantMatchedFields.length
+              : comparableSets.counterpartyMatchedFields.length} fields matched`}
+          >
             {isApplicantSide
               ? `${comparableSets.applicantMatchedFields.length} fields matched`
               : `${comparableSets.counterpartyMatchedFields.length} fields matched`}
@@ -222,37 +238,56 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
       <div className="p-4">
         {/* Fields Section */}
         {requirements.fields && requirements.fields.length > 0 && (
-          <div className="mb-6">
+          <section 
+            id={fieldsSectionId}
+            aria-labelledby={`${fieldsSectionId}-heading`}
+            className="mb-6"
+          >
             <h4
+              id={`${fieldsSectionId}-heading`}
               className={`text-sm font-medium ${colors.accent} mb-3 transition-colors duration-200`}
             >
               Required Fields
             </h4>
-            <div className="flex flex-wrap gap-2">
+            <div 
+              className="flex flex-wrap gap-2"
+              role="list"
+              aria-label="Required fields for this VASP"
+            >
               {requirements.fields.map((field, index) => (
-                <FieldPill
-                  key={index}
-                  field={field}
-                  isMatched={fieldPairings ? fieldPairings.has(field) : false}
-                  fieldPairings={fieldPairings}
-                  isApplicantSide={isApplicantSide}
-                  hoveredField={hoveredField || null}
-                  onFieldHover={onFieldHover || undefined}
-                />
+                <div key={index} role="listitem">
+                  <FieldPill
+                    field={field}
+                    isMatched={fieldPairings ? fieldPairings.has(field) : false}
+                    fieldPairings={fieldPairings}
+                    isApplicantSide={isApplicantSide}
+                    hoveredField={hoveredField || null}
+                    onFieldHover={onFieldHover || undefined}
+                  />
+                </div>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
         {/* Groups Section with enhanced visual separation */}
         {requirements.groups && requirements.groups.length > 0 && (
-          <div className="mb-6">
+          <section 
+            id={groupsSectionId}
+            aria-labelledby={`${groupsSectionId}-heading`}
+            className="mb-6"
+          >
             <h4
+              id={`${groupsSectionId}-heading`}
               className={`text-sm font-medium ${colors.accent} mb-3 transition-colors duration-200`}
             >
               Requirement Groups
             </h4>
-            <div className="space-y-4">
+            <div 
+              className="space-y-4"
+              role="list"
+              aria-label="Requirement groups for this VASP"
+            >
               {requirements.groups.map((group, groupIndex) => {
                 // Find the corresponding group in comparableSets to get satisfaction status
                 const groupKey = `group_${groupIndex}`;
@@ -268,21 +303,22 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
                   : undefined;
 
                 return (
-                  <RequirementGroup
-                    key={groupIndex}
-                    group={group}
-                    colorTheme={colorTheme}
-                    isSatisfied={isSatisfied}
-                    fieldPairings={fieldPairings}
-                    isApplicantSide={isApplicantSide}
-                    hoveredField={hoveredField || null}
-                    onFieldHover={onFieldHover || undefined}
-                    matchedFields={comparableGroup ? comparableGroup[1].matchedFields : []}
-                  />
+                  <div key={groupIndex} role="listitem">
+                    <RequirementGroup
+                      group={group}
+                      colorTheme={colorTheme}
+                      isSatisfied={isSatisfied}
+                      fieldPairings={fieldPairings}
+                      isApplicantSide={isApplicantSide}
+                      hoveredField={hoveredField || null}
+                      onFieldHover={onFieldHover || undefined}
+                      matchedFields={comparableGroup ? comparableGroup[1].matchedFields : []}
+                    />
+                  </div>
                 );
               })}
             </div>
-          </div>
+          </section>
         )}
 
         {/* Verification Flags */}
