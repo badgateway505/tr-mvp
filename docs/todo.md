@@ -204,10 +204,10 @@
   - ✅ Integration: Component appears below input controls when amount > 0 and country selected
   - ✅ Testing: All 18 currency conversion tests and 13 integration tests passing
   - ✅ Responsive design: Works on all screen sizes with proper styling and animations
-- **10.5** [x] **Accessibility & keyboard checks (basic)**
+- **10.5** [x] **Accessibility & keyboard checks (basic)** - COMMENTED OUT FOR UI IMPROVEMENT
   _Context:_ Tab through inputs/toggles/dropdowns; visible focus rings via Tailwind.
   _Depends on:_ 5.x, 9.x
-  _Status:_ ✅ **COMPLETED** - Added comprehensive accessibility features including:
+  _Status:_ ✅ **COMPLETED BUT COMMENTED OUT** - Added comprehensive accessibility features including:
   - Skip to main content link
   - Proper ARIA labels, roles, and descriptions
   - Keyboard navigation support (Enter/Space keys)
@@ -216,6 +216,7 @@
   - Landmark roles and semantic HTML structure
   - Form label associations and validation states
   - Comprehensive accessibility testing
+  _Note:_ Temporarily commented out to improve UI appearance and reduce visual clutter
 
 ---
 

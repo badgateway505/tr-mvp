@@ -35,17 +35,17 @@ export const DirectionToggle: React.FC<DirectionToggleProps> = ({
       )}
       <div
         className="flex items-center space-x-3"
-        role="radiogroup"
-        aria-labelledby={label ? `${label.toLowerCase()}-label` : undefined}
-        aria-describedby="direction-description"
+        // role="radiogroup"
+        // aria-labelledby={label ? `${label.toLowerCase()}-label` : undefined}
+        // aria-describedby="direction-description"
       >
         <button
           type="button"
           onClick={() => onChange('OUT')}
           onKeyDown={(e) => handleKeyDown(e, 'OUT')}
           disabled={disabled}
-          aria-pressed={value === 'OUT'}
-          aria-label="Outgoing transfer direction"
+          // aria-pressed={value === 'OUT'}
+          // aria-label="Outgoing transfer direction"
           className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 active:scale-95
                      focus:outline-none focus:ring-2 focus:ring-sumsub-500 focus:ring-offset-2
                      ${
@@ -61,13 +61,13 @@ export const DirectionToggle: React.FC<DirectionToggleProps> = ({
           onClick={() => onChange('IN')}
           onKeyDown={(e) => handleKeyDown(e, 'IN')}
           disabled={disabled}
-          aria-pressed={value === 'IN'}
-          aria-label="Incoming transfer direction"
+          // aria-pressed={value === 'IN'}
+          // aria-label="Incoming transfer direction"
           className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 active:scale-95
                      focus:outline-none focus:ring-2 focus:ring-sumsub-500 focus:ring-offset-2
                      ${
                        value === 'IN'
-                         ? 'bg-sumsub-600 text-white shadow-medium hover:shadow-strong'
+                         ? 'bg-sumsub-600 text-white shadow-white shadow-medium hover:shadow-strong'
                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-soft'
                      } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover-lift'}`}
         >
@@ -75,9 +75,9 @@ export const DirectionToggle: React.FC<DirectionToggleProps> = ({
         </button>
       </div>
       <div
-        id="direction-description"
+        // id="direction-description"
         className="mt-3 text-sm text-gray-600 animate-slide-up"
-        aria-live="polite"
+        // aria-live="polite"
       >
         {value === 'OUT' ? 'Outgoing transfer' : 'Incoming transfer'}
       </div>

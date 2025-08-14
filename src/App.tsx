@@ -180,8 +180,8 @@ function App() {
 
   return (
     <div className="App min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Skip to main content link for screen readers */}
-      <a
+      {/* Skip to main content link for screen readers - COMMENTED OUT FOR UI IMPROVEMENT */}
+      {/* <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 
                    bg-sumsub-600 text-white px-4 py-2 rounded-lg shadow-medium z-50
@@ -189,7 +189,7 @@ function App() {
                    animate-bounce-in"
       >
         Skip to main content
-      </a>
+      </a> */}
 
       {/* Responsive container with proper padding */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
@@ -209,13 +209,12 @@ function App() {
         </header>
 
         {/* Main content area */}
-        <main id="main-content" role="main" aria-label="Travel Rule Calculator" className="animate-fade-in animation-delay-200">
+        <main id="main-content" className="animate-fade-in animation-delay-200">
           {/* Input controls - responsive grid */}
           <section
-            aria-labelledby="input-controls-heading"
             className="space-y-6 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 mb-8"
           >
-            <h2 id="input-controls-heading" className="sr-only">
+            <h2 className="sr-only">
               Input Controls
             </h2>
             <div className="space-y-4">
@@ -230,7 +229,6 @@ function App() {
                   id="sumsub-country"
                   value={sumsubCountry}
                   onChange={(e) => setSumsubCountry(e.target.value)}
-                  aria-describedby="sumsub-country-help"
                   className="w-full p-3 border border-gray-300 rounded-lg shadow-soft 
                              focus:ring-2 focus:ring-sumsub-500 focus:border-sumsub-500 
                              transition-all duration-200 ease-out
@@ -241,9 +239,6 @@ function App() {
                   <option value="DEU">Germany (EUR)</option>
                   <option value="ZAF">South Africa (ZAR)</option>
                 </select>
-                <div id="sumsub-country-help" className="sr-only">
-                  Select the country where Sumsub VASP is located
-                </div>
               </div>
 
               <div className="group animate-slide-up animation-delay-400">
@@ -257,7 +252,6 @@ function App() {
                   id="direction-select"
                   value={direction}
                   onChange={(e) => setDirection(e.target.value as 'IN' | 'OUT')}
-                  aria-describedby="direction-help"
                   className="self-start p-3 border border-gray-300 rounded-lg shadow-soft 
                              focus:ring-2 focus:ring-sumsub-500 focus:border-sumsub-500 
                              transition-all duration-200 ease-out
@@ -267,9 +261,6 @@ function App() {
                   <option value="OUT">OUT (Sumsub = Sender)</option>
                   <option value="IN">IN (Sumsub = Receiver)</option>
                 </select>
-                <div id="direction-help" className="sr-only">
-                  Select whether this is an outgoing or incoming transfer
-                </div>
               </div>
             </div>
 
@@ -285,7 +276,6 @@ function App() {
                   id="counterparty-country"
                   value={counterpartyCountry}
                   onChange={(e) => setCounterpartyCountry(e.target.value)}
-                  aria-describedby="counterparty-country-help"
                   className="w-full p-3 border border-gray-300 rounded-lg shadow-soft 
                              transition-all duration-200 ease-out
                              hover:border-gray-400 hover:shadow-medium
@@ -295,9 +285,6 @@ function App() {
                   <option value="DEU">Germany (EUR)</option>
                   <option value="ZAF">South Africa (ZAR)</option>
                 </select>
-                <div id="counterparty-country-help" className="sr-only">
-                  Select the country where the counterparty VASP is located
-                </div>
               </div>
 
               <div className="group">
@@ -313,16 +300,12 @@ function App() {
                   value={amount || ''}
                   onChange={(e) => setAmount(parseInt(e.target.value) || 0)}
                   placeholder="Enter amount"
-                  aria-describedby="amount-help"
                   className="w-full p-3 border border-gray-300 rounded-lg shadow-soft 
                              focus:ring-2 focus:ring-sumsub-500 focus:border-sumsub-500 
                              transition-all duration-200 ease-out
                              hover:border-gray-400 hover:shadow-medium
                              focus:shadow-medium focus:scale-[1.01] hover-lift"
                 />
-                <div id="amount-help" className="sr-only">
-                  Enter the transfer amount in the local currency
-                </div>
               </div>
             </div>
           </section>
@@ -330,10 +313,9 @@ function App() {
           {/* Currency Conversion Display */}
           {amount > 0 && sumsubCountry && (
             <section
-              aria-labelledby="conversion-heading"
               className="mb-8 transition-all duration-500 ease-out animate-in slide-in-from-bottom-4"
             >
-              <h2 id="conversion-heading" className="sr-only">
+              <h2 className="sr-only">
                 Currency Conversion
               </h2>
               <ConvertedAmount
@@ -357,7 +339,6 @@ function App() {
           <section className="text-center mb-8">
             <button
               onClick={runSection4Tests}
-              aria-describedby="test-button-help"
               className="w-full sm:w-auto bg-blue-600 text-white py-3 px-8 rounded-lg 
                          hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 
                          transition-all duration-200 ease-out font-medium
@@ -365,19 +346,14 @@ function App() {
             >
               Test Section 4 Integration
             </button>
-            <div id="test-button-help" className="sr-only">
-              Click to run comprehensive tests of the travel rule calculator
-              functionality
-            </div>
           </section>
 
           {/* Summary Status Bar */}
           {sumsubRequirements && counterpartyRequirements && (
             <section
-              aria-labelledby="summary-heading"
               className="mb-8 transition-all duration-500 ease-out animate-in slide-in-from-bottom-4"
             >
-              <h2 id="summary-heading" className="sr-only">
+              <h2 className="sr-only">
                 Summary Status
               </h2>
               <SummaryStatusBar
@@ -392,11 +368,9 @@ function App() {
           {/* Requirements Display - Responsive VASP blocks */}
           {(sumsubRequirements || counterpartyRequirements) && (
             <section
-              aria-labelledby="requirements-heading"
               className="mb-8 transition-all duration-500 ease-out animate-in slide-in-from-bottom-4"
             >
               <h2
-                id="requirements-heading"
                 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-6 text-center
                              transition-all duration-300 hover:scale-105"
               >
@@ -436,21 +410,19 @@ function App() {
           {/* Test Results */}
           {testResults.length > 0 && (
             <section
-              aria-labelledby="test-results-heading"
               className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-sm
                          transition-all duration-300 ease-out hover:shadow-md hover:scale-[1.01]"
             >
               <h3
-                id="test-results-heading"
                 className="font-semibold text-gray-900 mb-3 text-lg transition-colors duration-200"
               >
                 Test Results:
               </h3>
               <div
                 className="space-y-2"
-                role="log"
-                aria-live="polite"
-                aria-label="Test execution results"
+                // role="log"
+                // aria-live="polite"
+                // aria-label="Test execution results"
               >
                 {testResults.map((result, index) => (
                   <div
@@ -467,12 +439,10 @@ function App() {
 
           {/* Test Scenarios */}
           <section
-            aria-labelledby="test-scenarios-heading"
             className="mt-12 bg-white border border-gray-200 rounded-lg p-6 shadow-sm
                        transition-all duration-300 ease-out hover:shadow-md hover:scale-[1.01]"
           >
             <h3
-              id="test-scenarios-heading"
               className="font-semibold text-gray-900 mb-4 text-lg transition-colors duration-200"
             >
               Test Scenarios:
