@@ -7,13 +7,27 @@ interface VaspRequirementsBlockProps {
   roleLabel: string;
   colorTheme: 'blue' | 'purple';
   requirements: ExtractedRequirements;
+  comparableSets?: {
+    applicantFields: string[];
+    counterpartyFields: string[];
+    applicantGroups: Array<[string, { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean }]>;
+    counterpartyGroups: Array<[string, { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean }]>;
+    fieldPairings: Map<string, string[]>;
+    reversePairings: Map<string, string[]>;
+    totalMatches: number;
+    applicantMatchedFields: string[];
+    counterpartyMatchedFields: string[];
+  } | undefined;
 }
 
 // Separate component for rendering requirement groups with enhanced styling
 const RequirementGroup: React.FC<{
   group: { logic: 'AND' | 'OR'; fields: string[] };
   colorTheme: 'blue' | 'purple';
-}> = ({ group, colorTheme }) => {
+  isSatisfied?: boolean | undefined;
+  fieldPairings?: Map<string, string[]> | undefined;
+  isApplicantSide?: boolean | undefined;
+}> = ({ group, colorTheme, isSatisfied, fieldPairings, isApplicantSide }) => {
   const themeColors = {
     blue: {
       logicBg: group.logic === 'AND' ? 'bg-green-100' : 'bg-orange-100',
@@ -33,8 +47,13 @@ const RequirementGroup: React.FC<{
 
   const colors = themeColors[colorTheme];
 
+  // Add satisfaction styling classes
+  const satisfactionClasses = isSatisfied !== undefined 
+    ? (isSatisfied ? 'group-satisfied' : 'group-not-satisfied')
+    : '';
+
   return (
-    <div className={`${colors.groupBg} border ${colors.groupBorder} rounded-lg p-4 shadow-sm`}>
+    <div className={`${colors.groupBg} border ${colors.groupBorder} rounded-lg p-4 shadow-sm ${satisfactionClasses}`}>
       {/* Logic indicator with enhanced styling */}
       <div className="flex items-center gap-3 mb-3">
         <span className={`text-xs font-semibold px-3 py-1.5 rounded-full ${colors.logicBg} ${colors.logicText} ${colors.logicBorder} border`}>
@@ -43,6 +62,11 @@ const RequirementGroup: React.FC<{
         <span className="text-xs text-gray-500 font-medium">
           {group.fields.length} field{group.fields.length !== 1 ? 's' : ''}
         </span>
+        {isSatisfied !== undefined && (
+          <span className={`text-xs px-2 py-1 rounded-full ${isSatisfied ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+            {isSatisfied ? '✓ Satisfied' : '✗ Not Satisfied'}
+          </span>
+        )}
       </div>
       
       {/* Fields with combo field support */}
@@ -51,7 +75,9 @@ const RequirementGroup: React.FC<{
           <FieldPill
             key={fieldIndex}
             field={field}
-            isMatched={false} // TODO: Connect to pairing logic when implemented
+            isMatched={fieldPairings ? fieldPairings.has(field) : false}
+            fieldPairings={fieldPairings || undefined}
+            isApplicantSide={isApplicantSide || undefined}
           />
         ))}
       </div>
@@ -62,7 +88,8 @@ const RequirementGroup: React.FC<{
 export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
   roleLabel,
   colorTheme,
-  requirements
+  requirements,
+  comparableSets
 }) => {
   const themeColors = {
     blue: {
@@ -82,6 +109,12 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
   };
 
   const colors = themeColors[colorTheme];
+  
+  // Determine which side this component represents and get appropriate pairings
+  const isApplicantSide = colorTheme === 'blue'; // Sumsub is always applicant side
+  const fieldPairings = comparableSets ? 
+    (isApplicantSide ? comparableSets.fieldPairings : comparableSets.reversePairings) : 
+    undefined;
 
   return (
     <div className={`border rounded-lg overflow-hidden ${colors.bg} ${colors.border}`}>
@@ -90,6 +123,14 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
         <h3 className="text-lg font-semibold text-white">
           {roleLabel} Requirements
         </h3>
+        {comparableSets && (
+          <div className="text-sm text-blue-100 mt-1">
+            {isApplicantSide 
+              ? `${comparableSets.applicantMatchedFields.length} fields matched`
+              : `${comparableSets.counterpartyMatchedFields.length} fields matched`
+            }
+          </div>
+        )}
       </div>
 
       {/* Content */}
@@ -105,7 +146,9 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
                 <FieldPill
                   key={index}
                   field={field}
-                  isMatched={false} // TODO: Connect to pairing logic when implemented
+                  isMatched={fieldPairings ? fieldPairings.has(field) : false}
+                  fieldPairings={fieldPairings}
+                  isApplicantSide={isApplicantSide}
                 />
               ))}
             </div>
@@ -119,13 +162,24 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
               Requirement Groups
             </h4>
             <div className="space-y-4">
-              {requirements.groups.map((group, groupIndex) => (
-                <RequirementGroup
-                  key={groupIndex}
-                  group={group}
-                  colorTheme={colorTheme}
-                />
-              ))}
+              {requirements.groups.map((group, groupIndex) => {
+                // Find the corresponding group in comparableSets to get satisfaction status
+                const groupKey = `group_${groupIndex}`;
+                const comparableGroup = comparableSets?.applicantGroups.find(([key, _]) => key === groupKey) ||
+                                      comparableSets?.counterpartyGroups.find(([key, _]) => key === groupKey);
+                const isSatisfied = comparableGroup ? comparableGroup[1].satisfied : undefined;
+                
+                return (
+                  <RequirementGroup
+                    key={groupIndex}
+                    group={group}
+                    colorTheme={colorTheme}
+                    isSatisfied={isSatisfied}
+                    fieldPairings={fieldPairings}
+                    isApplicantSide={isApplicantSide}
+                  />
+                );
+              })}
             </div>
           </div>
         )}

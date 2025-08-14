@@ -3,7 +3,7 @@ import { useAppState } from './logic/useAppState';
 import { getDirectionLabels, getSumsubLabel, getCounterpartyLabel } from './logic/directionUtils';
 import { getThresholdBucket } from './logic/thresholdUtils';
 import { extractRequirements } from './logic/requirementExtractor';
-import { normalizeFields, fieldsMatch } from './logic/fieldNormalization';
+import { normalizeFields, fieldsMatch, buildComparableSets } from './logic/fieldNormalization';
 import { convertToEUR, getConversionSummary } from './logic/currencyConversion';
 import { getCountryRule } from './logic/loadRequirements';
 import { VaspRequirementsBlock } from './components/VaspRequirementsBlock';
@@ -26,6 +26,11 @@ function App() {
   // Extract requirements for both sides
   const sumsubRequirements = sumsubCountry && amount > 0 ? extractRequirements(sumsubCountry, amount) : undefined;
   const counterpartyRequirements = counterpartyCountry && amount > 0 ? extractRequirements(counterpartyCountry, amount) : undefined;
+
+  // Build comparable sets and field pairings for task 7.1
+  const comparableSets = (sumsubRequirements && counterpartyRequirements) 
+    ? buildComparableSets(sumsubRequirements, counterpartyRequirements)
+    : undefined;
 
   const runSection4Tests = () => {
     const results: string[] = [];
@@ -68,6 +73,27 @@ function App() {
             const summary = getConversionSummary(amount, countryRule.currency);
             results.push(`✅ 4.5 Conversion: ${summary}`);
             results.push(`   Rate: ${countryRule.currency} → EUR = ${conversion?.exchangeRate}`);
+          }
+        }
+
+        // Test 7.1: Comparable sets and OR-group satisfaction
+        if (comparableSets) {
+          results.push(`✅ 7.1 Comparable Sets: ${comparableSets.totalMatches} total matches`);
+          results.push(`   Applicant fields: ${comparableSets.applicantFields.length}, Counterparty fields: ${comparableSets.counterpartyFields.length}`);
+          results.push(`   Applicant groups: ${comparableSets.applicantGroups.length}, Counterparty groups: ${comparableSets.counterpartyGroups.length}`);
+          
+          // Show OR-group satisfaction details
+          const applicantOrGroups = comparableSets.applicantGroups.filter(([_, group]) => group.logic === 'OR');
+          const counterpartyOrGroups = comparableSets.counterpartyGroups.filter(([_, group]) => group.logic === 'OR');
+          
+          if (applicantOrGroups.length > 0) {
+            const satisfiedOrGroups = applicantOrGroups.filter(([_, group]) => group.satisfied);
+            results.push(`   Applicant OR groups: ${satisfiedOrGroups.length}/${applicantOrGroups.length} satisfied`);
+          }
+          
+          if (counterpartyOrGroups.length > 0) {
+            const satisfiedOrGroups = counterpartyOrGroups.filter(([_, group]) => group.satisfied);
+            results.push(`   Counterparty OR groups: ${satisfiedOrGroups.length}/${counterpartyOrGroups.length} satisfied`);
           }
         }
       } else {
@@ -154,6 +180,7 @@ function App() {
                 roleLabel={getSumsubLabel(direction)}
                 colorTheme="blue"
                 requirements={sumsubRequirements}
+                comparableSets={comparableSets}
               />
             )}
             {counterpartyRequirements && (
@@ -161,6 +188,7 @@ function App() {
                 roleLabel={getCounterpartyLabel(direction)}
                 colorTheme="purple"
                 requirements={counterpartyRequirements}
+                comparableSets={comparableSets}
               />
             )}
           </div>

@@ -40,3 +40,51 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Field hover interactions for task 7.1 */
+.field-pill-hover {
+  transition: all 0.15s ease-out;
+}
+
+.field-pill-hover:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+/* Matched field styling */
+.field-matched {
+  border-color: #10b981 !important;
+  background-color: #f0fdf4 !important;
+}
+
+.field-matched:hover {
+  border-color: #059669 !important;
+  background-color: #ecfdf5 !important;
+}
+
+/* OR group satisfaction indicators */
+.group-satisfied {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.group-not-satisfied {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+/* Hover highlight for matching fields */
+.field-pill[data-is-matched="true"]:hover {
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.4);
+}
+
+/* Combo field special styling */
+.field-combo {
+  background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+  border: 2px solid #3b82f6;
+}
+
+.field-combo:hover {
+  background: linear-gradient(135deg, #bfdbfe 0%, #c7d2fe 100%);
+  border-color: #2563eb;
+}

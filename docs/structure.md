@@ -58,7 +58,7 @@ export type CountryRule = {
   currency: string; // e.g., 'EUR', 'ZAR'
   threshold: number; // local currency
   individual: IndividualBranch; // MVP: only 'individual'
-  // company?: ...                              // v2 placeholder
+  // company?: ...                              # v2 placeholder
 };
 
 export type RequirementsJson = Record<CountryCode, CountryRule>;
@@ -97,21 +97,40 @@ export type RequirementsJson = Record<CountryCode, CountryRule>;
   - `getCurrencyRate(code: string): number`
 - `normalizeFieldName.ts` — map raw field → canonical field via `fieldDictionary.json`.
   - `normalize(field: string): string`
+- `fieldNormalization.ts` — enhanced field normalization with combo field support.
+  - `normalizeFields(fields: string[]): NormalizedField[]`
+  - `fieldsMatch(field1: string, field2: string): boolean`
+  - `findMatchingFields(fields1: string[], fields2: string[]): Array<...>`
 - `useAppState.ts` — centralized state (minimal), e.g. with Zustand or `useReducer`.
   - State: `{ sumsubCountry, counterpartyCountry, direction, amount, entityType }`
   - Defaults: `direction='OUT'`, `entityType='individual'`
   - Amount guard: digits-only; store **int**.
-- `getRequirementSet.ts` — compute requirement block **per side**.
+- `requirementExtractor.ts` — compute requirement block **per side**.
   - Input: `(country: CountryCode, amount: number)`
   - Uses: `getCountryRule`, pick `above/below_threshold` (independent of other side)
   - Output: `{ fields: string[], groups?: RequirementGroup[], flags: Flags }`
-- `pairing.ts` — field matching & OR-satisfaction utilities.
-  - Build normalized sets per side
-  - Produce map: `{ normalizedKey: { inApplicant: boolean, inCounterparty: boolean } }`
-- `compareFieldSets.ts` — summary result logic (excludes KYC/AML/Wallet flags).
-  - Returns: `'match' | 'overcompliance' | 'undercompliance'`
-- `currency.ts` — conversion helper.
-  - `toEUR(amountInt: number, rateFloat: number): number /* rounded */`
+  - `extractRequirements(countryCode, amount): ExtractedRequirements`
+  - `getAllRequirements(countryCode): { below_threshold, above_threshold, threshold }`
+- `thresholdUtils.ts` — threshold determination utilities.
+  - `getThresholdBucket(countryCode, amount): ThresholdBucket`
+  - `isAmountAboveThreshold(countryCode, amount): boolean`
+  - `getCountryThreshold(countryCode): number`
+- `currencyConversion.ts` — conversion helper with formatting.
+  - `convertToEUR(amount: number, currencyCode: string): CurrencyConversion`
+  - `getConversionSummary(amount, currencyCode): string`
+  - `formatCurrency(amount, currencyCode): string`
+- `currencyUtils.ts` — currency display and formatting utilities.
+  - `getCurrencyForAmount(sumsubCountry): string`
+  - `getCurrencySymbol(currencyCode): string`
+  - `formatAmountWithCurrency(amount, currencyCode): string`
+- `directionUtils.ts` — direction-based labeling utilities.
+  - `getDirectionLabels(direction): { sender, receiver }`
+  - `getSumsubLabel(direction): string`
+  - `getCounterpartyLabel(direction): string`
+- `amountValidation.ts` — amount input validation.
+  - `validateAmount(input: string): number | null`
+  - `formatAmount(amount: number): string`
+  - `isDigitsOnly(input: string): boolean`
 
 ## 5) UI Components (Dumb/Pure Presentation)
 
@@ -120,14 +139,13 @@ export type RequirementsJson = Record<CountryCode, CountryRule>;
 - **Inputs**
   - `CountrySelect.tsx` — dropdown with flag, name, code (reused for both sides).
   - `DirectionToggle.tsx` — IN/OUT (default OUT).
-  - `EntityToggle.tsx` — Individual active, Company disabled with “Coming soon” label.
+  - `EntityToggle.tsx` — Individual active, Company disabled with "Coming soon" label.
   - `AmountInput.tsx` — digits-only; stores **int**; shows local currency (from Sumsub country).
   - `ConvertedAmount.tsx` — read-only EUR value (rounded).
 
 - **Results**
-  - `SummaryStatusBar.tsx` — green✅/blue☑️/orange⚠️ per `compareFieldSets`.
   - `VaspRequirementsBlock.tsx` — titled card (blue for Sumsub, purple for Counterparty).
-    - `RequirementGroup.tsx` — renders AND/OR groups, supports combo fields as a single chip.
+    - `RequirementGroup` — renders AND/OR groups, supports combo fields as a single chip.
     - `FieldPill.tsx` — individual field chip; unmatched = grey border; hover → scale + dashed if paired.
     - `VerificationFlags.tsx` — KYC/AML/Wallet tags (display-only).
 
@@ -146,22 +164,21 @@ export type RequirementsJson = Record<CountryCode, CountryRule>;
 2. User selects countries, direction (default OUT), enters **amount (int)**.
 3. App derives:
    - Local currency from **Sumsub** country.
-   - Converted EUR via `toEUR(amount, getCurrencyRate(localCurrency))` → **rounded**.
+   - Converted EUR via `convertToEUR(amount, getCurrencyRate(localCurrency))` → **rounded**.
 4. For **each side** (Sumsub & Counterparty):
-   - `getRequirementSet(country, amount)` → `{ fields/groups, flags }`.
-5. Build **normalized** sets + pairing map.
+   - `extractRequirements(country, amount)` → `{ fields/groups, flags }`.
+5. Build **normalized** sets + field matching.
 6. Render:
-   - `SummaryStatusBar(compareFieldSets(applicant, counterparty))`.
    - Two `VaspRequirementsBlock` with lists and flags.
 7. Hover on a field pill → look up pairing map → highlight peer(s) across.
 
 ## 7) Where To Change **X**
 
-- **Threshold logic:** `/logic/getRequirementSet.ts`
-- **Matching behavior / OR-group satisfaction:** `/logic/pairing.ts`
-- **Summary color/outcome:** `/logic/compareFieldSets.ts` (then `SummaryStatusBar.tsx`)
+- **Threshold logic:** `/logic/thresholdUtils.ts`
+- **Matching behavior / OR-group satisfaction:** `/logic/fieldNormalization.ts`
+- **Summary color/outcome:** Not yet implemented (see todo.md)
 - **Normalization:** `/logic/normalizeFieldName.ts` + `/data/fieldDictionary.json`
-- **EUR conversion & rounding:** `/logic/currency.ts` + `/data/currencyRates.json`
+- **EUR conversion & rounding:** `/logic/currencyConversion.ts` + `/data/currencyRates.json`
 - **Flags (KYC/AML/Wallet) display:** `VerificationFlags.tsx` (not part of comparison)
 - **Add a new country:** `/data/requirements.json` (+ flag/name in `CountrySelect` source)
 - **Disable/enable Company (future):** `EntityToggle.tsx` (UI) and add `company` branch in JSON + types
@@ -172,7 +189,7 @@ export type RequirementsJson = Record<CountryCode, CountryRule>;
 
 - **Company entity**
   - Add `company` branch to `CountryRule` in types & JSON.
-  - Update `getRequirementSet` to branch on entity type.
+  - Update `requirementExtractor` to branch on entity type.
 - **Live exchange rates**
   - Replace `getCurrencyRate` with API-backed source; keep the same interface.
 - **Debug/Dev Mode**
@@ -202,12 +219,15 @@ export type RequirementsJson = Record<CountryCode, CountryRule>;
 App.tsx
  ├─ useAppState (logic/useAppState.ts)
  ├─ getCountryRule, getCurrencyRate (logic/loadRequirements.ts, logic/getCurrencyRate.ts)
- ├─ getRequirementSet (logic/getRequirementSet.ts)
+ ├─ extractRequirements (logic/requirementExtractor.ts)
  │    └─ normalize (logic/normalizeFieldName.ts)
- ├─ pairing map (logic/pairing.ts)
- ├─ compareFieldSets (logic/compareFieldSets.ts)
+ ├─ field matching (logic/fieldNormalization.ts)
+ ├─ threshold determination (logic/thresholdUtils.ts)
+ ├─ currency conversion (logic/currencyConversion.ts)
+ ├─ direction utilities (logic/directionUtils.ts)
+ ├─ amount validation (logic/amountValidation.ts)
+ ├─ currency utilities (logic/currencyUtils.ts)
  ├─ UI
- │   ├─ SummaryStatusBar
  │   ├─ VaspRequirementsBlock
  │   │   ├─ RequirementGroup
  │   │   ├─ FieldPill
@@ -227,10 +247,33 @@ App.tsx
 
 - **Add country:** update `/data/requirements.json`; add display entry for dropdown; done.
 - **Add field alias:** update `/data/fieldDictionary.json`; normalization picks it up.
-- **Change summary outcome rules:** edit `/logic/compareFieldSets.ts`.
+- **Change summary outcome rules:** Not yet implemented (see todo.md).
 - **Change hover behavior:** edit `/components/FieldPill.tsx` + reference pairing map.
-- **Change conversion rounding:** edit `/logic/currency.ts`.
+- **Change conversion rounding:** edit `/logic/currencyConversion.ts`.
+
+## 13) Implementation Status
+
+**✅ Implemented:**
+- Core data loading and validation
+- Threshold determination logic
+- Requirement extraction for both sides
+- Field normalization with combo field support
+- Currency conversion and formatting
+- Direction-based labeling
+- Amount validation
+- All UI components except summary status
+- Basic field matching logic
+
+**🚧 Partially Implemented:**
+- Field pairing/hover interaction (structure exists, logic pending)
+- Summary status comparison (components exist, logic pending)
+
+**❌ Not Yet Implemented:**
+- `compareFieldSets` function for summary outcomes
+- `SummaryStatusBar` component
+- Field pairing map for hover interactions
+- Complete field matching with pairing visualization
 
 ---
 
-_This structure intentionally mirrors the PRD and task plan. Keep it updated when you add features (e.g., company logic, live rates, debug mode)._
+_This structure reflects the current implementation state. Keep it updated when you add features (e.g., company logic, live rates, debug mode, summary comparison)._

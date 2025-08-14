@@ -128,9 +128,10 @@
 
 ## 7. Matching & Hover Interaction
 
-- **7.1** \[ ] **Build comparable sets per side**
+- **7.1** [x] **Build comparable sets per side**
   _Context:_ Produce normalized sets: `applicantFields` and `counterpartyFields`; treat OR-group as **satisfied** if any member matches.
   _Depends on:_ 4.4
+  _Status:_ ✅ **COMPLETED** - Implemented `buildComparableSets` function with OR-group satisfaction logic, field pairing map, and UI integration
 - **7.2** \[ ] **Field ↔ field pairing resolver**
   _Context:_ For each unique normalized field, find presence in both sides; keep a map `{ normalizedKey: { inApplicant: boolean, inCounterparty: boolean } }`.
   _Depends on:_ 7.1

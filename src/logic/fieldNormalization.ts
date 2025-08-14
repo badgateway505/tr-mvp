@@ -145,3 +145,157 @@ export function splitComboField(field: string): string[] {
   }
   return field.split(' + ').map(f => f.trim());
 }
+
+/**
+ * Build comparable sets for both sides with OR-group satisfaction logic
+ * @param applicantRequirements - Requirements from the applicant side
+ * @param counterpartyRequirements - Requirements from the counterparty side
+ * @returns Object with normalized sets and pairing information
+ */
+export function buildComparableSets(
+  applicantRequirements: { fields?: string[]; groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }> },
+  counterpartyRequirements: { fields?: string[]; groups?: Array<{ logic: 'AND' | 'OR'; fields: string[] }> }
+) {
+  // Normalize applicant fields (including OR-group satisfaction)
+  const applicantFields = new Set<string>();
+  const applicantGroups = new Map<string, { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean }>();
+  
+  // Process simple fields
+  if (applicantRequirements.fields) {
+    applicantRequirements.fields.forEach(field => {
+      applicantFields.add(field);
+    });
+  }
+  
+  // Process groups with OR-group satisfaction logic
+  if (applicantRequirements.groups) {
+    applicantRequirements.groups.forEach((group, index) => {
+      const groupKey = `group_${index}`;
+      
+      // For OR groups, we'll track which fields are satisfied
+      // For AND groups, all fields are required
+      applicantGroups.set(groupKey, {
+        logic: group.logic,
+        fields: group.fields,
+        satisfied: false // Will be updated during matching
+      });
+      
+      // Add all fields to the set for comparison
+      group.fields.forEach(field => {
+        applicantFields.add(field);
+      });
+    });
+  }
+  
+  // Normalize counterparty fields (including OR-group satisfaction)
+  const counterpartyFields = new Set<string>();
+  const counterpartyGroups = new Map<string, { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean }>();
+  
+  // Process simple fields
+  if (counterpartyRequirements.fields) {
+    counterpartyRequirements.fields.forEach(field => {
+      counterpartyFields.add(field);
+    });
+  }
+  
+  // Process groups
+  if (counterpartyRequirements.groups) {
+    counterpartyRequirements.groups.forEach((group, index) => {
+      const groupKey = `group_${index}`;
+      
+      counterpartyGroups.set(groupKey, {
+        logic: group.logic,
+        fields: group.fields,
+        satisfied: false // Will be updated during matching
+      });
+      
+      // Add all fields to the set for comparison
+      group.fields.forEach(field => {
+        counterpartyFields.add(field);
+      });
+    });
+  }
+  
+  // Build field pairing map for hover interactions
+  const fieldPairings = new Map<string, string[]>();
+  const reversePairings = new Map<string, string[]>();
+  
+  // Find all matches between the two sides
+  for (const applicantField of applicantFields) {
+    const matches: string[] = [];
+    
+    for (const counterpartyField of counterpartyFields) {
+      if (fieldsMatch(applicantField, counterpartyField)) {
+        matches.push(counterpartyField);
+      }
+    }
+    
+    if (matches.length > 0) {
+      fieldPairings.set(applicantField, matches);
+      
+      // Build reverse mappings
+      matches.forEach(match => {
+        if (!reversePairings.has(match)) {
+          reversePairings.set(match, []);
+        }
+        reversePairings.get(match)!.push(applicantField);
+      });
+    }
+  }
+  
+  // Update group satisfaction based on matches
+  // For OR groups: satisfied if ANY field matches
+  // For AND groups: satisfied if ALL fields match
+  for (const [, group] of applicantGroups) {
+    if (group.logic === 'OR') {
+      // OR group is satisfied if any field matches
+      group.satisfied = group.fields.some(field => fieldPairings.has(field));
+    } else {
+      // AND group is satisfied if all fields match
+      group.satisfied = group.fields.every(field => fieldPairings.has(field));
+    }
+  }
+  
+  for (const [, group] of counterpartyGroups) {
+    if (group.logic === 'OR') {
+      // OR group is satisfied if any field matches
+      group.satisfied = group.fields.some(field => reversePairings.has(field));
+    } else {
+      // AND group is satisfied if all fields match
+      group.satisfied = group.fields.every(field => reversePairings.has(field));
+    }
+  }
+  
+  return {
+    applicantFields: Array.from(applicantFields),
+    counterpartyFields: Array.from(counterpartyFields),
+    applicantGroups: Array.from(applicantGroups.entries()),
+    counterpartyGroups: Array.from(counterpartyGroups.entries()),
+    fieldPairings,
+    reversePairings,
+    // Summary statistics
+    totalMatches: fieldPairings.size,
+    applicantMatchedFields: Array.from(fieldPairings.keys()),
+    counterpartyMatchedFields: Array.from(reversePairings.keys())
+  };
+}
+
+/**
+ * Check if a field has matches on the other side
+ * @param field - The field to check
+ * @param pairings - The field pairings map
+ * @returns True if the field has matches
+ */
+export function hasMatches(field: string, pairings: Map<string, string[]>): boolean {
+  return pairings.has(field);
+}
+
+/**
+ * Get all matching fields for a given field
+ * @param field - The field to get matches for
+ * @param pairings - The field pairings map
+ * @returns Array of matching fields or empty array if no matches
+ */
+export function getMatchingFields(field: string, pairings: Map<string, string[]>): string[] {
+  return pairings.get(field) || [];
+}
