@@ -2,19 +2,19 @@
 
 ## 0. Project Initialization & Tooling
 
-- **0.1** \[ ] **Create project scaffold (Vite + React + TypeScript)**
+- **0.1** \[x] **Create project scaffold (Vite + React + TypeScript)**
   _Context:_ Initialize the app with TS from the start to enforce types for requirements and logic.
   _Depends on:_ —
-- **0.2** \[ ] **Install & configure Tailwind CSS**
+- **0.2** \[x] **Install & configure Tailwind CSS**
   _Context:_ Add Tailwind for fast, consistent styling and transitions. Include base, components, utilities.
   _Depends on:_ 0.1
-- **0.3** \[ ] **Establish folder structure**
+- **0.3** \[x] **Establish folder structure**
   _Context:_ Create `/src/components`, `/src/logic`, `/src/data`, `/src/styles`, `/src/types`, `App.tsx`, `main.tsx`.
   _Depends on:_ 0.1
-- **0.4** \[ ] **Enable strict TypeScript settings**
+- **0.4** \[x] **Enable strict TypeScript settings**
   _Context:_ `strict: true`, `noImplicitAny`, `exactOptionalPropertyTypes`. Helps avoid runtime errors in rules logic.
   _Depends on:_ 0.1
-- **0.5** \[ ] **Add ESLint + Prettier (basic rules)**
+- **0.5** \[x] **Add ESLint + Prettier (basic rules)**
   _Context:_ Keep code readable and consistent; minimal config to avoid overhead.
   _Depends on:_ 0.1
 
@@ -39,16 +39,16 @@
 
 ## 2. Types & Parsing Utilities
 
-- **2.1** \[ ] **Define requirement types (`/types/requirements.ts`)**
+- **2.1** \[x] **Define requirement types (`/types/requirements.ts`)**
   _Context:_ Types for `CountryCode`, `RequirementGroup`, `Logic = 'AND'|'OR'`, `Flags`, `RuleBlock`, `CountryRule`.
   _Depends on:_ 1.1
-- **2.2** \[ ] **Create loader helpers (`/logic/loadRequirements.ts`)**
+- **2.2** \[x] **Create loader helpers (`/logic/loadRequirements.ts`)**
   _Context:_ Read/validate `requirements.json`; expose `getCountryRule(code)`.
   _Depends on:_ 2.1, 1.1
-- **2.3** \[ ] **Create currency helper (`/logic/getCurrencyRate.ts`)**
+- **2.3** \[x] **Create currency helper (`/logic/getCurrencyRate.ts`)**
   _Context:_ Read static mapping and return `number` for given currency code.
   _Depends on:_ 1.2
-- **2.4** \[ ] **Field normalization helper (`/logic/normalizeFieldName.ts`)**
+- **2.4** \[x] **Field normalization helper (`/logic/normalizeFieldName.ts`)**
   _Context:_ Map incoming field to normalized key using `fieldDictionary.json`. Fall back to the original if no map.
   _Depends on:_ 1.3
 
@@ -56,13 +56,13 @@
 
 ## 3. Core State Management
 
-- **3.1** \[ ] **Implement app state store (`/logic/useAppState.ts`)**
+- **3.1** \[x] **Implement app state store (`/logic/useAppState.ts`)**
   _Context:_ Fields: `sumsubCountry`, `counterpartyCountry`, `direction ('IN'|'OUT', default 'OUT')`, `amount: number`, `entityType: 'individual'`.
   _Depends on:_ 0.3
-- **3.2** \[ ] **Amount validation (digits only) utility**
+- **3.2** \[x] **Amount validation (digits only) utility**
   _Context:_ Input → parse to `int` (reject non-digits). Ensure `amount` is an **integer**.
   _Depends on:_ 3.1
-- **3.3** \[ ] **Derived currency code for input**
+- **3.3** \[x] **Derived currency code for input**
   _Context:_ From `sumsubCountry` rule; use its `currency` for the amount label.
   _Depends on:_ 2.2, 3.1
 
@@ -70,19 +70,19 @@
 
 ## 4. Requirement Selection Logic
 
-- **4.1** \[ ] **Determine sender/receiver by direction**
+- **4.1** \[x] **Determine sender/receiver by direction**
   _Context:_ `OUT`: Sumsub=sender; `IN`: Sumsub=receiver. Used to label blocks and messages only (rules still independent).
   _Depends on:_ 3.1
-- **4.2** \[ ] **Select threshold bucket per side (`below_threshold` vs `above_threshold`)**
+- **4.2** \[x] **Select threshold bucket per side (`below_threshold` vs `above_threshold`)**
   _Context:_ Compare **that side’s** `threshold` with input `amount` (int). Sides evaluated independently.
   _Depends on:_ 2.2, 3.1, 3.2
-- **4.3** \[ ] **Extract fields & flags per side**
+- **4.3** \[x] **Extract fields & flags per side**
   _Context:_ For each side and bucket: get `required_fields` **or** `requirement_groups`; plus `kyc_required`, `aml_required`, `wallet_attribution`.
   _Depends on:_ 4.2
-- **4.4** \[ ] **Normalize field labels for comparison**
+- **4.4** \[x] **Normalize field labels for comparison**
   _Context:_ Convert each field (including combo fields like `date_of_birth + birthplace`) to a normalized key for matching.
   _Depends on:_ 2.4, 4.3
-- **4.5** \[ ] **EUR conversion helper**
+- **4.5** \[x] **EUR conversion helper**
   _Context:_ Get rate for Sumsub’s currency; compute `convertedEUR = Math.round(amount * rate)`; display read-only.
   _Depends on:_ 2.3, 3.1, 3.2, 3.3
 
@@ -90,19 +90,19 @@
 
 ## 5. Primitive UI Components
 
-- **5.1** \[ ] **Country dropdown (`<CountrySelect />`)**
+- **5.1** \[x] **Country dropdown (`<CountrySelect />`)**
   _Context:_ Flag + name + code; value is 3-letter code; reuse for both Sumsub and Counterparty.
   _Depends on:_ 3.1
-- **5.2** \[ ] **Direction toggle (`<DirectionToggle />`)**
+- **5.2** \[x] **Direction toggle (`<DirectionToggle />`)**
   _Context:_ Two-state switch `IN`/`OUT`; default `OUT`.
   _Depends on:_ 3.1
-- **5.3** \[ ] **Entity toggle (`<EntityToggle />`)**
+- **5.3** \[x] **Entity toggle (`<EntityToggle />`)**
   _Context:_ Show `Individual` active, `Company` disabled with label “Coming soon”.
   _Depends on:_ 3.1
-- **5.4** \[ ] **Amount input (`<AmountInput />`)**
+- **5.4** \[x] **Amount input (`<AmountInput />`)**
   _Context:_ Digits-only; prevent non-digits; `amount` is `int`. Show currency from Sumsub VASP.
   _Depends on:_ 3.2, 3.3
-- **5.5** \[ ] **Converted EUR readout (`<ConvertedAmount />`)**
+- **5.5** \[x] **Converted EUR readout (`<ConvertedAmount />`)**
   _Context:_ Read-only display of `convertedEUR` from helper (rounded).
   _Depends on:_ 4.5
 
@@ -153,13 +153,13 @@
 
 ## 9. Layout, Styling & Animations
 
-- **9.1** \[ ] **Responsive layout (`App.tsx`)**
+- **9.1** \[x] **Responsive layout (`App.tsx`)**
   _Context:_ Two-column layout for VASP blocks on desktop; stacked on small screens.
   _Depends on:_ 5.x, 6.x, 8.2
-- **9.2** \[ ] **Theme colors & tokens**
+- **9.2** \[x] **Theme colors & tokens**
   _Context:_ Tailwind classes for blue (Sumsub) and purple (Counterparty); consistent paddings, radii, shadows.
   _Depends on:_ 2.2, 6.1
-- **9.3** \[ ] **Micro-interactions**
+- **9.3** \[x] **Micro-interactions**
   _Context:_ Tailwind transitions (`transition`, `transform`, `hover:scale-…`, `border-dashed`) for smooth UX; keep subtle.
   _Depends on:_ 6.3, 7.3
 
@@ -226,21 +226,21 @@
 
 ## Acceptance Checklist (maps to PRD)
 
-- **A.1** \[ ] Direction default = **OUT**; entity shows **Individual**, Company disabled
+- **A.1** \[x] Direction default = **OUT**; entity shows **Individual**, Company disabled
   _Depends on:_ 5.2, 5.3
-- **A.2** \[ ] Amount input is **integer-only**; conversion uses **float rate**, EUR value **rounded**
+- **A.2** \[x] Amount input is **integer-only**; conversion uses **float rate**, EUR value **rounded**
   _Depends on:_ 5.4, 4.5
-- **A.3** \[ ] Independent threshold evaluation per VASP side
+- **A.3** \[x] Independent threshold evaluation per VASP side
   _Depends on:_ 4.2
 - **A.4** \[ ] Matching & hover highlighting between blocks
   _Depends on:_ 7.3
 - **A.5** \[ ] Summary bar colors: Green/Blue/Orange with correct logic
   _Depends on:_ 8.2
-- **A.6** \[ ] Flags (KYC/AML/Wallet) displayed, not compared
+- **A.6** \[x] Flags (KYC/AML/Wallet) displayed, not compared
   _Depends on:_ 6.4
-- **A.7** \[ ] Tailwind styling + smooth transitions
+- **A.7** \[x] Tailwind styling + smooth transitions
   _Depends on:_ 9.x
-- **A.8** \[ ] All logic driven by static JSONs; no API calls
+- **A.8** \[x] All logic driven by static JSONs; no API calls
   _Depends on:_ 1.x–4.x
 
 ---
