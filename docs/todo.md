@@ -110,13 +110,14 @@
 
 ## 6. Requirements Rendering
 
-- **6.1** \[ ] **VASP requirements block wrapper (`<VaspRequirementsBlock />`)**
+- **6.1** \[x] **VASP requirements block wrapper (`<VaspRequirementsBlock />`)**
   _Context:_ Receives: role label, color theme (blue for Sumsub, purple for Counterparty), fields/groups, flags.
   _Depends on:_ 4.3
-- **6.2** \[ ] **Group renderer (`<RequirementGroup />`)**
+  _Status:_ ✅ **COMPLETED** - Component created with blue/purple themes, fields/groups display, verification flags, and comprehensive tests
+- **6.2** \[x] **Group renderer (`<RequirementGroup />`)**
   _Context:_ Renders groups with `logic: 'AND' | 'OR'`; visually separate groups; support combo fields as a single chip.
   _Depends on:_ 6.1
-- **6.3** \[ ] **Field chip (`<FieldPill />`)**
+- **6.3** \[x] **Field chip (`<FieldPill />`)**
   _Context:_ Single field (or combo) item; base border grey when unmatched; hover logic to scale + dashed if matched.
   _Depends on:_ 6.2
 - **6.4** \[ ] **Flags row (`<VerificationFlags />`)**
