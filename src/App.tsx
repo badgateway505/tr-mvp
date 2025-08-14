@@ -16,6 +16,7 @@ import { convertToEUR, getConversionSummary } from './logic/currencyConversion';
 import { getCountryRule } from './logic/loadRequirements';
 import { VaspRequirementsBlock } from './components/VaspRequirementsBlock';
 import { SummaryStatusBar } from './components/SummaryStatusBar';
+import { ConvertedAmount } from './components/ConvertedAmount';
 import './App.css';
 
 function App() {
@@ -223,7 +224,7 @@ function App() {
               <select
                 value={direction}
                 onChange={(e) => setDirection(e.target.value as 'IN' | 'OUT')}
-                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm 
+                className="self-start p-3 border border-gray-300 rounded-lg shadow-sm 
                            focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
                            transition-all duration-200 ease-out
                            hover:border-gray-400 hover:shadow-md
@@ -244,7 +245,6 @@ function App() {
                 value={counterpartyCountry}
                 onChange={(e) => setCounterpartyCountry(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm 
-                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
                            transition-all duration-200 ease-out
                            hover:border-gray-400 hover:shadow-md
                            focus:shadow-lg focus:scale-[1.01]"
@@ -256,7 +256,7 @@ function App() {
             </div>
 
             <div className="group">
-              <label className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800">
+              <label className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-400">
                 Amount
               </label>
               <input
@@ -273,6 +273,19 @@ function App() {
             </div>
           </div>
         </div>
+
+        {/* Currency Conversion Display */}
+        {amount > 0 && sumsubCountry && (
+          <div className="mb-8 transition-all duration-500 ease-out animate-in slide-in-from-bottom-4">
+            <ConvertedAmount
+              amount={amount}
+              originalCurrency={getCountryRule(sumsubCountry)?.currency || 'EUR'}
+              convertedEUR={convertToEUR(amount, getCountryRule(sumsubCountry)?.currency || 'EUR')?.eurAmount || 0}
+              label="Currency Conversion"
+              showOriginal={true}
+            />
+          </div>
+        )}
 
         {/* Test button */}
         <div className="text-center mb-8">
