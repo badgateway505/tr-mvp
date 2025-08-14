@@ -21,36 +21,131 @@
     background-color: var(--color-sumsub-200);
     color: var(--color-sumsub-900);
   }
+
+  /* Smooth scrolling for better UX */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Base transitions for smooth interactions */
+  * {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
 }
 
 @layer components {
   /* Common component patterns using theme tokens */
   .btn-primary {
-    @apply bg-sumsub-600 hover:bg-sumsub-700 text-white font-medium transition-colors duration-200;
-    padding: var(--spacing-button);
-    border-radius: var(--radius-button);
-    box-shadow: var(--shadow-button);
+    @apply bg-sumsub-600 hover:bg-sumsub-700 text-white font-medium px-6 py-3 rounded-lg shadow-soft hover:shadow-medium transform hover:scale-105 active:scale-95 transition-all duration-200;
   }
 
   .btn-secondary {
-    @apply bg-counterparty-600 hover:bg-counterparty-700 text-white font-medium transition-colors duration-200;
-    padding: var(--spacing-button);
-    border-radius: var(--radius-button);
-    box-shadow: var(--shadow-button);
+    @apply bg-counterparty-600 hover:bg-counterparty-700 text-white font-medium px-6 py-3 rounded-lg shadow-soft hover:shadow-medium transform hover:scale-105 active:scale-95 transition-all duration-200;
   }
 
   .card {
-    background-color: white;
-    border: 1px solid var(--color-neutral-200);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
-    padding: var(--spacing-card);
+    @apply bg-white border border-neutral-200 rounded-xl shadow-soft hover:shadow-medium p-6 transform hover:scale-[1.02] transition-all duration-300;
   }
 
   .input-field {
-    @apply border border-neutral-300 focus:border-sumsub-500 focus:ring-2 focus:ring-sumsub-200 transition-colors duration-200;
-    padding: var(--spacing-input);
-    border-radius: var(--radius-input);
-    box-shadow: var(--shadow-input);
+    @apply border border-neutral-300 focus:border-sumsub-500 focus:ring-2 focus:ring-sumsub-200 px-4 py-3 rounded-lg shadow-soft focus:shadow-medium transition-all duration-200;
+  }
+
+  /* Smooth animation classes */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  .animate-bounce-in {
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  /* Hover effects */
+  .hover-lift {
+    @apply transform hover:-translate-y-1 hover:shadow-medium transition-all duration-200;
+  }
+
+  .hover-glow {
+    @apply hover:shadow-strong transition-shadow duration-200;
+  }
+}
+
+@layer utilities {
+  /* Custom animation keyframes */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { 
+      transform: translateY(20px); 
+      opacity: 0; 
+    }
+    to { 
+      transform: translateY(0); 
+      opacity: 1; 
+    }
+  }
+
+  @keyframes scaleIn {
+    from { 
+      transform: scale(0.9); 
+      opacity: 0; 
+    }
+    to { 
+      transform: scale(1); 
+      opacity: 1; 
+    }
+  }
+
+  @keyframes bounceIn {
+    0% { 
+      transform: scale(0.3); 
+      opacity: 0; 
+    }
+    50% { 
+      transform: scale(1.05); 
+      opacity: 0.8; 
+    }
+    70% { 
+      transform: scale(0.9); 
+      opacity: 0.9; 
+    }
+    100% { 
+      transform: scale(1); 
+      opacity: 1; 
+    }
+  }
+
+  /* Animation delay utilities */
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 500ms;
   }
 }

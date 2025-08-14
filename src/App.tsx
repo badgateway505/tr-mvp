@@ -179,13 +179,14 @@ function App() {
   };
 
   return (
-    <div className="App min-h-screen bg-gray-50">
+    <div className="App min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Skip to main content link for screen readers */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 
-                   bg-blue-600 text-white px-4 py-2 rounded-md z-50
-                   focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
+                   bg-sumsub-600 text-white px-4 py-2 rounded-lg shadow-medium z-50
+                   focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-sumsub-600
+                   animate-bounce-in"
       >
         Skip to main content
       </a>
@@ -193,20 +194,22 @@ function App() {
       {/* Responsive container with proper padding */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
         {/* Header section */}
-        <header className="text-center mb-8 sm:mb-12 transition-all duration-300 ease-out">
+        <header className="text-center mb-8 sm:mb-12 animate-fade-in">
           <h1
-            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 
-                         transition-all duration-300 ease-out hover:scale-105 hover:text-gray-800"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 
+                         transition-all duration-300 ease-out hover:scale-105 hover:text-sumsub-700
+                         animate-slide-up"
           >
             Travel Rule Calculator
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 transition-all duration-300 ease-out hover:text-gray-700">
+          <p className="text-sm sm:text-base text-gray-600 transition-all duration-300 ease-out hover:text-gray-700
+                       animate-slide-up animation-delay-100">
             Section 4 Integration - VASP Requirements Analysis
           </p>
         </header>
 
         {/* Main content area */}
-        <main id="main-content" role="main" aria-label="Travel Rule Calculator">
+        <main id="main-content" role="main" aria-label="Travel Rule Calculator" className="animate-fade-in animation-delay-200">
           {/* Input controls - responsive grid */}
           <section
             aria-labelledby="input-controls-heading"
@@ -216,10 +219,10 @@ function App() {
               Input Controls
             </h2>
             <div className="space-y-4">
-              <div className="group">
+              <div className="group animate-slide-up animation-delay-300">
                 <label
                   htmlFor="sumsub-country"
-                  className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800"
+                  className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-sumsub-600"
                 >
                   Sumsub Country
                 </label>
@@ -228,11 +231,11 @@ function App() {
                   value={sumsubCountry}
                   onChange={(e) => setSumsubCountry(e.target.value)}
                   aria-describedby="sumsub-country-help"
-                  className="w-full p-3 border border-gray-300 rounded-lg shadow-sm 
-                             focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                  className="w-full p-3 border border-gray-300 rounded-lg shadow-soft 
+                             focus:ring-2 focus:ring-sumsub-500 focus:border-sumsub-500 
                              transition-all duration-200 ease-out
-                             hover:border-gray-400 hover:shadow-md
-                             focus:shadow-lg focus:scale-[1.01]"
+                             hover:border-gray-400 hover:shadow-medium
+                             focus:shadow-medium focus:scale-[1.01] hover-lift"
                 >
                   <option value="">Select country</option>
                   <option value="DEU">Germany (EUR)</option>
@@ -243,10 +246,10 @@ function App() {
                 </div>
               </div>
 
-              <div className="group">
+              <div className="group animate-slide-up animation-delay-400">
                 <label
                   htmlFor="direction-select"
-                  className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800"
+                  className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-sumsub-600"
                 >
                   Direction
                 </label>
@@ -255,11 +258,11 @@ function App() {
                   value={direction}
                   onChange={(e) => setDirection(e.target.value as 'IN' | 'OUT')}
                   aria-describedby="direction-help"
-                  className="self-start p-3 border border-gray-300 rounded-lg shadow-sm 
-                             focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                  className="self-start p-3 border border-gray-300 rounded-lg shadow-soft 
+                             focus:ring-2 focus:ring-sumsub-500 focus:border-sumsub-500 
                              transition-all duration-200 ease-out
-                             hover:border-gray-400 hover:shadow-md
-                             focus:shadow-lg focus:scale-[1.01]"
+                             hover:border-gray-400 hover:shadow-medium
+                             focus:shadow-medium focus:scale-[1.01] hover-lift"
                 >
                   <option value="OUT">OUT (Sumsub = Sender)</option>
                   <option value="IN">IN (Sumsub = Receiver)</option>
@@ -271,10 +274,10 @@ function App() {
             </div>
 
             <div className="space-y-4">
-              <div className="group">
+              <div className="group animate-slide-up animation-delay-500">
                 <label
                   htmlFor="counterparty-country"
-                  className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800"
+                  className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-counterparty-600"
                 >
                   Counterparty Country
                 </label>
@@ -283,10 +286,10 @@ function App() {
                   value={counterpartyCountry}
                   onChange={(e) => setCounterpartyCountry(e.target.value)}
                   aria-describedby="counterparty-country-help"
-                  className="w-full p-3 border border-gray-300 rounded-lg shadow-sm 
+                  className="w-full p-3 border border-gray-300 rounded-lg shadow-soft 
                              transition-all duration-200 ease-out
-                             hover:border-gray-400 hover:shadow-md
-                             focus:shadow-lg focus:scale-[1.01]"
+                             hover:border-gray-400 hover:shadow-medium
+                             focus:shadow-medium focus:scale-[1.01] hover-lift"
                 >
                   <option value="">Select country</option>
                   <option value="DEU">Germany (EUR)</option>
@@ -311,11 +314,11 @@ function App() {
                   onChange={(e) => setAmount(parseInt(e.target.value) || 0)}
                   placeholder="Enter amount"
                   aria-describedby="amount-help"
-                  className="w-full p-3 border border-gray-300 rounded-lg shadow-sm 
-                             focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                  className="w-full p-3 border border-gray-300 rounded-lg shadow-soft 
+                             focus:ring-2 focus:ring-sumsub-500 focus:border-sumsub-500 
                              transition-all duration-200 ease-out
-                             hover:border-gray-400 hover:shadow-md
-                             focus:shadow-lg focus:scale-[1.01]"
+                             hover:border-gray-400 hover:shadow-medium
+                             focus:shadow-medium focus:scale-[1.01] hover-lift"
                 />
                 <div id="amount-help" className="sr-only">
                   Enter the transfer amount in the local currency
