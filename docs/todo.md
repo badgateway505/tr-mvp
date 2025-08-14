@@ -227,9 +227,10 @@
 - **11.2** \[x] **Run linter/formatter; fix warnings**
   _Context:_ Keep baseline green; avoids friction for the next devs.
   _Depends on:_ 11.1
-- **11.3** \[ ] **Tag MVP v1.0 (git) & short changelog**
+- **11.3** \[x] **Tag MVP v1.0 (git) & short changelog**
   _Context:_ Mark the snapshot used for demos; list known limitations (e.g., no company, static rates).
   _Depends on:_ 11.2
+  _Completed:_ 2024-12-19 - Created comprehensive changelog and tagged v1.0.0
 
 ---
 
