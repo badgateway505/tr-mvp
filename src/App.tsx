@@ -119,127 +119,170 @@ function App() {
   };
 
   return (
-    <div className="App p-8 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Travel Rule Calculator - Section 4 Integration</h1>
-      
-      <div className="grid grid-cols-2 gap-6 mb-6">
-        <div>
-          <label className="block text-sm font-medium mb-2">Sumsub Country</label>
-          <select 
-            value={sumsubCountry} 
-            onChange={(e) => setSumsubCountry(e.target.value)}
-            className="w-full p-2 border rounded"
-          >
-            <option value="">Select country</option>
-            <option value="DEU">Germany (EUR)</option>
-            <option value="ZAF">South Africa (ZAR)</option>
-          </select>
+    <div className="App min-h-screen bg-gray-50">
+      {/* Responsive container with proper padding */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+        {/* Header section */}
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+            Travel Rule Calculator
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600">
+            Section 4 Integration - VASP Requirements Analysis
+          </p>
         </div>
         
-        <div>
-          <label className="block text-sm font-medium mb-2">Counterparty Country</label>
-          <select 
-            value={counterpartyCountry} 
-            onChange={(e) => setCounterpartyCountry(e.target.value)}
-            className="w-full p-2 border rounded"
-          >
-            <option value="">Select country</option>
-            <option value="DEU">Germany (EUR)</option>
-            <option value="ZAF">South Africa (ZAR)</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-6 mb-6">
-        <div>
-          <label className="block text-sm font-medium mb-2">Direction</label>
-          <select 
-            value={direction} 
-            onChange={(e) => setDirection(e.target.value as 'IN' | 'OUT')}
-            className="w-full p-2 border rounded"
-          >
-            <option value="OUT">OUT (Sumsub = Sender)</option>
-            <option value="IN">IN (Sumsub = Receiver)</option>
-          </select>
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium mb-2">Amount</label>
-          <input 
-            type="number" 
-            value={amount || ''} 
-            onChange={(e) => setAmount(parseInt(e.target.value) || 0)}
-            placeholder="Enter amount"
-            className="w-full p-2 border rounded"
-          />
-        </div>
-      </div>
-
-      <button 
-        onClick={runSection4Tests}
-        className="w-full bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 mb-6"
-      >
-        Test Section 4 Integration
-      </button>
-
-      {/* Summary Status Bar */}
-      {(sumsubRequirements && counterpartyRequirements) && (
-        <div className="mb-6">
-          <SummaryStatusBar
-            applicantRequirements={sumsubRequirements}
-            counterpartyRequirements={counterpartyRequirements}
-            direction={direction}
-            className="mb-4"
-          />
-        </div>
-      )}
-
-      {/* Requirements Display */}
-      {(sumsubRequirements || counterpartyRequirements) && (
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-4">Requirements Display</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {sumsubRequirements && (
-              <VaspRequirementsBlock
-                roleLabel={getSumsubLabel(direction)}
-                colorTheme="blue"
-                requirements={sumsubRequirements}
-                comparableSets={comparableSets}
-                hoveredField={hoveredField}
-                onFieldHover={handleFieldHover}
+        {/* Input controls - responsive grid */}
+        <div className="space-y-6 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 mb-8">
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Sumsub Country</label>
+              <select 
+                value={sumsubCountry} 
+                onChange={(e) => setSumsubCountry(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              >
+                <option value="">Select country</option>
+                <option value="DEU">Germany (EUR)</option>
+                <option value="ZAF">South Africa (ZAR)</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Direction</label>
+              <select 
+                value={direction} 
+                onChange={(e) => setDirection(e.target.value as 'IN' | 'OUT')}
+                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              >
+                <option value="OUT">OUT (Sumsub = Sender)</option>
+                <option value="IN">IN (Sumsub = Receiver)</option>
+              </select>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Counterparty Country</label>
+              <select 
+                value={counterpartyCountry} 
+                onChange={(e) => setCounterpartyCountry(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              >
+                <option value="">Select country</option>
+                <option value="DEU">Germany (EUR)</option>
+                <option value="ZAF">South Africa (ZAR)</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Amount</label>
+              <input 
+                type="number" 
+                value={amount || ''} 
+                onChange={(e) => setAmount(parseInt(e.target.value) || 0)}
+                placeholder="Enter amount"
+                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               />
-            )}
-            {counterpartyRequirements && (
-              <VaspRequirementsBlock
-                roleLabel={getCounterpartyLabel(direction)}
-                colorTheme="purple"
-                requirements={counterpartyRequirements}
-                comparableSets={comparableSets}
-                hoveredField={hoveredField}
-                onFieldHover={handleFieldHover}
-              />
-            )}
+            </div>
           </div>
         </div>
-      )}
 
-      {testResults.length > 0 && (
-        <div className="bg-gray-100 p-4 rounded-lg">
-          <h3 className="font-semibold mb-2">Test Results:</h3>
-          {testResults.map((result, index) => (
-            <div key={index} className="text-sm mb-1 font-mono">{result}</div>
-          ))}
+        {/* Test button */}
+        <div className="text-center mb-8">
+          <button 
+            onClick={runSection4Tests}
+            className="w-full sm:w-auto bg-blue-600 text-white py-3 px-8 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 font-medium"
+          >
+            Test Section 4 Integration
+          </button>
         </div>
-      )}
 
-      <div className="mt-8 text-sm text-gray-600">
-        <h3 className="font-semibold mb-2">Test Scenarios:</h3>
-        <ul className="list-disc list-inside space-y-1">
-          <li><strong>DEU + EUR 0:</strong> Should show above_threshold (threshold = 0)</li>
-          <li><strong>ZAF + ZAR 4999:</strong> Should show below_threshold (threshold = 5000)</li>
-          <li><strong>ZAF + ZAR 5000:</strong> Should show above_threshold with requirement groups</li>
-          <li><strong>Direction IN/OUT:</strong> Should swap sender/receiver labels</li>
-        </ul>
+        {/* Summary Status Bar */}
+        {(sumsubRequirements && counterpartyRequirements) && (
+          <div className="mb-8">
+            <SummaryStatusBar
+              applicantRequirements={sumsubRequirements}
+              counterpartyRequirements={counterpartyRequirements}
+              direction={direction}
+              className="mb-4"
+            />
+          </div>
+        )}
+
+        {/* Requirements Display - Responsive VASP blocks */}
+        {(sumsubRequirements || counterpartyRequirements) && (
+          <div className="mb-8">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-6 text-center">
+              Requirements Display
+            </h2>
+            
+            {/* Responsive grid: stacked on mobile, side-by-side on larger screens */}
+            <div className="space-y-6 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-8">
+              {sumsubRequirements && (
+                <div className="w-full">
+                  <VaspRequirementsBlock
+                    roleLabel={getSumsubLabel(direction)}
+                    colorTheme="blue"
+                    requirements={sumsubRequirements}
+                    comparableSets={comparableSets}
+                    hoveredField={hoveredField}
+                    onFieldHover={handleFieldHover}
+                  />
+                </div>
+              )}
+              {counterpartyRequirements && (
+                <div className="w-full">
+                  <VaspRequirementsBlock
+                    roleLabel={getCounterpartyLabel(direction)}
+                    colorTheme="purple"
+                    requirements={counterpartyRequirements}
+                    comparableSets={comparableSets}
+                    hoveredField={hoveredField}
+                    onFieldHover={handleFieldHover}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Test Results */}
+        {testResults.length > 0 && (
+          <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-sm">
+            <h3 className="font-semibold text-gray-900 mb-3 text-lg">Test Results:</h3>
+            <div className="space-y-2">
+              {testResults.map((result, index) => (
+                <div key={index} className="text-sm font-mono text-gray-700 bg-gray-50 p-2 rounded border-l-4 border-blue-500">
+                  {result}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Test Scenarios */}
+        <div className="mt-12 bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+          <h3 className="font-semibold text-gray-900 mb-4 text-lg">Test Scenarios:</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="font-medium text-gray-800">Threshold Tests:</div>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li><strong>DEU + EUR 0:</strong> Above threshold (threshold = 0)</li>
+                <li><strong>ZAF + ZAR 4999:</strong> Below threshold (threshold = 5000)</li>
+                <li><strong>ZAF + ZAR 5000:</strong> Above threshold with groups</li>
+              </ul>
+            </div>
+            <div className="space-y-2">
+              <div className="font-medium text-gray-800">Direction Tests:</div>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li><strong>Direction IN/OUT:</strong> Swaps sender/receiver labels</li>
+                <li><strong>Field Matching:</strong> Highlights paired requirements</li>
+                <li><strong>OR Groups:</strong> Shows satisfaction status</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

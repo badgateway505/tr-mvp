@@ -272,8 +272,6 @@ App.tsx
 - Summary status comparison (components exist, logic pending)
 
 **❌ Not Yet Implemented:**
-- `compareFieldSets` function for summary outcomes
-- `SummaryStatusBar` component
 - Field pairing map for hover interactions
 - Complete field matching with pairing visualization
 
