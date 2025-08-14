@@ -221,7 +221,7 @@
 
 ## 11. Cleanup & Handoff
 
-- **11.1** \[ ] **Docs & code comments**
+- **11.1** \[x] **Docs & code comments**
   _Context:_ JSDoc for helpers; README with quick start, where to edit JSONs, how to add a country.
   _Depends on:_ 1.x–10.x
 - **11.2** \[ ] **Run linter/formatter; fix warnings**
