@@ -190,7 +190,7 @@
   _Context:_ Ensure labeling and summary logic remain correct while requirements evaluation stays independent.
   _Depends on:_ 4.1, 8.2
   _Completed:_ Comprehensive test suite created covering direction labeling logic, threshold evaluation independence, requirements extraction independence, and currency conversion independence for both IN and OUT directions.
-- **10.3** \[ ] **Matching behavior**
+- **10.3** [x] **Matching behavior**
   _Context:_ Hover matches for normalized names; unmatched default grey border; OR-group considered satisfied by any one field.
   _Depends on:_ 7.3
 - **10.4** \[ ] **Currency conversion & rounding**

@@ -148,3 +148,130 @@ select,
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Enhanced field pill hover effects for task 10.3 */
+.field-pill-hover {
+  transition: all 0.15s ease-out;
+}
+
+.field-pill-hover:hover {
+  transform: scale(1.05);
+}
+
+/* Field matching visual indicators */
+.field-matched {
+  position: relative;
+}
+
+.field-matched::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 0.5rem;
+  background: linear-gradient(45deg, #10b981, #34d399);
+  opacity: 0.1;
+  z-index: -1;
+  transition: opacity 0.2s ease-out;
+}
+
+.field-matched:hover::after {
+  opacity: 0.2;
+}
+
+/* Combo field styling */
+.field-combo {
+  position: relative;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border: 2px solid #93c5fd;
+}
+
+.field-combo::before {
+  content: '🔗';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  font-size: 0.75rem;
+  background: white;
+  border-radius: 50%;
+  padding: 2px;
+  border: 1px solid #93c5fd;
+}
+
+/* Hover sync animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6);
+  }
+}
+
+.field-pill-hover[data-is-highlighted="true"] {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* Group satisfaction animations */
+.group-satisfied {
+  animation: slideInFromLeft 0.3s ease-out;
+}
+
+.group-not-satisfied {
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Enhanced hover effects for requirement groups */
+.RequirementGroup:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Field count badges */
+.field-count-badge {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  border: 1px solid #d1d5db;
+  color: #374151;
+  font-weight: 600;
+  transition: all 0.2s ease-out;
+}
+
+.field-count-badge:hover {
+  background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+  transform: scale(1.05);
+}
+
+/* Responsive animations */
+@media (prefers-reduced-motion: reduce) {
+  .field-pill-hover,
+  .field-matched,
+  .group-satisfied,
+  .group-not-satisfied {
+    animation: none;
+    transition: none;
+  }
+}

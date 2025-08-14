@@ -148,9 +148,9 @@ export function buildFieldPresenceMap(
     { inApplicant: boolean; inCounterparty: boolean }
   >();
 
-  // Get all unique normalized fields from both sides
-  const applicantNormalized = getUniqueNormalizedFields(applicantFields);
-  const counterpartyNormalized = getUniqueNormalizedFields(counterpartyFields);
+  // Get all unique normalized fields from both sides, expanding combo fields
+  const applicantNormalized = expandComboFields(applicantFields);
+  const counterpartyNormalized = expandComboFields(counterpartyFields);
 
   // Create a set of all unique normalized fields across both sides
   const allNormalizedFields = new Set([
@@ -210,7 +210,7 @@ export function buildComparableSets(
   const applicantFields = new Set<string>();
   const applicantGroups = new Map<
     string,
-    { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean }
+    { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean; matchedFields: string[] }
   >();
 
   // Process simple fields
@@ -231,6 +231,7 @@ export function buildComparableSets(
         logic: group.logic,
         fields: group.fields,
         satisfied: false, // Will be updated during matching
+        matchedFields: [], // Track which fields in this group have matches
       });
 
       // Add all fields to the set for comparison
@@ -244,7 +245,7 @@ export function buildComparableSets(
   const counterpartyFields = new Set<string>();
   const counterpartyGroups = new Map<
     string,
-    { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean }
+    { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean; matchedFields: string[] }
   >();
 
   // Process simple fields
@@ -263,6 +264,7 @@ export function buildComparableSets(
         logic: group.logic,
         fields: group.fields,
         satisfied: false, // Will be updated during matching
+        matchedFields: [], // Track which fields in this group have matches
       });
 
       // Add all fields to the set for comparison
@@ -300,29 +302,49 @@ export function buildComparableSets(
   }
 
   // Update group satisfaction based on matches
-  // For OR groups: satisfied if ANY field matches
+  // For OR groups: satisfied if ANY field matches (task 10.3 requirement)
   // For AND groups: satisfied if ALL fields match
-  for (const [, group] of applicantGroups) {
+  for (const [groupKey, group] of applicantGroups) {
+    const matchedFields: string[] = [];
+    
+    // Check which fields in this group have matches
+    group.fields.forEach((field) => {
+      if (fieldPairings.has(field)) {
+        matchedFields.push(field);
+      }
+    });
+
+    // Update the group with matched fields
+    group.matchedFields = matchedFields;
+
     if (group.logic === 'OR') {
-      // OR group is satisfied if any field matches
-      group.satisfied = group.fields.some((field) => fieldPairings.has(field));
+      // OR group is satisfied if ANY field matches (task 10.3 requirement)
+      group.satisfied = matchedFields.length > 0;
     } else {
-      // AND group is satisfied if all fields match
-      group.satisfied = group.fields.every((field) => fieldPairings.has(field));
+      // AND group is satisfied if ALL fields match
+      group.satisfied = matchedFields.length === group.fields.length;
     }
   }
 
-  for (const [, group] of counterpartyGroups) {
+  for (const [groupKey, group] of counterpartyGroups) {
+    const matchedFields: string[] = [];
+    
+    // Check which fields in this group have matches
+    group.fields.forEach((field) => {
+      if (reversePairings.has(field)) {
+        matchedFields.push(field);
+      }
+    });
+
+    // Update the group with matched fields
+    group.matchedFields = matchedFields;
+
     if (group.logic === 'OR') {
-      // OR group is satisfied if any field matches
-      group.satisfied = group.fields.some((field) =>
-        reversePairings.has(field)
-      );
+      // OR group is satisfied if ANY field matches (task 10.3 requirement)
+      group.satisfied = matchedFields.length > 0;
     } else {
-      // AND group is satisfied if all fields match
-      group.satisfied = group.fields.every((field) =>
-        reversePairings.has(field)
-      );
+      // AND group is satisfied if ALL fields match
+      group.satisfied = matchedFields.length === group.fields.length;
     }
   }
 
@@ -488,3 +510,4 @@ function expandComboFields(fields: string[]): string[] {
 
   return expandedFields;
 }
+
