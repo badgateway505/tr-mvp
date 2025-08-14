@@ -132,9 +132,10 @@
   _Context:_ Produce normalized sets: `applicantFields` and `counterpartyFields`; treat OR-group as **satisfied** if any member matches.
   _Depends on:_ 4.4
   _Status:_ ✅ **COMPLETED** - Implemented `buildComparableSets` function with OR-group satisfaction logic, field pairing map, and UI integration
-- **7.2** \[ ] **Field ↔ field pairing resolver**
+- **7.2** [x] **Field ↔ field pairing resolver**
   _Context:_ For each unique normalized field, find presence in both sides; keep a map `{ normalizedKey: { inApplicant: boolean, inCounterparty: boolean } }`.
   _Depends on:_ 7.1
+  _Status:_ ✅ **COMPLETED** - Implemented `buildFieldPresenceMap` function that creates a map showing which normalized fields exist on each side, with helper functions `getFieldPresenceMap` and `isFieldPresentOnBothSides`
 - **7.3** \[ ] **Hover sync between blocks**
   _Context:_ On hover of a field pill, highlight corresponding pill(s) in the opposite block if `inBoth === true` → apply `scale` + `dashed-border`.
   _Depends on:_ 7.2, 6.3

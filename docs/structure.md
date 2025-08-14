@@ -101,6 +101,8 @@ export type RequirementsJson = Record<CountryCode, CountryRule>;
   - `normalizeFields(fields: string[]): NormalizedField[]`
   - `fieldsMatch(field1: string, field2: string): boolean`
   - `findMatchingFields(fields1: string[], fields2: string[]): Array<...>`
+  - `buildFieldPresenceMap(applicantFields, counterpartyFields): Map<string, { inApplicant: boolean, inCounterparty: boolean }>`
+  - `isFieldPresentOnBothSides(normalizedField, presenceMap): boolean`
 - `useAppState.ts` — centralized state (minimal), e.g. with Zustand or `useReducer`.
   - State: `{ sumsubCountry, counterpartyCountry, direction, amount, entityType }`
   - Defaults: `direction='OUT'`, `entityType='individual'`
@@ -263,6 +265,7 @@ App.tsx
 - Amount validation
 - All UI components except summary status
 - Basic field matching logic
+- Field presence map for normalized field comparison
 
 **🚧 Partially Implemented:**
 - Field pairing/hover interaction (structure exists, logic pending)

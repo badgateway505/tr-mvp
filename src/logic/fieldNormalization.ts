@@ -120,9 +120,44 @@ export function findMatchingFields(fields1: string[], fields2: string[]): Array<
  * @returns Array of unique normalized field names
  */
 export function getUniqueNormalizedFields(fields: string[]): string[] {
-  const normalized = normalizeFields(fields);
-  const unique = new Set(normalized.map(f => f.normalized));
-  return Array.from(unique);
+  const normalizedSet = new Set<string>();
+  
+  fields.forEach(field => {
+    const normalized = normalizeField(field);
+    normalizedSet.add(normalized.normalized);
+  });
+  
+  return Array.from(normalizedSet);
+}
+
+/**
+ * Build a field presence map showing which normalized fields exist on each side
+ * @param applicantFields - Raw field names from applicant side
+ * @param counterpartyFields - Raw field names from counterparty side
+ * @returns Map of normalized field keys to presence information
+ */
+export function buildFieldPresenceMap(
+  applicantFields: string[],
+  counterpartyFields: string[]
+): Map<string, { inApplicant: boolean; inCounterparty: boolean }> {
+  const presenceMap = new Map<string, { inApplicant: boolean; inCounterparty: boolean }>();
+  
+  // Get all unique normalized fields from both sides
+  const applicantNormalized = getUniqueNormalizedFields(applicantFields);
+  const counterpartyNormalized = getUniqueNormalizedFields(counterpartyFields);
+  
+  // Create a set of all unique normalized fields across both sides
+  const allNormalizedFields = new Set([...applicantNormalized, ...counterpartyNormalized]);
+  
+  // Build the presence map
+  for (const normalizedField of allNormalizedFields) {
+    presenceMap.set(normalizedField, {
+      inApplicant: applicantNormalized.includes(normalizedField),
+      inCounterparty: counterpartyNormalized.includes(normalizedField)
+    });
+  }
+  
+  return presenceMap;
 }
 
 /**
@@ -276,7 +311,9 @@ export function buildComparableSets(
     // Summary statistics
     totalMatches: fieldPairings.size,
     applicantMatchedFields: Array.from(fieldPairings.keys()),
-    counterpartyMatchedFields: Array.from(reversePairings.keys())
+    counterpartyMatchedFields: Array.from(reversePairings.keys()),
+    // Field presence map for task 7.2
+    fieldPresenceMap: buildFieldPresenceMap(Array.from(applicantFields), Array.from(counterpartyFields))
   };
 }
 
@@ -298,4 +335,27 @@ export function hasMatches(field: string, pairings: Map<string, string[]>): bool
  */
 export function getMatchingFields(field: string, pairings: Map<string, string[]>): string[] {
   return pairings.get(field) || [];
+}
+
+/**
+ * Get the field presence map from the buildComparableSets result
+ * @param comparableSets - Result from buildComparableSets function
+ * @returns Map of normalized field keys to presence information
+ */
+export function getFieldPresenceMap(comparableSets: ReturnType<typeof buildComparableSets>): Map<string, { inApplicant: boolean; inCounterparty: boolean }> {
+  return comparableSets.fieldPresenceMap;
+}
+
+/**
+ * Check if a normalized field is present on both sides
+ * @param normalizedField - The normalized field name to check
+ * @param presenceMap - The field presence map
+ * @returns True if the field is present on both sides
+ */
+export function isFieldPresentOnBothSides(
+  normalizedField: string,
+  presenceMap: Map<string, { inApplicant: boolean; inCounterparty: boolean }>
+): boolean {
+  const presence = presenceMap.get(normalizedField);
+  return presence ? presence.inApplicant && presence.inCounterparty : false;
 }

@@ -6,7 +6,10 @@ import {
   findMatchingFields,
   getUniqueNormalizedFields,
   isComboField,
-  splitComboField
+  splitComboField,
+  buildFieldPresenceMap,
+  isFieldPresentOnBothSides,
+  buildComparableSets
 } from '../fieldNormalization';
 
 describe('fieldNormalization', () => {
@@ -138,6 +141,81 @@ describe('fieldNormalization', () => {
     it('should return single field for non-combo fields', () => {
       const result = splitComboField('full_name');
       expect(result).toEqual(['full_name']);
+    });
+  });
+});
+
+describe('Field Presence Map', () => {
+  it('buildFieldPresenceMap creates correct presence information', () => {
+    const applicantFields = ['passportNumber', 'dateOfBirth'];
+    const counterpartyFields = ['idDocumentNumber', 'dateOfBirth'];
+    
+    const presenceMap = buildFieldPresenceMap(applicantFields, counterpartyFields);
+    
+    // passportNumber -> id_document_number (normalized)
+    expect(presenceMap.get('id_document_number')).toEqual({
+      inApplicant: true,
+      inCounterparty: true
+    });
+    
+    // dateOfBirth -> date_of_birth (normalized)
+    expect(presenceMap.get('date_of_birth')).toEqual({
+      inApplicant: true,
+      inCounterparty: true
+    });
+  });
+
+  it('buildFieldPresenceMap handles fields present on only one side', () => {
+    const applicantFields = ['passportNumber', 'dateOfBirth'];
+    const counterpartyFields = ['idDocumentNumber']; // Only passportNumber equivalent
+    
+    const presenceMap = buildFieldPresenceMap(applicantFields, counterpartyFields);
+    
+    expect(presenceMap.get('id_document_number')).toEqual({
+      inApplicant: true,
+      inCounterparty: true
+    });
+    
+    expect(presenceMap.get('date_of_birth')).toEqual({
+      inApplicant: true,
+      inCounterparty: false
+    });
+  });
+
+  it('isFieldPresentOnBothSides returns correct boolean', () => {
+    const presenceMap = new Map([
+      ['field1', { inApplicant: true, inCounterparty: true }],
+      ['field2', { inApplicant: true, inCounterparty: false }],
+      ['field3', { inApplicant: false, inCounterparty: true }]
+    ]);
+    
+    expect(isFieldPresentOnBothSides('field1', presenceMap)).toBe(true);
+    expect(isFieldPresentOnBothSides('field2', presenceMap)).toBe(false);
+    expect(isFieldPresentOnBothSides('field3', presenceMap)).toBe(false);
+    expect(isFieldPresentOnBothSides('nonexistent', presenceMap)).toBe(false);
+  });
+
+  it('buildComparableSets includes fieldPresenceMap', () => {
+    const applicantRequirements = {
+      fields: ['passportNumber'],
+      groups: [{ logic: 'OR' as const, fields: ['dateOfBirth', 'placeOfBirth'] }]
+    };
+    
+    const counterpartyRequirements = {
+      fields: ['idDocumentNumber'],
+      groups: [{ logic: 'AND' as const, fields: ['dateOfBirth'] }]
+    };
+    
+    const result = buildComparableSets(applicantRequirements, counterpartyRequirements);
+    
+    expect(result.fieldPresenceMap).toBeDefined();
+    expect(result.fieldPresenceMap.get('id_document_number')).toEqual({
+      inApplicant: true,
+      inCounterparty: true
+    });
+    expect(result.fieldPresenceMap.get('date_of_birth')).toEqual({
+      inApplicant: true,
+      inCounterparty: true
     });
   });
 });

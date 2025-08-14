@@ -1,6 +1,9 @@
 {
   "passportNumber": "id_document_number",
   "passport_number": "id_document_number",
+  "idDocumentNumber": "id_document_number",
+  "id_document_number": "id_document_number",
+  "dateOfBirth": "date_of_birth",
   "dob + pob": "date_of_birth + birthplace",
   "date_of_birth + birthplace": "date_of_birth + birthplace",
   "fullName": "full_name",

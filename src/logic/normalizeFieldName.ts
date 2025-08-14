@@ -1,4 +1,6 @@
-import fieldDictionary from '../data/fieldDictionary.json';
+import * as fieldDictionaryData from '../data/fieldDictionary.json';
+
+const fieldDictionary = fieldDictionaryData as Record<string, string>;
 
 /**
  * Normalize a field name using the field dictionary mapping
@@ -6,7 +8,7 @@ import fieldDictionary from '../data/fieldDictionary.json';
  * @returns The normalized field name, or the original if no mapping exists
  */
 export function normalizeFieldName(field: string): string {
-  return fieldDictionary[field as keyof typeof fieldDictionary] || field;
+  return fieldDictionary[field] || field;
 }
 
 /**
