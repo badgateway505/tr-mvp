@@ -18,6 +18,7 @@ export const AmountInput: React.FC<AmountInputProps> = ({
   disabled = false,
 }) => {
   const [displayValue, setDisplayValue] = useState(value.toString());
+  const [isFocused, setIsFocused] = useState(false);
 
   // Update display value when prop value changes
   useEffect(() => {
@@ -62,9 +63,9 @@ export const AmountInput: React.FC<AmountInputProps> = ({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full group">
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800">
           {label}
         </label>
       )}
@@ -76,17 +77,32 @@ export const AmountInput: React.FC<AmountInputProps> = ({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           placeholder={placeholder}
           disabled={disabled}
-          className="w-full pl-3 pr-12 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          className="w-full pl-3 pr-12 py-2 border border-gray-300 rounded-md shadow-sm 
+                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                     disabled:bg-gray-100 disabled:cursor-not-allowed
+                     transition-all duration-200 ease-out
+                     hover:border-gray-400 hover:shadow-md
+                     focus:shadow-lg focus:scale-[1.01]
+                     disabled:hover:border-gray-300 disabled:hover:shadow-sm"
         />
         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-          <span className="text-gray-500 text-sm font-medium">
+          <span className={`text-sm font-medium transition-all duration-200 ${
+            isFocused ? 'text-blue-600 scale-110' : 'text-gray-500'
+          }`}>
             {currency}
           </span>
         </div>
+        
+        {/* Subtle focus indicator */}
+        {isFocused && (
+          <div className="absolute inset-0 rounded-md ring-2 ring-blue-200 ring-opacity-50 pointer-events-none animate-pulse"></div>
+        )}
       </div>
-      <div className="mt-2 text-xs text-gray-500">
+      <div className="mt-2 text-xs text-gray-500 transition-colors duration-150 group-hover:text-gray-600">
         Enter amount in {currency} (digits only)
       </div>
     </div>

@@ -57,17 +57,22 @@ const RequirementGroup: React.FC<{
     : '';
 
   return (
-    <div className={`${colors.groupBg} border ${colors.groupBorder} rounded-lg p-4 shadow-sm ${satisfactionClasses}`}>
+    <div className={`${colors.groupBg} border ${colors.groupBorder} rounded-lg p-4 shadow-sm 
+                     transition-all duration-300 ease-out hover:shadow-md hover:scale-[1.01]
+                     ${satisfactionClasses}`}>
       {/* Logic indicator with enhanced styling */}
       <div className="flex items-center gap-3 mb-3">
-        <span className={`text-xs font-semibold px-3 py-1.5 rounded-full ${colors.logicBg} ${colors.logicText} ${colors.logicBorder} border`}>
+        <span className={`text-xs font-semibold px-3 py-1.5 rounded-full ${colors.logicBg} ${colors.logicText} ${colors.logicBorder} border
+                         transition-all duration-200 hover:scale-105`}>
           {group.logic}
         </span>
-        <span className="text-xs text-gray-500 font-medium">
+        <span className="text-xs text-gray-500 font-medium transition-colors duration-150">
           {group.fields.length} field{group.fields.length !== 1 ? 's' : ''}
         </span>
         {isSatisfied !== undefined && (
-          <span className={`text-xs px-2 py-1 rounded-full ${isSatisfied ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+          <span className={`text-xs px-2 py-1 rounded-full transition-all duration-300 ease-out
+                           ${isSatisfied ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}
+                           ${isSatisfied ? 'hover:bg-green-200' : 'hover:bg-red-200'}`}>
             {isSatisfied ? '✓ Satisfied' : '✗ Not Satisfied'}
           </span>
         )}
@@ -125,14 +130,16 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
     undefined;
 
   return (
-    <div className={`border rounded-lg overflow-hidden ${colors.bg} ${colors.border}`}>
+    <div className={`border rounded-lg overflow-hidden ${colors.bg} ${colors.border}
+                     transition-all duration-300 ease-out hover:shadow-lg hover:scale-[1.005]
+                     group`}>
       {/* Header */}
-      <div className={`${colors.header} px-4 py-3`}>
-        <h3 className="text-lg font-semibold text-white">
+      <div className={`${colors.header} px-4 py-3 transition-all duration-200 group-hover:brightness-110`}>
+        <h3 className="text-lg font-semibold text-white transition-all duration-200 group-hover:scale-[1.02]">
           {roleLabel} Requirements
         </h3>
         {comparableSets && (
-          <div className="text-sm text-blue-100 mt-1">
+          <div className="text-sm text-blue-100 mt-1 transition-opacity duration-200 group-hover:opacity-90">
             {isApplicantSide 
               ? `${comparableSets.applicantMatchedFields.length} fields matched`
               : `${comparableSets.counterpartyMatchedFields.length} fields matched`
@@ -146,7 +153,7 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
         {/* Fields Section */}
         {requirements.fields && requirements.fields.length > 0 && (
           <div className="mb-6">
-            <h4 className={`text-sm font-medium ${colors.accent} mb-3`}>
+            <h4 className={`text-sm font-medium ${colors.accent} mb-3 transition-colors duration-200`}>
               Required Fields
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -168,7 +175,7 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
         {/* Groups Section with enhanced visual separation */}
         {requirements.groups && requirements.groups.length > 0 && (
           <div className="mb-6">
-            <h4 className={`text-sm font-medium ${colors.accent} mb-3`}>
+            <h4 className={`text-sm font-medium ${colors.accent} mb-3 transition-colors duration-200`}>
               Requirement Groups
             </h4>
             <div className="space-y-4">

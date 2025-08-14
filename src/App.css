@@ -34,9 +34,10 @@
   color: #888;
 }
 
-/* Field hover interactions for task 7.1 */
+/* Enhanced micro-interactions for task 9.3 */
 .field-pill-hover {
   transition: all 0.15s ease-out;
+  will-change: transform, box-shadow, border-color;
 }
 
 .field-pill-hover:hover {
@@ -44,42 +45,81 @@
   z-index: 10;
 }
 
-/* Matched field styling */
+/* Matched field styling with enhanced transitions */
 .field-matched {
   border-color: #10b981 !important;
   background-color: #f0fdf4 !important;
+  transition: all 0.2s ease-out;
 }
 
 .field-matched:hover {
   border-color: #059669 !important;
   background-color: #ecfdf5 !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
 }
 
-/* OR group satisfaction indicators */
+/* OR group satisfaction indicators with smooth transitions */
 .group-satisfied {
   border-color: #10b981 !important;
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  transition: all 0.3s ease-out;
 }
 
 .group-not-satisfied {
   border-color: #ef4444 !important;
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+  transition: all 0.3s ease-out;
 }
 
 /* Hover highlight for matching fields */
 .field-pill[data-is-matched="true"]:hover {
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.4);
+  transform: translateY(-1px);
 }
 
-/* Combo field special styling */
+/* Combo field special styling with enhanced hover */
 .field-combo {
   background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
   border: 2px solid #3b82f6;
+  transition: all 0.2s ease-out;
 }
 
 .field-combo:hover {
   background: linear-gradient(135deg, #bfdbfe 0%, #c7d2fe 100%);
   border-color: #2563eb;
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+/* Enhanced focus states for accessibility */
+input:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Smooth transitions for all interactive elements */
+button, input, select, .field-pill, .requirement-group {
+  transition: all 0.2s ease-out;
+}
+
+/* Hover effects for cards and containers */
+.vasp-requirements-block {
+  transition: all 0.3s ease-out;
+}
+
+.vasp-requirements-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Status bar animations */
+.summary-status-bar {
+  transition: all 0.3s ease-out;
+}
+
+.summary-status-bar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* Responsive layout enhancements */
@@ -92,5 +132,14 @@
 @media (min-width: 1024px) {
   .App {
     padding: 2rem;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
