@@ -25,19 +25,39 @@ describe('FieldPill', () => {
 
   it('applies matched styling when isMatched is true and has actual matches', () => {
     const fieldPairings = new Map([['full_name', ['matching_field']]]);
-    render(<FieldPill field="full_name" isMatched={true} fieldPairings={fieldPairings} />);
+    render(
+      <FieldPill
+        field="full_name"
+        isMatched={true}
+        fieldPairings={fieldPairings}
+      />
+    );
 
     const pill = screen.getByText('full_name');
-    expect(pill).toHaveClass('bg-green-50', 'border-green-300', 'text-green-800');
+    expect(pill).toHaveClass(
+      'bg-green-50',
+      'border-green-300',
+      'text-green-800'
+    );
     expect(pill).toHaveClass('hover:scale-105', 'hover:shadow-md');
   });
 
   it('applies warning styling when isMatched is true but no actual matches', () => {
     const fieldPairings = new Map(); // Empty pairings
-    render(<FieldPill field="full_name" isMatched={true} fieldPairings={fieldPairings} />);
+    render(
+      <FieldPill
+        field="full_name"
+        isMatched={true}
+        fieldPairings={fieldPairings}
+      />
+    );
 
     const pill = screen.getByText('full_name');
-    expect(pill).toHaveClass('bg-yellow-50', 'border-yellow-300', 'text-yellow-800');
+    expect(pill).toHaveClass(
+      'bg-yellow-50',
+      'border-yellow-300',
+      'text-yellow-800'
+    );
     expect(pill).toHaveClass('hover:scale-105');
   });
 
@@ -84,12 +104,20 @@ describe('FieldPill', () => {
   });
 
   it('shows match count for fields with multiple matches', () => {
-    const fieldPairings = new Map([['full_name', ['match1', 'match2', 'match3']]]);
-    render(<FieldPill field="full_name" isMatched={true} fieldPairings={fieldPairings} />);
+    const fieldPairings = new Map([
+      ['full_name', ['match1', 'match2', 'match3']],
+    ]);
+    render(
+      <FieldPill
+        field="full_name"
+        isMatched={true}
+        fieldPairings={fieldPairings}
+      />
+    );
 
     const pill = screen.getByText('full_name');
     expect(pill).toHaveClass('bg-green-50', 'border-green-300');
-    
+
     // Should show match count badge
     const matchCount = screen.getByText('3');
     expect(matchCount).toBeInTheDocument();
@@ -98,17 +126,27 @@ describe('FieldPill', () => {
 
   it('shows correct visual indicators for different field states', () => {
     const fieldPairings = new Map([['matched_field', ['counterpart']]]);
-    
+
     // Matched field with actual matches
     const { rerender } = render(
-      <FieldPill field="matched_field" isMatched={true} fieldPairings={fieldPairings} />
+      <FieldPill
+        field="matched_field"
+        isMatched={true}
+        fieldPairings={fieldPairings}
+      />
     );
     expect(screen.getByText('✓')).toBeInTheDocument();
-    
+
     // Matched field without actual matches
-    rerender(<FieldPill field="warning_field" isMatched={true} fieldPairings={new Map()} />);
+    rerender(
+      <FieldPill
+        field="warning_field"
+        isMatched={true}
+        fieldPairings={new Map()}
+      />
+    );
     expect(screen.getByText('⚠')).toBeInTheDocument();
-    
+
     // Unmatched field
     rerender(<FieldPill field="unmatched_field" isMatched={false} />);
     expect(screen.getByText('○')).toBeInTheDocument();
@@ -116,7 +154,13 @@ describe('FieldPill', () => {
 
   it('applies enhanced hover effects for matched fields', () => {
     const fieldPairings = new Map([['full_name', ['matching_field']]]);
-    render(<FieldPill field="full_name" isMatched={true} fieldPairings={fieldPairings} />);
+    render(
+      <FieldPill
+        field="full_name"
+        isMatched={true}
+        fieldPairings={fieldPairings}
+      />
+    );
 
     const pill = screen.getByText('full_name');
     expect(pill).toHaveClass('hover:scale-105', 'hover:shadow-md');
@@ -127,7 +171,12 @@ describe('FieldPill', () => {
     render(<FieldPill field="date_of_birth + birthplace" />);
 
     const pill = screen.getByText('date_of_birth + birthplace');
-    expect(pill).toHaveClass('field-combo', 'text-blue-800', 'bg-blue-50', 'border-blue-200');
+    expect(pill).toHaveClass(
+      'field-combo',
+      'text-blue-800',
+      'bg-blue-50',
+      'border-blue-200'
+    );
     expect(pill).toHaveClass('hover:scale-105');
   });
 });

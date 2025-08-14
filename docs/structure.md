@@ -181,6 +181,7 @@ export type RequirementsJson = Record<CountryCode, CountryRule>;
 7. Hover on a field pill → look up pairing map → highlight peer(s) across.
 
 **Accessibility Features:**
+
 - Skip to main content link for keyboard users
 - Proper landmark roles and semantic structure
 - Comprehensive ARIA labeling and descriptions
@@ -310,6 +311,7 @@ App.tsx
 **✅ Comprehensive Accessibility Features Implemented:**
 
 ### Core Accessibility
+
 - **Skip to main content link** for keyboard users
 - **Semantic HTML structure** with proper landmarks
 - **ARIA attributes** throughout all components
@@ -318,12 +320,14 @@ App.tsx
 - **Screen reader support** with comprehensive labeling
 
 ### Component-Specific Accessibility
+
 - **Form components**: Proper label associations, validation states, help text
 - **Interactive elements**: Button roles, state management, keyboard support
 - **Data display**: List roles, region roles, proper heading hierarchy
 - **Status updates**: Live regions for dynamic content
 
 ### Testing & Validation
+
 - **13 comprehensive accessibility tests** covering all features
 - **All tests passing** ✅
 - **WCAG 2.1 AA compliance** for basic accessibility

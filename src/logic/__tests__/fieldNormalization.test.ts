@@ -1,12 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   normalizeField,
-  normalizeFields,
   fieldsMatch,
-  findMatchingFields,
-  getUniqueNormalizedFields,
-  isComboField,
-  splitComboField,
   buildFieldPresenceMap,
   isFieldPresentOnBothSides,
   buildComparableSets,
@@ -38,12 +33,18 @@ describe('Field Normalization', () => {
     });
 
     it('should match combo field with individual field', () => {
-      expect(fieldsMatch('date_of_birth + birthplace', 'date_of_birth')).toBe(true);
-      expect(fieldsMatch('date_of_birth', 'date_of_birth + birthplace')).toBe(true);
+      expect(fieldsMatch('date_of_birth + birthplace', 'date_of_birth')).toBe(
+        true
+      );
+      expect(fieldsMatch('date_of_birth', 'date_of_birth + birthplace')).toBe(
+        true
+      );
     });
 
     it('should match combo fields with shared components', () => {
-      expect(fieldsMatch('date_of_birth + birthplace', 'date_of_birth + nationality')).toBe(true);
+      expect(
+        fieldsMatch('date_of_birth + birthplace', 'date_of_birth + nationality')
+      ).toBe(true);
     });
 
     it('should not match unrelated fields', () => {
@@ -73,7 +74,10 @@ describe('Field Normalization', () => {
         ],
       };
 
-      const result = buildComparableSets(applicantRequirements, counterpartyRequirements);
+      const result = buildComparableSets(
+        applicantRequirements,
+        counterpartyRequirements
+      );
 
       // Check that OR groups are properly satisfied
       expect(result.applicantGroups).toHaveLength(1);
@@ -90,7 +94,9 @@ describe('Field Normalization', () => {
 
       // Check field pairings
       expect(result.fieldPairings.has('passportNumber')).toBe(true);
-      expect(result.fieldPairings.get('passportNumber')).toContain('id_document_number');
+      expect(result.fieldPairings.get('passportNumber')).toContain(
+        'id_document_number'
+      );
       expect(result.fieldPairings.has('date_of_birth')).toBe(true);
     });
 
@@ -113,7 +119,10 @@ describe('Field Normalization', () => {
         ],
       };
 
-      const result = buildComparableSets(applicantRequirements, counterpartyRequirements);
+      const result = buildComparableSets(
+        applicantRequirements,
+        counterpartyRequirements
+      );
 
       // AND group should not be satisfied because not all fields match
       const applicantGroup = result.applicantGroups[0];
@@ -136,13 +145,20 @@ describe('Field Normalization', () => {
       const applicantFields = ['passportNumber', 'date_of_birth'];
       const counterpartyFields = ['id_document_number', 'nationality'];
 
-      const presenceMap = buildFieldPresenceMap(applicantFields, counterpartyFields);
+      const presenceMap = buildFieldPresenceMap(
+        applicantFields,
+        counterpartyFields
+      );
 
       // passportNumber and id_document_number should be present on both sides (normalized)
-      expect(isFieldPresentOnBothSides('id_document_number', presenceMap)).toBe(true);
-      
+      expect(isFieldPresentOnBothSides('id_document_number', presenceMap)).toBe(
+        true
+      );
+
       // date_of_birth and nationality should not be present on both sides
-      expect(isFieldPresentOnBothSides('date_of_birth', presenceMap)).toBe(false);
+      expect(isFieldPresentOnBothSides('date_of_birth', presenceMap)).toBe(
+        false
+      );
       expect(isFieldPresentOnBothSides('nationality', presenceMap)).toBe(false);
     });
 
@@ -150,10 +166,15 @@ describe('Field Normalization', () => {
       const applicantFields = ['date_of_birth + birthplace'];
       const counterpartyFields = ['date_of_birth'];
 
-      const presenceMap = buildFieldPresenceMap(applicantFields, counterpartyFields);
+      const presenceMap = buildFieldPresenceMap(
+        applicantFields,
+        counterpartyFields
+      );
 
       // date_of_birth should be present on both sides
-      expect(isFieldPresentOnBothSides('date_of_birth', presenceMap)).toBe(true);
+      expect(isFieldPresentOnBothSides('date_of_birth', presenceMap)).toBe(
+        true
+      );
     });
   });
 
@@ -167,7 +188,11 @@ describe('Field Normalization', () => {
         fields: ['id_document_number', 'date_of_birth'],
       };
 
-      const result = compareFieldSets(applicantRequirements, counterpartyRequirements, 'OUT');
+      const result = compareFieldSets(
+        applicantRequirements,
+        counterpartyRequirements,
+        'OUT'
+      );
       expect(result).toBe('match'); // All required fields are covered
     });
 
@@ -180,7 +205,11 @@ describe('Field Normalization', () => {
         fields: ['id_document_number', 'date_of_birth'],
       };
 
-      const result = compareFieldSets(applicantRequirements, counterpartyRequirements, 'OUT');
+      const result = compareFieldSets(
+        applicantRequirements,
+        counterpartyRequirements,
+        'OUT'
+      );
       expect(result).toBe('overcompliance'); // Applicant has more fields than required
     });
 
@@ -193,7 +222,11 @@ describe('Field Normalization', () => {
         fields: ['id_document_number', 'date_of_birth'],
       };
 
-      const result = compareFieldSets(applicantRequirements, counterpartyRequirements, 'OUT');
+      const result = compareFieldSets(
+        applicantRequirements,
+        counterpartyRequirements,
+        'OUT'
+      );
       expect(result).toBe('undercompliance'); // Applicant missing required fields
     });
   });
@@ -218,7 +251,10 @@ describe('Field Normalization', () => {
         ],
       };
 
-      const result = buildComparableSets(applicantRequirements, counterpartyRequirements);
+      const result = buildComparableSets(
+        applicantRequirements,
+        counterpartyRequirements
+      );
 
       // OR group should be satisfied because at least one field matches
       const applicantGroup = result.applicantGroups[0];
@@ -237,7 +273,10 @@ describe('Field Normalization', () => {
         fields: ['matched_field'],
       };
 
-      const result = buildComparableSets(applicantRequirements, counterpartyRequirements);
+      const result = buildComparableSets(
+        applicantRequirements,
+        counterpartyRequirements
+      );
 
       // Check that unmatched fields are properly identified
       expect(result.fieldPairings.has('matched_field')).toBe(true);
@@ -256,15 +295,22 @@ describe('Field Normalization', () => {
         fields: ['id_document_number', 'date_of_birth'],
       };
 
-      const result = buildComparableSets(applicantRequirements, counterpartyRequirements);
+      const result = buildComparableSets(
+        applicantRequirements,
+        counterpartyRequirements
+      );
 
       // passportNumber should match id_document_number (normalized)
       expect(result.fieldPairings.has('passportNumber')).toBe(true);
-      expect(result.fieldPairings.get('passportNumber')).toContain('id_document_number');
+      expect(result.fieldPairings.get('passportNumber')).toContain(
+        'id_document_number'
+      );
 
       // date_of_birth should match date_of_birth (exact)
       expect(result.fieldPairings.has('date_of_birth')).toBe(true);
-      expect(result.fieldPairings.get('date_of_birth')).toContain('date_of_birth');
+      expect(result.fieldPairings.get('date_of_birth')).toContain(
+        'date_of_birth'
+      );
     });
   });
 });

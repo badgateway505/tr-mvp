@@ -54,7 +54,7 @@ describe('requirementExtractor', () => {
     });
 
     it('should return undefined for invalid country', () => {
-      const result = extractRequirements('INVALID' as any, 1000);
+      const result = extractRequirements('INVALID' as string, 1000);
       expect(result).toBeUndefined();
     });
   });
@@ -131,7 +131,7 @@ describe('requirementExtractor', () => {
     });
 
     it('should return undefined for invalid country', () => {
-      const result = getAllRequirements('INVALID' as any);
+      const result = getAllRequirements('INVALID' as string);
       expect(result).toBeUndefined();
     });
   });

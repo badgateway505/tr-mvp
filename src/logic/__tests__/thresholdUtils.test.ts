@@ -29,7 +29,7 @@ describe('thresholdUtils', () => {
     });
 
     it('should return undefined for invalid country', () => {
-      expect(getThresholdBucket('INVALID' as any, 1000)).toBeUndefined();
+      expect(getThresholdBucket('INVALID' as string, 1000)).toBeUndefined();
     });
   });
 
@@ -43,7 +43,7 @@ describe('thresholdUtils', () => {
     });
 
     it('should return undefined for invalid country', () => {
-      expect(getCountryThreshold('INVALID' as any)).toBeUndefined();
+      expect(getCountryThreshold('INVALID' as string)).toBeUndefined();
     });
   });
 
@@ -69,7 +69,7 @@ describe('thresholdUtils', () => {
     });
 
     it('should return undefined for invalid country', () => {
-      expect(isAmountAboveThreshold('INVALID' as any, 1000)).toBeUndefined();
+      expect(isAmountAboveThreshold('INVALID' as string, 1000)).toBeUndefined();
     });
   });
 
@@ -91,7 +91,7 @@ describe('thresholdUtils', () => {
     });
 
     it('should return undefined for invalid country', () => {
-      expect(getThresholdBuckets('INVALID' as any)).toBeUndefined();
+      expect(getThresholdBuckets('INVALID' as string)).toBeUndefined();
     });
   });
 });

@@ -120,7 +120,7 @@ describe('VerificationFlags', () => {
 
     const container = screen
       .getByText('Verification Requirements')
-      .closest('div');
+      .closest('section');
     expect(container).toHaveClass('custom-class');
   });
 

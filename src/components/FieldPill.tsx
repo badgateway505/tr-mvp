@@ -81,7 +81,9 @@ export const FieldPill: React.FC<FieldPillProps> = ({
   ];
 
   if (isComboField) {
-    baseClasses.push('field-combo text-blue-800 bg-blue-50 border border-blue-200 hover:scale-105 hover:bg-blue-100 hover:border-blue-300');
+    baseClasses.push(
+      'field-combo text-blue-800 bg-blue-50 border border-blue-200 hover:scale-105 hover:bg-blue-100 hover:border-blue-300'
+    );
   } else {
     // Enhanced styling based on match status (task 10.3 requirement)
     if (isMatched && hasMatches) {
@@ -126,11 +128,11 @@ export const FieldPill: React.FC<FieldPillProps> = ({
   // Generate accessible description
   const getAccessibleDescription = () => {
     let description = field;
-    
+
     if (isComboField) {
       description += ' (combined field)';
     }
-    
+
     if (isMatched && hasMatches) {
       description += ` - matched with ${matchCount} field${matchCount !== 1 ? 's' : ''} on the other side`;
     } else if (isMatched && !hasMatches) {
@@ -138,7 +140,7 @@ export const FieldPill: React.FC<FieldPillProps> = ({
     } else {
       description += ' - no matches found on the other side';
     }
-    
+
     return description;
   };
 
@@ -159,7 +161,7 @@ export const FieldPill: React.FC<FieldPillProps> = ({
       tabIndex={0}
       role="button"
       aria-label={getAccessibleDescription()}
-      aria-pressed={isHighlightedByHover ? "true" : "false"}
+      aria-pressed={isHighlightedByHover ? 'true' : 'false'}
       aria-describedby={`${pillId}-status`}
       data-field-name={field}
       data-is-matched={isMatched}
@@ -171,7 +173,7 @@ export const FieldPill: React.FC<FieldPillProps> = ({
       {field}
       {/* Enhanced visual indicators for task 10.3 */}
       {isMatched && hasMatches && (
-        <span 
+        <span
           className="ml-1 text-xs text-green-600 font-bold"
           aria-hidden="true"
         >
@@ -179,7 +181,7 @@ export const FieldPill: React.FC<FieldPillProps> = ({
         </span>
       )}
       {isMatched && !hasMatches && (
-        <span 
+        <span
           className="ml-1 text-xs text-yellow-600 font-bold"
           aria-hidden="true"
         >
@@ -187,29 +189,22 @@ export const FieldPill: React.FC<FieldPillProps> = ({
         </span>
       )}
       {!isMatched && (
-        <span 
-          className="ml-1 text-xs text-gray-500"
-          aria-hidden="true"
-        >
+        <span className="ml-1 text-xs text-gray-500" aria-hidden="true">
           ○
         </span>
       )}
       {/* Show match count for fields with multiple matches */}
       {hasMatches && matchCount > 1 && (
-        <span 
+        <span
           className="ml-1 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full"
           aria-hidden="true"
         >
           {matchCount}
         </span>
       )}
-      
+
       {/* Hidden status text for screen readers */}
-      <span 
-        id={`${pillId}-status`}
-        className="sr-only"
-        aria-live="polite"
-      >
+      <span id={`${pillId}-status`} className="sr-only" aria-live="polite">
         {getAccessibleDescription()}
       </span>
     </span>

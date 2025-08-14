@@ -55,21 +55,21 @@ const initialState = {
 
 /**
  * Zustand store hook for managing application state
- * 
+ *
  * Provides centralized state management for:
  * - Country selection (Sumsub and counterparty)
  * - Transaction direction and amount
  * - Entity type for compliance requirements
- * 
+ *
  * @returns AppState object with current state and action methods
- * 
+ *
  * @example
  * ```tsx
  * const { sumsubCountry, setSumsubCountry, amount, setAmount } = useAppState();
- * 
+ *
  * // Update country
  * setSumsubCountry('DEU');
- * 
+ *
  * // Update amount
  * setAmount(1500);
  * ```

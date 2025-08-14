@@ -196,26 +196,26 @@
 - **10.4** \[x] **Currency conversion & rounding**
   _Context:_ Verify `amount` is **int**, rate is **float**, `convertedEUR = Math.round(amount * rate)` is displayed read-only.
   _Depends on:_ 3.2, 4.5, 5.5
-  _Completed:_ 
-    - ✅ Amount validation: `AmountInput` component enforces digits-only input and stores as integer
-    - ✅ Exchange rates: `currencyRates.json` contains float values (EUR: 1.0, ZAR: 0.05)
-    - ✅ Conversion logic: `convertToEUR()` function uses `Math.round(amount * rate)` for proper rounding
-    - ✅ UI display: `ConvertedAmount` component shows original amount and converted EUR read-only
-    - ✅ Integration: Component appears below input controls when amount > 0 and country selected
-    - ✅ Testing: All 18 currency conversion tests and 13 integration tests passing
-    - ✅ Responsive design: Works on all screen sizes with proper styling and animations
+  _Completed:_
+  - ✅ Amount validation: `AmountInput` component enforces digits-only input and stores as integer
+  - ✅ Exchange rates: `currencyRates.json` contains float values (EUR: 1.0, ZAR: 0.05)
+  - ✅ Conversion logic: `convertToEUR()` function uses `Math.round(amount * rate)` for proper rounding
+  - ✅ UI display: `ConvertedAmount` component shows original amount and converted EUR read-only
+  - ✅ Integration: Component appears below input controls when amount > 0 and country selected
+  - ✅ Testing: All 18 currency conversion tests and 13 integration tests passing
+  - ✅ Responsive design: Works on all screen sizes with proper styling and animations
 - **10.5** [x] **Accessibility & keyboard checks (basic)**
   _Context:_ Tab through inputs/toggles/dropdowns; visible focus rings via Tailwind.
   _Depends on:_ 5.x, 9.x
   _Status:_ ✅ **COMPLETED** - Added comprehensive accessibility features including:
-    - Skip to main content link
-    - Proper ARIA labels, roles, and descriptions
-    - Keyboard navigation support (Enter/Space keys)
-    - Focus management with visible focus rings
-    - Screen reader support with hidden descriptions
-    - Landmark roles and semantic HTML structure
-    - Form label associations and validation states
-    - Comprehensive accessibility testing
+  - Skip to main content link
+  - Proper ARIA labels, roles, and descriptions
+  - Keyboard navigation support (Enter/Space keys)
+  - Focus management with visible focus rings
+  - Screen reader support with hidden descriptions
+  - Landmark roles and semantic HTML structure
+  - Form label associations and validation states
+  - Comprehensive accessibility testing
 
 ---
 
@@ -224,7 +224,7 @@
 - **11.1** \[x] **Docs & code comments**
   _Context:_ JSDoc for helpers; README with quick start, where to edit JSONs, how to add a country.
   _Depends on:_ 1.x–10.x
-- **11.2** \[ ] **Run linter/formatter; fix warnings**
+- **11.2** \[x] **Run linter/formatter; fix warnings**
   _Context:_ Keep baseline green; avoids friction for the next devs.
   _Depends on:_ 11.1
 - **11.3** \[ ] **Tag MVP v1.0 (git) & short changelog**

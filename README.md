@@ -5,10 +5,12 @@ A React-based application for calculating Travel Rule compliance requirements ba
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 
 ### Installation
+
 ```bash
 npm install
 npm run dev
@@ -17,6 +19,7 @@ npm run dev
 The app will be available at `http://localhost:5173`
 
 ### Build for Production
+
 ```bash
 npm run build
 npm run preview
@@ -63,6 +66,7 @@ Edit `/src/data/requirements.json` to modify country-specific rules:
 ```
 
 **Field Types:**
+
 - **Simple fields:** `"full_name"`, `"date_of_birth"`
 - **Combined fields:** `"date_of_birth + birthplace"` (treated as one unit)
 - **Logic groups:** Use `requirement_groups` with AND/OR logic for complex rules
@@ -74,6 +78,7 @@ Edit `/src/data/requirements.json` to modify country-specific rules:
 3. **Add field mappings** to `/src/data/fieldDictionary.json` if using custom field names
 
 Example for adding South Africa:
+
 ```json
 // requirements.json
 "ZAF": {
@@ -82,7 +87,7 @@ Example for adding South Africa:
   "individual": { ... }
 }
 
-// currencyRates.json  
+// currencyRates.json
 "ZAR": 0.05
 
 // fieldDictionary.json

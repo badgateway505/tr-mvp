@@ -144,15 +144,15 @@ function App() {
 
           // Show OR-group satisfaction details
           const applicantOrGroups = comparableSets.applicantGroups.filter(
-            ([_, group]) => group.logic === 'OR'
+            ([, group]) => group.logic === 'OR'
           );
           const counterpartyOrGroups = comparableSets.counterpartyGroups.filter(
-            ([_, group]) => group.logic === 'OR'
+            ([, group]) => group.logic === 'OR'
           );
 
           if (applicantOrGroups.length > 0) {
             const satisfiedOrGroups = applicantOrGroups.filter(
-              ([_, group]) => group.satisfied
+              ([, group]) => group.satisfied
             );
             results.push(
               `   Applicant OR groups: ${satisfiedOrGroups.length}/${applicantOrGroups.length} satisfied`
@@ -161,7 +161,7 @@ function App() {
 
           if (counterpartyOrGroups.length > 0) {
             const satisfiedOrGroups = counterpartyOrGroups.filter(
-              ([_, group]) => group.satisfied
+              ([, group]) => group.satisfied
             );
             results.push(
               `   Counterparty OR groups: ${satisfiedOrGroups.length}/${counterpartyOrGroups.length} satisfied`
@@ -208,11 +208,19 @@ function App() {
         {/* Main content area */}
         <main id="main-content" role="main" aria-label="Travel Rule Calculator">
           {/* Input controls - responsive grid */}
-          <section aria-labelledby="input-controls-heading" className="space-y-6 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 mb-8">
-            <h2 id="input-controls-heading" className="sr-only">Input Controls</h2>
+          <section
+            aria-labelledby="input-controls-heading"
+            className="space-y-6 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 mb-8"
+          >
+            <h2 id="input-controls-heading" className="sr-only">
+              Input Controls
+            </h2>
             <div className="space-y-4">
               <div className="group">
-                <label htmlFor="sumsub-country" className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800">
+                <label
+                  htmlFor="sumsub-country"
+                  className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800"
+                >
                   Sumsub Country
                 </label>
                 <select
@@ -230,11 +238,16 @@ function App() {
                   <option value="DEU">Germany (EUR)</option>
                   <option value="ZAF">South Africa (ZAR)</option>
                 </select>
-                <div id="sumsub-country-help" className="sr-only">Select the country where Sumsub VASP is located</div>
+                <div id="sumsub-country-help" className="sr-only">
+                  Select the country where Sumsub VASP is located
+                </div>
               </div>
 
               <div className="group">
-                <label htmlFor="direction-select" className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800">
+                <label
+                  htmlFor="direction-select"
+                  className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800"
+                >
                   Direction
                 </label>
                 <select
@@ -251,13 +264,18 @@ function App() {
                   <option value="OUT">OUT (Sumsub = Sender)</option>
                   <option value="IN">IN (Sumsub = Receiver)</option>
                 </select>
-                <div id="direction-help" className="sr-only">Select whether this is an outgoing or incoming transfer</div>
+                <div id="direction-help" className="sr-only">
+                  Select whether this is an outgoing or incoming transfer
+                </div>
               </div>
             </div>
 
             <div className="space-y-4">
               <div className="group">
-                <label htmlFor="counterparty-country" className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800">
+                <label
+                  htmlFor="counterparty-country"
+                  className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800"
+                >
                   Counterparty Country
                 </label>
                 <select
@@ -274,11 +292,16 @@ function App() {
                   <option value="DEU">Germany (EUR)</option>
                   <option value="ZAF">South Africa (ZAR)</option>
                 </select>
-                <div id="counterparty-country-help" className="sr-only">Select the country where the counterparty VASP is located</div>
+                <div id="counterparty-country-help" className="sr-only">
+                  Select the country where the counterparty VASP is located
+                </div>
               </div>
 
               <div className="group">
-                <label htmlFor="amount-input" className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-400">
+                <label
+                  htmlFor="amount-input"
+                  className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-400"
+                >
                   Amount
                 </label>
                 <input
@@ -294,19 +317,33 @@ function App() {
                              hover:border-gray-400 hover:shadow-md
                              focus:shadow-lg focus:scale-[1.01]"
                 />
-                <div id="amount-help" className="sr-only">Enter the transfer amount in the local currency</div>
+                <div id="amount-help" className="sr-only">
+                  Enter the transfer amount in the local currency
+                </div>
               </div>
             </div>
           </section>
 
           {/* Currency Conversion Display */}
           {amount > 0 && sumsubCountry && (
-            <section aria-labelledby="conversion-heading" className="mb-8 transition-all duration-500 ease-out animate-in slide-in-from-bottom-4">
-              <h2 id="conversion-heading" className="sr-only">Currency Conversion</h2>
+            <section
+              aria-labelledby="conversion-heading"
+              className="mb-8 transition-all duration-500 ease-out animate-in slide-in-from-bottom-4"
+            >
+              <h2 id="conversion-heading" className="sr-only">
+                Currency Conversion
+              </h2>
               <ConvertedAmount
                 amount={amount}
-                originalCurrency={getCountryRule(sumsubCountry)?.currency || 'EUR'}
-                convertedEUR={convertToEUR(amount, getCountryRule(sumsubCountry)?.currency || 'EUR')?.eurAmount || 0}
+                originalCurrency={
+                  getCountryRule(sumsubCountry)?.currency || 'EUR'
+                }
+                convertedEUR={
+                  convertToEUR(
+                    amount,
+                    getCountryRule(sumsubCountry)?.currency || 'EUR'
+                  )?.eurAmount || 0
+                }
                 label="Currency Conversion"
                 showOriginal={true}
               />
@@ -325,13 +362,21 @@ function App() {
             >
               Test Section 4 Integration
             </button>
-            <div id="test-button-help" className="sr-only">Click to run comprehensive tests of the travel rule calculator functionality</div>
+            <div id="test-button-help" className="sr-only">
+              Click to run comprehensive tests of the travel rule calculator
+              functionality
+            </div>
           </section>
 
           {/* Summary Status Bar */}
           {sumsubRequirements && counterpartyRequirements && (
-            <section aria-labelledby="summary-heading" className="mb-8 transition-all duration-500 ease-out animate-in slide-in-from-bottom-4">
-              <h2 id="summary-heading" className="sr-only">Summary Status</h2>
+            <section
+              aria-labelledby="summary-heading"
+              className="mb-8 transition-all duration-500 ease-out animate-in slide-in-from-bottom-4"
+            >
+              <h2 id="summary-heading" className="sr-only">
+                Summary Status
+              </h2>
               <SummaryStatusBar
                 applicantRequirements={sumsubRequirements}
                 counterpartyRequirements={counterpartyRequirements}
@@ -343,7 +388,10 @@ function App() {
 
           {/* Requirements Display - Responsive VASP blocks */}
           {(sumsubRequirements || counterpartyRequirements) && (
-            <section aria-labelledby="requirements-heading" className="mb-8 transition-all duration-500 ease-out animate-in slide-in-from-bottom-4">
+            <section
+              aria-labelledby="requirements-heading"
+              className="mb-8 transition-all duration-500 ease-out animate-in slide-in-from-bottom-4"
+            >
               <h2
                 id="requirements-heading"
                 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-6 text-center
@@ -384,12 +432,23 @@ function App() {
 
           {/* Test Results */}
           {testResults.length > 0 && (
-            <section aria-labelledby="test-results-heading" className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-sm
-                         transition-all duration-300 ease-out hover:shadow-md hover:scale-[1.01]">
-              <h3 id="test-results-heading" className="font-semibold text-gray-900 mb-3 text-lg transition-colors duration-200">
+            <section
+              aria-labelledby="test-results-heading"
+              className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-sm
+                         transition-all duration-300 ease-out hover:shadow-md hover:scale-[1.01]"
+            >
+              <h3
+                id="test-results-heading"
+                className="font-semibold text-gray-900 mb-3 text-lg transition-colors duration-200"
+              >
                 Test Results:
               </h3>
-              <div className="space-y-2" role="log" aria-live="polite" aria-label="Test execution results">
+              <div
+                className="space-y-2"
+                role="log"
+                aria-live="polite"
+                aria-label="Test execution results"
+              >
                 {testResults.map((result, index) => (
                   <div
                     key={index}
@@ -404,9 +463,15 @@ function App() {
           )}
 
           {/* Test Scenarios */}
-          <section aria-labelledby="test-scenarios-heading" className="mt-12 bg-white border border-gray-200 rounded-lg p-6 shadow-sm
-                       transition-all duration-300 ease-out hover:shadow-md hover:scale-[1.01]">
-            <h3 id="test-scenarios-heading" className="font-semibold text-gray-900 mb-4 text-lg transition-colors duration-200">
+          <section
+            aria-labelledby="test-scenarios-heading"
+            className="mt-12 bg-white border border-gray-200 rounded-lg p-6 shadow-sm
+                       transition-all duration-300 ease-out hover:shadow-md hover:scale-[1.01]"
+          >
+            <h3
+              id="test-scenarios-heading"
+              className="font-semibold text-gray-900 mb-4 text-lg transition-colors duration-200"
+            >
               Test Scenarios:
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -416,11 +481,12 @@ function App() {
                 </div>
                 <ul className="text-sm text-gray-600 space-y-1">
                   <li>
-                    <strong>DEU + EUR 0:</strong> Above threshold (threshold = 0)
+                    <strong>DEU + EUR 0:</strong> Above threshold (threshold =
+                    0)
                   </li>
                   <li>
-                    <strong>ZAF + ZAR 4999:</strong> Below threshold (threshold =
-                    5000)
+                    <strong>ZAF + ZAR 4999:</strong> Below threshold (threshold
+                    = 5000)
                   </li>
                   <li>
                     <strong>ZAF + ZAR 5000:</strong> Above threshold with groups

@@ -31,7 +31,12 @@ Edit `/src/data/requirements.json` to add your new country:
         "wallet_attribution": false
       },
       "above_threshold": {
-        "required_fields": ["full_name", "date_of_birth", "id_document_number", "address"],
+        "required_fields": [
+          "full_name",
+          "date_of_birth",
+          "id_document_number",
+          "address"
+        ],
         "kyc_required": true,
         "aml_required": true,
         "wallet_attribution": true
@@ -42,11 +47,13 @@ Edit `/src/data/requirements.json` to add your new country:
 ```
 
 **Field Types:**
+
 - **Simple fields:** `"full_name"`, `"date_of_birth"`
 - **Combined fields:** `"date_of_birth + birthplace"` (treated as one unit)
 - **Logic groups:** Use `requirement_groups` for complex AND/OR logic
 
 **Complex Requirements Example:**
+
 ```json
 "above_threshold": {
   "requirement_groups": [
@@ -55,7 +62,7 @@ Edit `/src/data/requirements.json` to add your new country:
       "fields": ["full_name", "date_of_birth"]
     },
     {
-      "logic": "OR", 
+      "logic": "OR",
       "fields": ["passport_number", "national_id", "drivers_license"]
     }
   ],
@@ -94,12 +101,14 @@ If your country uses custom field names, add them to `/src/data/fieldDictionary.
 ## 📊 Understanding the Data Flow
 
 ### 1. Country Selection
+
 ```typescript
 // User selects country → App loads country rule
 const countryRule = getCountryRule('USA');
 ```
 
 ### 2. Amount Processing
+
 ```typescript
 // User enters amount → App converts to EUR
 const conversion = convertToEUR(1500, 'USD');
@@ -107,6 +116,7 @@ const conversion = convertToEUR(1500, 'USD');
 ```
 
 ### 3. Threshold Determination
+
 ```typescript
 // App determines which threshold bucket applies
 const bucket = getThresholdBucket('USA', 1500);
@@ -114,6 +124,7 @@ const bucket = getThresholdBucket('USA', 1500);
 ```
 
 ### 4. Requirements Extraction
+
 ```typescript
 // App extracts requirements for the threshold bucket
 const requirements = extractRequirements('USA', 1500);
@@ -123,6 +134,7 @@ const requirements = extractRequirements('USA', 1500);
 ## 🧪 Testing New Countries
 
 ### Unit Tests
+
 ```bash
 # Test specific country logic
 npm test -- --grep "USA"
@@ -132,6 +144,7 @@ npm test -- --grep "currencyConversion"
 ```
 
 ### Manual Testing
+
 1. Add your country to the JSON files
 2. Start the dev server: `npm run dev`
 3. Select your country and test different amounts
@@ -141,42 +154,51 @@ npm test -- --grep "currencyConversion"
 ## 🔍 Debugging Common Issues
 
 ### Issue: Country Not Appearing in Dropdown
+
 **Check:**
+
 - Country code is added to `requirements.json`
 - Country code follows ISO 3166-1 alpha-3 format (e.g., 'USA', 'DEU')
 - No syntax errors in JSON file
 
 ### Issue: Currency Conversion Failing
+
 **Check:**
+
 - Currency code matches between `requirements.json` and `currencyRates.json`
 - Exchange rate is a valid number
 - No typos in currency codes
 
 ### Issue: Requirements Not Displaying
+
 **Check:**
+
 - Country rule structure is valid
 - Required fields array exists and contains valid field names
 - No missing required properties (kyc_required, aml_required, etc.)
 
 ### Issue: Field Matching Not Working
+
 **Check:**
+
 - Field names in `fieldDictionary.json` are correct
 - Normalized field names match between requirements
-- Combo fields use proper ` + ` separator
+- Combo fields use proper `+` separator
 
 ## 📝 Code Style Guidelines
 
 ### JSDoc Comments
+
 All exported functions should have comprehensive JSDoc comments:
 
-```typescript
+````typescript
 /**
  * Brief description of what the function does
- * 
+ *
  * @param paramName - Description of the parameter
  * @param anotherParam - Description of another parameter
  * @returns Description of what the function returns
- * 
+ *
  * @example
  * ```typescript
  * const result = functionName('value', 123);
@@ -185,15 +207,17 @@ All exported functions should have comprehensive JSDoc comments:
 export function functionName(paramName: string, anotherParam: number): string {
   // Implementation
 }
-```
+````
 
 ### Type Safety
+
 - Always use TypeScript interfaces for data structures
 - Avoid `any` type - use proper typing
 - Use union types for finite sets of values
 - Export types that other modules might need
 
 ### Error Handling
+
 - Return `undefined` or `null` for missing data rather than throwing errors
 - Use optional chaining (`?.`) and nullish coalescing (`??`)
 - Log warnings for recoverable errors
@@ -202,11 +226,13 @@ export function functionName(paramName: string, anotherParam: number): string {
 ## 🚀 Performance Considerations
 
 ### Memoization
+
 - Use `useMemo` for expensive calculations in React components
 - Cache results of pure functions when called repeatedly
 - Avoid recreating objects/arrays in render cycles
 
 ### Data Loading
+
 - Load JSON data once at startup (already implemented)
 - Use static imports for configuration files
 - Consider lazy loading for large datasets in future versions

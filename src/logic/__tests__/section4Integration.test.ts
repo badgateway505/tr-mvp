@@ -174,8 +174,8 @@ describe('Section 4 Integration Tests', () => {
 
   describe('Edge cases and error handling', () => {
     it('should handle invalid countries gracefully', () => {
-      expect(getThresholdBucket('INVALID' as any, 1000)).toBeUndefined();
-      expect(extractRequirements('INVALID' as any, 1000)).toBeUndefined();
+      expect(getThresholdBucket('INVALID' as string, 1000)).toBeUndefined();
+      expect(extractRequirements('INVALID' as string, 1000)).toBeUndefined();
       expect(convertToEUR(1000, 'INVALID')).toBeUndefined();
     });
 

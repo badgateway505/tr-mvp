@@ -210,7 +210,12 @@ export function buildComparableSets(
   const applicantFields = new Set<string>();
   const applicantGroups = new Map<
     string,
-    { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean; matchedFields: string[] }
+    {
+      logic: 'AND' | 'OR';
+      fields: string[];
+      satisfied: boolean;
+      matchedFields: string[];
+    }
   >();
 
   // Process simple fields
@@ -245,7 +250,12 @@ export function buildComparableSets(
   const counterpartyFields = new Set<string>();
   const counterpartyGroups = new Map<
     string,
-    { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean; matchedFields: string[] }
+    {
+      logic: 'AND' | 'OR';
+      fields: string[];
+      satisfied: boolean;
+      matchedFields: string[];
+    }
   >();
 
   // Process simple fields
@@ -304,9 +314,9 @@ export function buildComparableSets(
   // Update group satisfaction based on matches
   // For OR groups: satisfied if ANY field matches (task 10.3 requirement)
   // For AND groups: satisfied if ALL fields match
-  for (const [groupKey, group] of applicantGroups) {
+  for (const [, group] of applicantGroups) {
     const matchedFields: string[] = [];
-    
+
     // Check which fields in this group have matches
     group.fields.forEach((field) => {
       if (fieldPairings.has(field)) {
@@ -326,9 +336,9 @@ export function buildComparableSets(
     }
   }
 
-  for (const [groupKey, group] of counterpartyGroups) {
+  for (const [, group] of counterpartyGroups) {
     const matchedFields: string[] = [];
-    
+
     // Check which fields in this group have matches
     group.fields.forEach((field) => {
       if (reversePairings.has(field)) {
@@ -510,4 +520,3 @@ function expandComboFields(fields: string[]): string[] {
 
   return expandedFields;
 }
-

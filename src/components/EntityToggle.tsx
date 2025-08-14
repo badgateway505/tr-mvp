@@ -14,7 +14,10 @@ export const EntityToggle: React.FC<EntityToggleProps> = ({
   disabled = false,
   label = 'Entity Type',
 }) => {
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, entityType: EntityType) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLButtonElement>,
+    entityType: EntityType
+  ) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (!disabled && entityType === 'individual') {
@@ -30,7 +33,7 @@ export const EntityToggle: React.FC<EntityToggleProps> = ({
           {label}
         </label>
       )}
-      <div 
+      <div
         className="flex items-center space-x-4"
         role="radiogroup"
         aria-labelledby={label ? `${label.toLowerCase()}-label` : undefined}
@@ -45,9 +48,10 @@ export const EntityToggle: React.FC<EntityToggleProps> = ({
           aria-label="Individual entity type"
           className={`px-4 py-2 rounded-md font-medium transition-colors duration-150 
                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
-                     ${value === 'individual'
-                       ? 'bg-green-600 text-white shadow-md'
-                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                     ${
+                       value === 'individual'
+                         ? 'bg-green-600 text-white shadow-md'
+                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                      } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           Individual
@@ -63,7 +67,7 @@ export const EntityToggle: React.FC<EntityToggleProps> = ({
           >
             Company
           </button>
-          <div 
+          <div
             id="company-tooltip"
             className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap
                        opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
@@ -74,7 +78,7 @@ export const EntityToggle: React.FC<EntityToggleProps> = ({
           </div>
         </div>
       </div>
-      <div 
+      <div
         id="entity-description"
         className="mt-2 text-xs text-gray-500"
         aria-live="polite"

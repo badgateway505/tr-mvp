@@ -36,27 +36,27 @@ export const ConvertedAmount: React.FC<ConvertedAmountProps> = ({
   const componentId = 'converted-amount';
   const labelId = label ? `${componentId}-label` : undefined;
 
-  // Generate accessible description
-  const getAccessibleDescription = () => {
-    let description = `Converted amount: ${formatEUR(convertedEUR)}`;
-    if (showOriginal) {
-      description += ` from ${formatOriginal(amount, originalCurrency)}`;
-    }
-    description += '. Exchange rate applied and rounded to nearest EUR.';
-    return description;
-  };
+  // Generate accessible description (unused but kept for future accessibility features)
+  // const getAccessibleDescription = () => {
+  //   let description = `Converted amount: ${formatEUR(convertedEUR)}`;
+  //   if (showOriginal) {
+  //     description += ` from ${formatOriginal(amount, originalCurrency)}`;
+  //   }
+  //   description += '. Exchange rate applied and rounded to nearest EUR.';
+  //   return description;
+  // };
 
   return (
     <div className="w-full">
       {label && (
-        <label 
+        <label
           id={labelId}
           className="block text-sm font-medium text-gray-700 mb-2"
         >
           {label}
         </label>
       )}
-      <div 
+      <div
         className="bg-gray-50 border border-gray-200 rounded-md p-4"
         role="region"
         aria-labelledby={labelId}
@@ -70,7 +70,7 @@ export const ConvertedAmount: React.FC<ConvertedAmountProps> = ({
                 {formatOriginal(amount, originalCurrency)}
               </div>
             )}
-            <div 
+            <div
               className="text-lg font-semibold text-gray-900"
               aria-label={`Converted amount: ${formatEUR(convertedEUR)}`}
             >
@@ -78,13 +78,10 @@ export const ConvertedAmount: React.FC<ConvertedAmountProps> = ({
             </div>
           </div>
           <div className="text-right">
-            <div 
-              className="text-xs text-gray-500"
-              aria-hidden="true"
-            >
+            <div className="text-xs text-gray-500" aria-hidden="true">
               EUR Equivalent
             </div>
-            <div 
+            <div
               className="text-xs text-blue-600 font-medium"
               aria-hidden="true"
             >
@@ -92,7 +89,7 @@ export const ConvertedAmount: React.FC<ConvertedAmountProps> = ({
             </div>
           </div>
         </div>
-        <div 
+        <div
           id={`${componentId}-description`}
           className="mt-2 text-xs text-gray-500"
         >

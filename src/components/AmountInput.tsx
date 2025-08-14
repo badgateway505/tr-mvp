@@ -80,7 +80,7 @@ export const AmountInput: React.FC<AmountInputProps> = ({
   return (
     <div className="w-full group">
       {label && (
-        <label 
+        <label
           id={labelId}
           htmlFor={inputId}
           className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800"
@@ -113,7 +113,7 @@ export const AmountInput: React.FC<AmountInputProps> = ({
                      focus:shadow-lg focus:scale-[1.01]
                      disabled:hover:border-gray-300 disabled:hover:shadow-sm"
         />
-        <div 
+        <div
           className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
           aria-hidden="true"
         >
@@ -128,13 +128,13 @@ export const AmountInput: React.FC<AmountInputProps> = ({
 
         {/* Subtle focus indicator */}
         {isFocused && (
-          <div 
+          <div
             className="absolute inset-0 rounded-md ring-2 ring-blue-200 ring-opacity-50 pointer-events-none animate-pulse"
             aria-hidden="true"
           ></div>
         )}
       </div>
-      <div 
+      <div
         id={helpTextId}
         className="mt-2 text-xs text-gray-500 transition-colors duration-150 group-hover:text-gray-600"
       >

@@ -35,11 +35,11 @@ export const VerificationFlags: React.FC<VerificationFlagsProps> = ({
     if (kyc_required) requirements.push('KYC verification required');
     if (aml_required) requirements.push('AML verification required');
     if (wallet_attribution) requirements.push('wallet attribution required');
-    
+
     if (requirements.length === 0) {
       return 'No special verification requirements';
     }
-    
+
     return requirements.join(', ');
   };
 
@@ -55,7 +55,7 @@ export const VerificationFlags: React.FC<VerificationFlagsProps> = ({
       >
         Verification Requirements
       </h4>
-      <div 
+      <div
         id={flagsListId}
         className="flex flex-wrap gap-2"
         role="list"
@@ -107,13 +107,9 @@ export const VerificationFlags: React.FC<VerificationFlagsProps> = ({
           </span>
         )}
       </div>
-      
+
       {/* Hidden summary for screen readers */}
-      <div 
-        id={`${sectionId}-summary`}
-        className="sr-only"
-        aria-live="polite"
-      >
+      <div id={`${sectionId}-summary`} className="sr-only" aria-live="polite">
         {getVerificationSummary()}
       </div>
     </section>

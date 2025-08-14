@@ -5,9 +5,7 @@ import React from 'react';
 import {
   theme,
   getVaspTheme,
-  getComponentStyles,
   commonStyles,
-  vaspThemes,
   combineClasses,
   conditionalClass,
   responsiveClass,

@@ -14,13 +14,23 @@ interface VaspRequirementsBlockProps {
         applicantGroups: Array<
           [
             string,
-            { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean; matchedFields: string[] },
+            {
+              logic: 'AND' | 'OR';
+              fields: string[];
+              satisfied: boolean;
+              matchedFields: string[];
+            },
           ]
         >;
         counterpartyGroups: Array<
           [
             string,
-            { logic: 'AND' | 'OR'; fields: string[]; satisfied: boolean; matchedFields: string[] },
+            {
+              logic: 'AND' | 'OR';
+              fields: string[];
+              satisfied: boolean;
+              matchedFields: string[];
+            },
           ]
         >;
         fieldPairings: Map<string, string[]>;
@@ -86,7 +96,8 @@ const RequirementGroup: React.FC<{
   // Calculate satisfaction details for better UX
   const totalFields = group.fields.length;
   const matchedCount = matchedFields.length;
-  const satisfactionPercentage = totalFields > 0 ? (matchedCount / totalFields) * 100 : 0;
+  // const satisfactionPercentage =
+  //   totalFields > 0 ? (matchedCount / totalFields) * 100 : 0;
 
   const groupId = `group-${group.logic.toLowerCase()}-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -142,7 +153,7 @@ const RequirementGroup: React.FC<{
 
       {/* Satisfaction details for OR groups */}
       {group.logic === 'OR' && isSatisfied !== undefined && (
-        <div 
+        <div
           id={`${groupId}-description`}
           className="mt-3 pt-3 border-t border-gray-200"
           role="status"
@@ -150,10 +161,9 @@ const RequirementGroup: React.FC<{
         >
           <div className="text-xs text-gray-600">
             <strong>OR Group Logic:</strong> This group is satisfied because{' '}
-            {isSatisfied 
+            {isSatisfied
               ? `at least one field (${matchedCount} of ${totalFields}) has matches on the other side.`
-              : `none of the ${totalFields} fields have matches on the other side.`
-            }
+              : `none of the ${totalFields} fields have matches on the other side.`}
           </div>
         </div>
       )}
@@ -213,19 +223,21 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
       <div
         className={`${colors.header} px-4 py-3 transition-all duration-200 group-hover:brightness-110`}
       >
-        <h3 
+        <h3
           id={`${blockId}-header`}
           className="text-lg font-semibold text-white transition-all duration-200 group-hover:scale-[1.02]"
         >
           {roleLabel} Requirements
         </h3>
         {comparableSets && (
-          <div 
+          <div
             className="text-sm text-blue-100 mt-1 transition-opacity duration-200 group-hover:opacity-90"
             role="status"
-            aria-label={`${isApplicantSide
-              ? comparableSets.applicantMatchedFields.length
-              : comparableSets.counterpartyMatchedFields.length} fields matched`}
+            aria-label={`${
+              isApplicantSide
+                ? comparableSets.applicantMatchedFields.length
+                : comparableSets.counterpartyMatchedFields.length
+            } fields matched`}
           >
             {isApplicantSide
               ? `${comparableSets.applicantMatchedFields.length} fields matched`
@@ -238,7 +250,7 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
       <div className="p-4">
         {/* Fields Section */}
         {requirements.fields && requirements.fields.length > 0 && (
-          <section 
+          <section
             id={fieldsSectionId}
             aria-labelledby={`${fieldsSectionId}-heading`}
             className="mb-6"
@@ -249,7 +261,7 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
             >
               Required Fields
             </h4>
-            <div 
+            <div
               className="flex flex-wrap gap-2"
               role="list"
               aria-label="Required fields for this VASP"
@@ -272,7 +284,7 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
 
         {/* Groups Section with enhanced visual separation */}
         {requirements.groups && requirements.groups.length > 0 && (
-          <section 
+          <section
             id={groupsSectionId}
             aria-labelledby={`${groupsSectionId}-heading`}
             className="mb-6"
@@ -283,7 +295,7 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
             >
               Requirement Groups
             </h4>
-            <div 
+            <div
               className="space-y-4"
               role="list"
               aria-label="Requirement groups for this VASP"
@@ -293,10 +305,10 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
                 const groupKey = `group_${groupIndex}`;
                 const comparableGroup =
                   comparableSets?.applicantGroups.find(
-                    ([key, _]) => key === groupKey
+                    ([key]) => key === groupKey
                   ) ||
                   comparableSets?.counterpartyGroups.find(
-                    ([key, _]) => key === groupKey
+                    ([key]) => key === groupKey
                   );
                 const isSatisfied = comparableGroup
                   ? comparableGroup[1].satisfied
@@ -312,7 +324,9 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
                       isApplicantSide={isApplicantSide}
                       hoveredField={hoveredField || null}
                       onFieldHover={onFieldHover || undefined}
-                      matchedFields={comparableGroup ? comparableGroup[1].matchedFields : []}
+                      matchedFields={
+                        comparableGroup ? comparableGroup[1].matchedFields : []
+                      }
                     />
                   </div>
                 );

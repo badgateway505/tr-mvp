@@ -33,7 +33,7 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
   return (
     <div className="w-full group">
       {label && (
-        <label 
+        <label
           id={labelId}
           htmlFor={selectId}
           className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-150 group-hover:text-gray-800"
@@ -67,7 +67,7 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
         </select>
 
         {/* Custom dropdown arrow with hover effect */}
-        <div 
+        <div
           className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
           aria-hidden="true"
         >
