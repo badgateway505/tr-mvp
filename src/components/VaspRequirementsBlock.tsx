@@ -18,6 +18,8 @@ interface VaspRequirementsBlockProps {
     applicantMatchedFields: string[];
     counterpartyMatchedFields: string[];
   } | undefined;
+  hoveredField?: string | null;
+  onFieldHover?: (field: string, isHovering: boolean) => void;
 }
 
 // Separate component for rendering requirement groups with enhanced styling
@@ -27,7 +29,9 @@ const RequirementGroup: React.FC<{
   isSatisfied?: boolean | undefined;
   fieldPairings?: Map<string, string[]> | undefined;
   isApplicantSide?: boolean | undefined;
-}> = ({ group, colorTheme, isSatisfied, fieldPairings, isApplicantSide }) => {
+  hoveredField?: string | null | undefined;
+  onFieldHover?: ((field: string, isHovering: boolean) => void) | undefined;
+}> = ({ group, colorTheme, isSatisfied, fieldPairings, isApplicantSide, hoveredField, onFieldHover }) => {
   const themeColors = {
     blue: {
       logicBg: group.logic === 'AND' ? 'bg-green-100' : 'bg-orange-100',
@@ -78,6 +82,8 @@ const RequirementGroup: React.FC<{
             isMatched={fieldPairings ? fieldPairings.has(field) : false}
             fieldPairings={fieldPairings || undefined}
             isApplicantSide={isApplicantSide || undefined}
+            hoveredField={hoveredField}
+            onFieldHover={onFieldHover}
           />
         ))}
       </div>
@@ -89,7 +95,9 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
   roleLabel,
   colorTheme,
   requirements,
-  comparableSets
+  comparableSets,
+  hoveredField,
+  onFieldHover
 }) => {
   const themeColors = {
     blue: {
@@ -149,6 +157,8 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
                   isMatched={fieldPairings ? fieldPairings.has(field) : false}
                   fieldPairings={fieldPairings}
                   isApplicantSide={isApplicantSide}
+                  hoveredField={hoveredField || null}
+                  onFieldHover={onFieldHover || undefined}
                 />
               ))}
             </div>
@@ -177,6 +187,8 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
                     isSatisfied={isSatisfied}
                     fieldPairings={fieldPairings}
                     isApplicantSide={isApplicantSide}
+                    hoveredField={hoveredField || null}
+                    onFieldHover={onFieldHover || undefined}
                   />
                 );
               })}

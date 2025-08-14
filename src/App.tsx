@@ -22,6 +22,8 @@ function App() {
   } = useAppState();
 
   const [testResults, setTestResults] = useState<string[]>([]);
+  // Add hover state for field sync
+  const [hoveredField, setHoveredField] = useState<string | null>(null);
 
   // Extract requirements for both sides
   const sumsubRequirements = sumsubCountry && amount > 0 ? extractRequirements(sumsubCountry, amount) : undefined;
@@ -31,6 +33,15 @@ function App() {
   const comparableSets = (sumsubRequirements && counterpartyRequirements) 
     ? buildComparableSets(sumsubRequirements, counterpartyRequirements)
     : undefined;
+
+  // Handle field hover for sync between blocks
+  const handleFieldHover = (field: string, isHovering: boolean) => {
+    if (isHovering) {
+      setHoveredField(field);
+    } else {
+      setHoveredField(null);
+    }
+  };
 
   const runSection4Tests = () => {
     const results: string[] = [];
@@ -181,6 +192,8 @@ function App() {
                 colorTheme="blue"
                 requirements={sumsubRequirements}
                 comparableSets={comparableSets}
+                hoveredField={hoveredField}
+                onFieldHover={handleFieldHover}
               />
             )}
             {counterpartyRequirements && (
@@ -189,6 +202,8 @@ function App() {
                 colorTheme="purple"
                 requirements={counterpartyRequirements}
                 comparableSets={comparableSets}
+                hoveredField={hoveredField}
+                onFieldHover={handleFieldHover}
               />
             )}
           </div>

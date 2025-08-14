@@ -8,6 +8,8 @@ interface FieldPillProps {
   className?: string;
   fieldPairings?: Map<string, string[]> | undefined;
   isApplicantSide?: boolean | undefined;
+  hoveredField?: string | null | undefined;
+  onFieldHover?: ((field: string, isHovering: boolean) => void) | undefined;
 }
 
 export const FieldPill: React.FC<FieldPillProps> = ({
@@ -16,23 +18,41 @@ export const FieldPill: React.FC<FieldPillProps> = ({
   onHover,
   className = '',
   fieldPairings,
-  isApplicantSide
+  isApplicantSide,
+  hoveredField,
+  onFieldHover
 }) => {
   const normalizedField = normalizeField(field);
   const isComboField = normalizedField.isCombo;
 
+  // Check if this field should be highlighted due to hover sync
+  const isHighlightedByHover = hoveredField && fieldPairings && (
+    // This field is hovered
+    hoveredField === field ||
+    // This field matches the hovered field
+    fieldPairings.has(field) && fieldPairings.get(field)?.includes(hoveredField) ||
+    // This field is matched by the hovered field (reverse lookup)
+    Array.from(fieldPairings.entries()).some(([key, matches]) => 
+      key === hoveredField && matches.includes(field)
+    )
+  );
+
   const handleMouseEnter = () => {
-    onHover?.(field, true);
-    
-    // Highlight matching fields on the other side
-    if (fieldPairings && fieldPairings.has(field)) {
-      // This will be handled by the parent component through CSS classes
-      // We could also emit a custom event here if needed
+    // Use onFieldHover if available, otherwise fall back to onHover
+    if (onFieldHover) {
+      onFieldHover(field, true);
+    } else if (onHover) {
+      onHover(field, true);
     }
   };
 
   const handleMouseLeave = () => {
-    onHover?.(field, false);
+    // Use onFieldHover if available, otherwise fall back to onHover
+    if (onFieldHover) {
+      onFieldHover(field, false);
+    } else if (onHover) {
+      onHover(field, false);
+    }
   };
 
   const baseClasses = [
@@ -68,6 +88,11 @@ export const FieldPill: React.FC<FieldPillProps> = ({
     }
   }
 
+  // Add hover sync effects
+  if (isHighlightedByHover) {
+    baseClasses.push('scale-105 border-dashed border-2 border-blue-400 shadow-lg');
+  }
+
   return (
     <span
       className={`${baseClasses.join(' ')} ${className}`}
@@ -77,6 +102,7 @@ export const FieldPill: React.FC<FieldPillProps> = ({
       data-field-name={field}
       data-is-matched={isMatched}
       data-is-applicant-side={isApplicantSide}
+      data-is-highlighted={isHighlightedByHover}
     >
       {field}
       {isMatched && fieldPairings && (

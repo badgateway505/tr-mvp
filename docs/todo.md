@@ -136,9 +136,10 @@
   _Context:_ For each unique normalized field, find presence in both sides; keep a map `{ normalizedKey: { inApplicant: boolean, inCounterparty: boolean } }`.
   _Depends on:_ 7.1
   _Status:_ ✅ **COMPLETED** - Implemented `buildFieldPresenceMap` function that creates a map showing which normalized fields exist on each side, with helper functions `getFieldPresenceMap` and `isFieldPresentOnBothSides`
-- **7.3** \[ ] **Hover sync between blocks**
+- **7.3** [x] **Hover sync between blocks**
   _Context:_ On hover of a field pill, highlight corresponding pill(s) in the opposite block if `inBoth === true` → apply `scale` + `dashed-border`.
   _Depends on:_ 7.2, 6.3
+  _Status:_ ✅ **COMPLETED** - Implemented bidirectional hover sync with scale + dashed border effects
 
 ---
 
