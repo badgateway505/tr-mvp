@@ -6,7 +6,7 @@ import {
   hasRequirementGroups,
   hasRequiredFields
 } from '../requirementExtractor';
-import type { RuleBlock } from '../../types/requirements';
+
 
 describe('requirementExtractor', () => {
   describe('extractRequirements', () => {
@@ -62,14 +62,14 @@ describe('requirementExtractor', () => {
 
   describe('extractFromRuleBlock', () => {
     it('should extract from rule block with required_fields', () => {
-      const ruleBlock: RuleBlock = {
+      const individualBranch = {
         required_fields: ['field1', 'field2'],
         kyc_required: true,
         aml_required: false,
         wallet_attribution: true
       };
 
-      const result = extractFromRuleBlock(ruleBlock);
+      const result = extractFromRuleBlock(individualBranch);
       expect(result.fields).toEqual(['field1', 'field2']);
       expect(result.groups).toBeUndefined();
       expect(result.kyc_required).toBe(true);
@@ -78,14 +78,14 @@ describe('requirementExtractor', () => {
     });
 
     it('should extract from rule block with requirement_groups', () => {
-      const ruleBlock: RuleBlock = {
+      const individualBranch = {
         requirement_groups: [
           {
-            logic: 'AND',
+            logic: 'AND' as const,
             fields: ['field1', 'field2']
           },
           {
-            logic: 'OR',
+            logic: 'OR' as const,
             fields: ['field3', 'field4']
           }
         ],
@@ -94,7 +94,7 @@ describe('requirementExtractor', () => {
         wallet_attribution: false
       };
 
-      const result = extractFromRuleBlock(ruleBlock);
+      const result = extractFromRuleBlock(individualBranch);
       expect(result.fields).toEqual([]);
       expect(result.groups).toBeDefined();
       expect(result.groups).toHaveLength(2);

@@ -1,4 +1,4 @@
-import type { CountryCode, CountryRule } from '../types/requirements';
+import type { CountryCode } from '../types/requirements';
 import { getCountryRule } from './loadRequirements';
 
 export type ThresholdBucket = 'below_threshold' | 'above_threshold';
