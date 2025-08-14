@@ -1,6 +1,7 @@
 import React from 'react';
 import type { ExtractedRequirements } from '../logic/requirementExtractor';
 import { FieldPill } from './FieldPill';
+import { VerificationFlags } from './VerificationFlags';
 
 interface VaspRequirementsBlockProps {
   roleLabel: string;
@@ -130,33 +131,12 @@ export const VaspRequirementsBlock: React.FC<VaspRequirementsBlockProps> = ({
         )}
 
         {/* Verification Flags */}
-        <div className="border-t border-gray-200 pt-4">
-          <h4 className={`text-sm font-medium ${colors.accent} mb-3`}>
-            Verification Requirements
-          </h4>
-          <div className="flex flex-wrap gap-2">
-            {requirements.kyc_required && (
-              <span className="px-3 py-2 bg-yellow-100 text-yellow-800 text-sm rounded-lg border border-yellow-200 font-medium">
-                KYC Required
-              </span>
-            )}
-            {requirements.aml_required && (
-              <span className="px-3 py-2 bg-red-100 text-red-800 text-sm rounded-lg border border-red-200 font-medium">
-                AML Required
-              </span>
-            )}
-            {requirements.wallet_attribution && (
-              <span className="px-3 py-2 bg-blue-100 text-blue-800 text-sm rounded-lg border border-blue-200 font-medium">
-                Wallet Attribution
-              </span>
-            )}
-            {!requirements.kyc_required && !requirements.aml_required && !requirements.wallet_attribution && (
-              <span className="px-3 py-2 bg-gray-100 text-gray-600 text-sm rounded-lg border border-gray-200 font-medium">
-                No Special Verification
-              </span>
-            )}
-          </div>
-        </div>
+        <VerificationFlags
+          kyc_required={requirements.kyc_required}
+          aml_required={requirements.aml_required}
+          wallet_attribution={requirements.wallet_attribution}
+          colorTheme={colorTheme}
+        />
       </div>
     </div>
   );

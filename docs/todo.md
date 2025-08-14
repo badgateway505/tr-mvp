@@ -120,7 +120,7 @@
 - **6.3** \[x] **Field chip (`<FieldPill />`)**
   _Context:_ Single field (or combo) item; base border grey when unmatched; hover logic to scale + dashed if matched.
   _Depends on:_ 6.2
-- **6.4** \[ ] **Flags row (`<VerificationFlags />`)**
+- **6.4** \[x] **Flags row (`<VerificationFlags />`)**
   _Context:_ Displays KYC / AML / Wallet Attribution as tags; informative only, not compared.
   _Depends on:_ 6.1
 
@@ -153,13 +153,13 @@
 
 ## 9. Layout, Styling & Animations
 
-- **9.1** \[x] **Responsive layout (`App.tsx`)**
+- **9.1** \[ ] **Responsive layout (`App.tsx`)**
   _Context:_ Two-column layout for VASP blocks on desktop; stacked on small screens.
   _Depends on:_ 5.x, 6.x, 8.2
-- **9.2** \[x] **Theme colors & tokens**
+- **9.2** \[ ] **Theme colors & tokens**
   _Context:_ Tailwind classes for blue (Sumsub) and purple (Counterparty); consistent paddings, radii, shadows.
   _Depends on:_ 2.2, 6.1
-- **9.3** \[x] **Micro-interactions**
+- **9.3** \[ ] **Micro-interactions**
   _Context:_ Tailwind transitions (`transition`, `transform`, `hover:scale-…`, `border-dashed`) for smooth UX; keep subtle.
   _Depends on:_ 6.3, 7.3
 
@@ -226,11 +226,11 @@
 
 ## Acceptance Checklist (maps to PRD)
 
-- **A.1** \[x] Direction default = **OUT**; entity shows **Individual**, Company disabled
+- **A.1** \[ ] Direction default = **OUT**; entity shows **Individual**, Company disabled
   _Depends on:_ 5.2, 5.3
-- **A.2** \[x] Amount input is **integer-only**; conversion uses **float rate**, EUR value **rounded**
+- **A.2** \[ ] Amount input is **integer-only**; conversion uses **float rate**, EUR value **rounded**
   _Depends on:_ 5.4, 4.5
-- **A.3** \[x] Independent threshold evaluation per VASP side
+- **A.3** \[ ] Independent threshold evaluation per VASP side
   _Depends on:_ 4.2
 - **A.4** \[ ] Matching & hover highlighting between blocks
   _Depends on:_ 7.3
@@ -238,9 +238,9 @@
   _Depends on:_ 8.2
 - **A.6** \[x] Flags (KYC/AML/Wallet) displayed, not compared
   _Depends on:_ 6.4
-- **A.7** \[x] Tailwind styling + smooth transitions
+- **A.7** \[ ] Tailwind styling + smooth transitions
   _Depends on:_ 9.x
-- **A.8** \[x] All logic driven by static JSONs; no API calls
+- **A.8** \[ ] All logic driven by static JSONs; no API calls
   _Depends on:_ 1.x–4.x
 
 ---
