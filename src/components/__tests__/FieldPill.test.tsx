@@ -16,7 +16,7 @@ describe('FieldPill', () => {
     
     const pill = screen.getByText('date_of_birth + birthplace');
     expect(pill).toBeInTheDocument();
-    expect(pill).toHaveClass('bg-gradient-to-r', 'from-blue-50', 'to-indigo-50');
+    expect(pill).toHaveClass('field-combo', 'text-blue-800');
     expect(pill).toHaveAttribute('title', 'Combined field: date_of_birth + birthplace');
   });
 
@@ -24,7 +24,7 @@ describe('FieldPill', () => {
     render(<FieldPill field="full_name" isMatched={true} />);
     
     const pill = screen.getByText('full_name');
-    expect(pill).toHaveClass('border-green-300', 'hover:border-dashed');
+    expect(pill).toHaveClass('field-matched', 'hover:border-dashed');
   });
 
   it('applies unmatched styling when isMatched is false', () => {
@@ -74,6 +74,6 @@ describe('FieldPill', () => {
     render(<FieldPill field="date_of_birth + birthplace" />);
     
     const pill = screen.getByText('date_of_birth + birthplace');
-    expect(pill).toHaveClass('hover:from-blue-100', 'hover:to-indigo-100', 'hover:border-blue-300');
+    expect(pill).toHaveClass('field-combo', 'hover:scale-105');
   });
 });
