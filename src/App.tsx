@@ -6,6 +6,7 @@ import { extractRequirements } from './logic/requirementExtractor';
 import { normalizeFields, fieldsMatch } from './logic/fieldNormalization';
 import { convertToEUR, getConversionSummary } from './logic/currencyConversion';
 import { getCountryRule } from './logic/loadRequirements';
+import { VaspRequirementsBlock } from './components/VaspRequirementsBlock';
 import './App.css';
 
 function App() {
@@ -21,6 +22,10 @@ function App() {
   } = useAppState();
 
   const [testResults, setTestResults] = useState<string[]>([]);
+
+  // Extract requirements for both sides
+  const sumsubRequirements = sumsubCountry && amount > 0 ? extractRequirements(sumsubCountry, amount) : undefined;
+  const counterpartyRequirements = counterpartyCountry && amount > 0 ? extractRequirements(counterpartyCountry, amount) : undefined;
 
   const runSection4Tests = () => {
     const results: string[] = [];
@@ -76,8 +81,8 @@ function App() {
   };
 
   return (
-    <div className="App p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Section 4 Integration Test</h1>
+    <div className="App p-8 max-w-6xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6">Travel Rule Calculator - Section 4 Integration</h1>
       
       <div className="grid grid-cols-2 gap-6 mb-6">
         <div>
@@ -138,6 +143,29 @@ function App() {
       >
         Test Section 4 Integration
       </button>
+
+      {/* Requirements Display */}
+      {(sumsubRequirements || counterpartyRequirements) && (
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold mb-4">Requirements Display</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {sumsubRequirements && (
+              <VaspRequirementsBlock
+                roleLabel={getSumsubLabel(direction)}
+                colorTheme="blue"
+                requirements={sumsubRequirements}
+              />
+            )}
+            {counterpartyRequirements && (
+              <VaspRequirementsBlock
+                roleLabel={getCounterpartyLabel(direction)}
+                colorTheme="purple"
+                requirements={counterpartyRequirements}
+              />
+            )}
+          </div>
+        </div>
+      )}
 
       {testResults.length > 0 && (
         <div className="bg-gray-100 p-4 rounded-lg">
