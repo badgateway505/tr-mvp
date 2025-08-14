@@ -186,9 +186,10 @@
   _Context:_ DEU (threshold 0) always above; ZAF around 5,000 boundary. Verify independent evaluation per side.
   _Depends on:_ 4.2, 6.x, 8.2
   _Completed:_ Comprehensive test suite created covering DEU threshold 0 behavior, ZAF 5,000 boundary testing, and independent evaluation per side validation.
-- **10.2** \[ ] **Direction cases (IN vs OUT)**
+- **10.2** \[x] **Direction cases (IN vs OUT)**
   _Context:_ Ensure labeling and summary logic remain correct while requirements evaluation stays independent.
   _Depends on:_ 4.1, 8.2
+  _Completed:_ Comprehensive test suite created covering direction labeling logic, threshold evaluation independence, requirements extraction independence, and currency conversion independence for both IN and OUT directions.
 - **10.3** \[ ] **Matching behavior**
   _Context:_ Hover matches for normalized names; unmatched default grey border; OR-group considered satisfied by any one field.
   _Depends on:_ 7.3
